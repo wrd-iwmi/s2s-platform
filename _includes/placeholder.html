@@ -1,0 +1,16 @@
+{%- comment -%}
+  A visible "we have not documented this yet" block.
+
+  USE THIS INSTEAD OF INVENTING A FACT. It is the single most important
+  convention on this site.
+
+    {% include placeholder.html what="Validation results to be added" %}
+    {% include placeholder.html what="Endpoint not published" note="Why, or who will supply it." %}
+{%- endcomment -%}
+<div class="placeholder" role="note">
+  <span class="placeholder__label">
+    <svg width="12" height="12" viewBox="0 0 12 12" aria-hidden="true" fill="currentColor"><path d="M6 0 12 11H0z" opacity=".25"/><path d="M5.3 4h1.4v3.6H5.3zM5.3 8.4h1.4v1.3H5.3z"/></svg>
+    {{ include.what | default: "Information to be added" }}
+  </span>
+  <p>{{ include.note | default: "This section has not yet been documented from project material. It is shown as a placeholder rather than filled with assumed content." }}</p>
+</div>

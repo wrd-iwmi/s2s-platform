@@ -1,0 +1,54 @@
+---
+layout: base
+---
+{%- comment -%}
+  Shared shell for every detail page: breadcrumbs, title block, status, badges.
+  The specific layouts (tool, method, api, tutorial, case-study, dataset) supply
+  the body. Breadcrumbs are derived from the collection, so nothing to maintain.
+{%- endcomment -%}
+{%- assign coll = site.collections | where: "label", page.kicker | first -%}
+{%- case page.collection -%}
+  {%- when 'tools' -%}        {%- assign sec_label = 'Tools' -%}        {%- assign sec_url = '/tools/' -%}
+  {%- when 'methods' -%}      {%- assign sec_label = 'Methods' -%}      {%- assign sec_url = '/methods/' -%}
+  {%- when 'apis' -%}         {%- assign sec_label = 'Data & APIs' -%}  {%- assign sec_url = '/apis/' -%}
+  {%- when 'tutorials' -%}    {%- assign sec_label = 'Tutorials' -%}    {%- assign sec_url = '/tutorials/' -%}
+  {%- when 'case_studies' -%} {%- assign sec_label = 'Case studies' -%} {%- assign sec_url = '/case-studies/' -%}
+  {%- when 'datasets' -%}     {%- assign sec_label = 'Datasets' -%}     {%- assign sec_url = '/datasets/' -%}
+{%- endcase -%}
+
+<nav class="breadcrumbs wrap" aria-label="Breadcrumb">
+  <ol>
+    <li><a href="{{ '/' | relative_url }}">Home</a></li>
+    {%- if page.collection == 'datasets' %}
+    <li><a href="{{ '/apis/' | relative_url }}">Data &amp; APIs</a></li>
+    {%- endif %}
+    <li><a href="{{ sec_url | relative_url }}">{{ sec_label }}</a></li>
+    <li><span aria-current="page">{{ page.title }}</span></li>
+  </ol>
+</nav>
+
+<div class="page-head">
+  <div class="wrap">
+    {%- if page.collection == 'datasets' -%}
+      {%- assign kick = 'Dataset · ' | append: page.role -%}
+    {%- else -%}
+      {%- assign kick = page.kicker | default: sec_label -%}
+    {%- endif -%}
+    <p class="eyebrow">{{ kick }}</p>
+    <h1>{{ page.title }}</h1>
+    <p class="lede">{{ page.summary }}</p>
+    <div class="page-head__meta">
+      {% include status.html status=page.status %}
+      {%- if page.badges.size > 0 %}
+      <span class="badge-row">
+        {%- for b in page.badges %}<span class="badge badge--neutral">{{ b }}</span>{% endfor %}
+      </span>
+      {%- endif %}
+      {%- if page.updated %}<span>Last updated {{ page.updated | date: '%Y-%m-%d' }}</span>{% endif %}
+    </div>
+  </div>
+</div>
+
+<div class="wrap section">
+  {{ content }}
+</div>

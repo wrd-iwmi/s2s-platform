@@ -1,0 +1,115 @@
+---
+layout: detail
+kicker: API
+---
+<div class="split">
+  <div>
+    <section id="sec-purpose">
+      <h2>Purpose</h2>
+      <p class="lede" style="max-width:none">{{ page.purpose }}</p>
+      <div class="prose prose--wide">{{ content }}</div>
+    </section>
+
+    <section id="sec-endpoints" style="margin-top:3rem">
+      <h2>Endpoints</h2>
+      {%- if page.base_url %}
+      <p>Base URL: <code>{{ page.base_url }}</code></p>
+      {%- else %}
+      {% include placeholder.html what="Base URL not published" note="The base URL for this API has not been released. It is left blank rather than shown as an example." %}
+      {%- endif %}
+
+      {%- if page.endpoints.size > 0 %}
+        {%- for ep in page.endpoints %}
+        <details class="disclosure">
+          <summary>
+            <span class="badge badge--blue">{{ ep.method | default: 'GET' }}</span>
+            <code>{{ ep.path }}</code>
+          </summary>
+          <div class="disclosure__body">
+            <p>{{ ep.description }}</p>
+            {%- if ep.parameters.size > 0 %}
+            <div class="table-scroll">
+              <table>
+                <caption>Parameters</caption>
+                <thead><tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr></thead>
+                <tbody>
+                  {%- for p in ep.parameters %}
+                  <tr><td><code>{{ p.name }}</code></td><td>{{ p.type }}</td><td>{% if p.required %}Yes{% else %}No{% endif %}</td><td>{{ p.description }}</td></tr>
+                  {%- endfor %}
+                </tbody>
+              </table>
+            </div>
+            {%- endif %}
+            {%- if ep.example_request %}<h4>Example request</h4><pre><code>{{ ep.example_request }}</code></pre>{% endif %}
+            {%- if ep.example_response %}<h4>Example response</h4><pre><code>{{ ep.example_response }}</code></pre>{% endif %}
+          </div>
+        </details>
+        {%- endfor %}
+      {%- else %}
+      {% include placeholder.html what="Endpoint documentation to be added" note="Endpoint paths, methods, parameters and example requests and responses will be documented here on release. They are not shown speculatively." %}
+      {%- endif %}
+    </section>
+
+    <section id="sec-reference" style="margin-top:3rem">
+      <h2>Reference</h2>
+      <div class="table-scroll">
+        <table>
+          <tbody>
+            <tr><th scope="row">Authentication</th><td>{{ page.authentication | default: "Information to be added" }}</td></tr>
+            <tr><th scope="row">Response formats</th><td>{% if page.response_formats.size > 0 %}{{ page.response_formats | join: ', ' }}{% else %}Information to be added{% endif %}</td></tr>
+            <tr><th scope="row">Update frequency</th><td>{{ page.update_frequency | default: "Information to be added" }}</td></tr>
+            <tr><th scope="row">Spatial / temporal coverage</th><td>{{ page.coverage | default: "Information to be added" }}</td></tr>
+            <tr><th scope="row">Rate limits</th><td>{{ page.rate_limits | default: "Information to be added" }}</td></tr>
+            <tr><th scope="row">Version</th><td>{{ page.version }}</td></tr>
+            <tr><th scope="row">Status</th><td>{{ page.status }}</td></tr>
+            <tr><th scope="row">Related tool</th><td>
+              {%- assign slug = page.related_tool -%}
+              {%- assign t = site.tools | where_exp: "i", "i.slug == slug" | first -%}
+              {% if t %}<a href="{{ t.url | relative_url }}">{{ t.title }}</a>{% else %}Information to be added{% endif %}
+            </td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="sec-access" style="margin-top:3rem">
+      <h2>Documentation links</h2>
+      {% include access-links.html links=page.links %}
+    </section>
+
+    <section id="sec-responsible-use" style="margin-top:3rem">
+      <h2>Responsible use</h2>
+      <div class="callout callout--caution">
+        <p style="margin:0">
+          Forecast products carry uncertainty that varies by region, season, variable and lead
+          time. Before building an operational service on any product served through this API,
+          consult the <a href="{{ '/methods/forecast-verification/' | relative_url }}">skill benchmarking work</a>
+          for the relevant region and variable.
+        </p>
+      </div>
+    </section>
+  </div>
+
+  <aside class="stack">
+    <div class="meta-card">
+      <h2>API metadata</h2>
+      <dl class="meta-list">
+        <div><dt>Version</dt><dd>{{ page.version }}</dd></div>
+        <div><dt>Status</dt><dd>{{ page.status }}</dd></div>
+        {%- if page.deliverables.size > 0 %}<div><dt>Deliverables</dt><dd>{{ page.deliverables | join: ', ' }}</dd></div>{% endif %}
+        {%- if page.team.size > 0 %}<div><dt>Team</dt><dd>{{ page.team | join: ', ' }}</dd></div>{% endif %}
+        {%- if page.tags.size > 0 %}<div><dt>Topics</dt><dd>{{ page.tags | join: ', ' }}</dd></div>{% endif %}
+      </dl>
+    </div>
+    <nav class="toc" aria-label="On this page">
+      <h2>On this page</h2>
+      <ul>
+        <li><a href="#sec-purpose">Purpose</a></li>
+        <li><a href="#sec-endpoints">Endpoints</a></li>
+        <li><a href="#sec-reference">Reference</a></li>
+        <li><a href="#sec-access">Documentation links</a></li>
+        <li><a href="#sec-responsible-use">Responsible use</a></li>
+      </ul>
+    </nav>
+  </aside>
+</div>

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <rect width="1200" height="630" fill="#0a2340"/>
+  <g fill="none" stroke="#2a63a8" stroke-width="1" opacity=".45">
+    <path d="M0 340 C 320 340, 640 300, 1200 210"/>
+    <path d="M0 340 C 320 344, 640 340, 1200 330"/>
+    <path d="M0 340 C 320 348, 640 380, 1200 450"/>
+    <path d="M0 340 C 320 336, 640 320, 1200 270"/>
+    <path d="M0 340 C 320 352, 640 410, 1200 510"/>
+    <path d="M0 340 C 320 356, 640 440, 1200 570"/>
+    <path d="M0 340 C 320 332, 640 280, 1200 150"/>
+  </g>
+  <text x="80" y="200" font-family="Georgia, serif" font-size="62" fill="#ffffff" font-weight="600">Seasonal-to-subseasonal</text>
+  <text x="80" y="272" font-family="Georgia, serif" font-size="62" fill="#ffffff" font-weight="600">climate intelligence</text>
+  <text x="80" y="140" font-family="Helvetica, Arial, sans-serif" font-size="22" fill="#8fc7d6" letter-spacing="3">CGIAR CLIMATE ACTION · IWMI</text>
+  <text x="80" y="530" font-family="Helvetica, Arial, sans-serif" font-size="26" fill="#9db4cc">Forecast datasets · Methods · APIs · Tutorials · Case studies</text>
+  <rect x="80" y="560" width="160" height="4" fill="#b8721f"/>
+</svg>

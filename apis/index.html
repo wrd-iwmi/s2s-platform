@@ -1,0 +1,33 @@
+---
+layout: page
+title: Data & APIs
+kicker: For developers and analysts
+lede: The access layer for the programme's forecast products — standardised APIs, a STAC catalogue and client libraries, developed under the CGIAR Forecast Interoperability & Data Access Toolkit.
+trail:
+  - label: Data & APIs
+permalink: /apis/
+---
+<div class="btn-row" style="margin-bottom:2rem">
+  <a class="btn btn--secondary btn--sm" href="{{ '/datasets/' | relative_url }}">Dataset catalogue ({{ site.datasets.size }})</a>
+  <a class="btn btn--secondary btn--sm" href="{{ '/tools/interoperability-toolkit/' | relative_url }}">Interoperability toolkit</a>
+</div>
+
+{% include callout.html variant="caution" title="No endpoints are published yet" body="The APIs below are in development. Endpoint paths, parameters, authentication and rate limits are shown as placeholders and will be filled in on release. Nothing on these pages is illustrative or invented — an unpublished endpoint is shown as unpublished." %}
+
+{%- assign items = site.apis | sort: "weight" | reverse -%}
+{% include filterable-list.html items=items label="APIs"
+   facet1_title="Topic" facet3_title="Status" facet3_key="status" %}
+
+<section style="margin-top:4rem">
+  <div class="section-head">
+    <h2>Underlying datasets</h2>
+    <p>The forecast, observational, reanalysis and ancillary datasets that feed the products served by these APIs.</p>
+  </div>
+  <ul class="link-list">
+    {%- assign ds = site.datasets | sort: "weight" | reverse -%}
+    {%- for d in ds limit: 8 %}
+    <li><a href="{{ d.url | relative_url }}">{{ d.title }}<span>{{ d.role }}</span></a></li>
+    {%- endfor %}
+  </ul>
+  <p style="margin-top:1.5rem"><a class="btn btn--ghost" href="{{ '/datasets/' | relative_url }}">Full dataset catalogue →</a></p>
+</section>

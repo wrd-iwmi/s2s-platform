@@ -1,0 +1,210 @@
+{%- comment -%}
+  All of the site's JavaScript. It is small, it is the only script on the page,
+  and every feature it powers degrades gracefully without it.
+{%- endcomment -%}
+<script>
+(function () {
+  'use strict';
+
+  /* ---- Mobile menu ---------------------------------------------------- */
+  var toggle = document.getElementById('nav-toggle');
+  var menu = document.getElementById('site-nav');
+  if (toggle && menu) {
+    toggle.addEventListener('click', function () {
+      var open = menu.classList.toggle('is-open');
+      toggle.setAttribute('aria-expanded', String(open));
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && menu.classList.contains('is-open')) {
+        menu.classList.remove('is-open');
+        toggle.setAttribute('aria-expanded', 'false');
+        toggle.focus();
+      }
+    });
+  }
+
+  /* ---- Level tabs on method pages ------------------------------------- */
+  Array.prototype.forEach.call(document.querySelectorAll('[data-levels]'), function (root) {
+    var tabs = Array.prototype.slice.call(root.querySelectorAll('.levels__tab'));
+    var panels = Array.prototype.slice.call(root.querySelectorAll('.levels__panel'));
+    if (!tabs.length || tabs.length !== panels.length) return;
+    function select(index) {
+      tabs.forEach(function (t, i) {
+        t.setAttribute('aria-selected', String(i === index));
+        t.tabIndex = i === index ? 0 : -1;
+      });
+      panels.forEach(function (p, i) { p.hidden = i !== index; });
+    }
+    tabs.forEach(function (tab, i) {
+      tab.addEventListener('click', function () { select(i); });
+      tab.addEventListener('keydown', function (e) {
+        if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+        e.preventDefault();
+        var next = (i + (e.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length;
+        select(next);
+        tabs[next].focus();
+      });
+    });
+    select(0);
+  });
+
+  /* ---- Long notebook outputs ------------------------------------------ */
+  Array.prototype.forEach.call(document.querySelectorAll('[data-nb-expand]'), function (btn) {
+    var out = btn.previousElementSibling;
+    if (!out) return;
+    btn.addEventListener('click', function () {
+      var open = out.classList.toggle('nb-cell__output--open');
+      btn.setAttribute('aria-expanded', String(open));
+      btn.textContent = open ? 'Show less' : 'Show all output';
+    });
+  });
+
+  /* ---- Interactive map (Leaflet + OpenStreetMap) ------------------------
+     Leaflet is fetched only when a map scrolls into view, so a visitor who
+     never reaches the map section downloads nothing extra.                  */
+  var LEAFLET_CSS = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
+  var LEAFLET_JS  = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
+
+  function loadLeaflet(done) {
+    if (window.L) { done(); return; }
+    var css = document.createElement('link');
+    css.rel = 'stylesheet';
+    css.href = LEAFLET_CSS;
+    document.head.appendChild(css);
+    var js = document.createElement('script');
+    js.src = LEAFLET_JS;
+    js.onload = done;
+    js.onerror = function () {
+      /* Offline, blocked, or the CDN is unreachable. The country list beside
+         the map carries the same information, so just remove the empty box. */
+      Array.prototype.forEach.call(document.querySelectorAll('[data-map]'), function (el) {
+        el.style.display = 'none';
+      });
+    };
+    document.head.appendChild(js);
+  }
+
+  function initMap(el) {
+    var pointsEl = el.querySelector('[data-map-points]');
+    if (!pointsEl) return;
+    var points;
+    try { points = JSON.parse(pointsEl.textContent); } catch (e) { return; }
+
+    var placeholder = el.querySelector('[data-map-placeholder]');
+    if (placeholder) placeholder.parentNode.removeChild(placeholder);
+
+    var map = L.map(el, {
+      center: [parseFloat(el.getAttribute('data-centre-lat')), parseFloat(el.getAttribute('data-centre-lon'))],
+      zoom: parseInt(el.getAttribute('data-zoom'), 10),
+      scrollWheelZoom: false,
+      attributionControl: true
+    });
+
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 12,
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    var bounds = [];
+    points.forEach(function (p) {
+      var marker = L.circleMarker([p.lat, p.lon], {
+        radius: 8, color: '#ffffff', weight: 2,
+        fillColor: '#0f6f7d', fillOpacity: 0.95
+      }).addTo(map);
+      var html = '<strong>' + p.name + '</strong><br>' + p.note;
+      if (p.url) html += '<br><a href="' + p.url + '">Read the case study</a>';
+      marker.bindPopup(html);
+      marker.bindTooltip(p.name, { direction: 'top' });
+      bounds.push([p.lat, p.lon]);
+    });
+
+    if (bounds.length > 1) map.fitBounds(bounds, { padding: [40, 40] });
+
+    /* Wheel zoom only after a click, so the map never hijacks page scrolling. */
+    map.on('click', function () { map.scrollWheelZoom.enable(); });
+    map.on('mouseout', function () { map.scrollWheelZoom.disable(); });
+  }
+
+  var maps = Array.prototype.slice.call(document.querySelectorAll('[data-map]'));
+  if (maps.length) {
+    var startMaps = function () { loadLeaflet(function () { maps.forEach(initMap); }); };
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) { io.disconnect(); startMaps(); }
+        });
+      }, { rootMargin: '200px' });
+      maps.forEach(function (m) { io.observe(m); });
+    } else {
+      startMaps();
+    }
+  }
+
+  /* ---- Search and filter chips ---------------------------------------- */
+  Array.prototype.forEach.call(document.querySelectorAll('[data-filter-root]'), function (root) {
+    var input = root.querySelector('[data-filter-input]');
+    var cards = Array.prototype.slice.call(root.querySelectorAll('[data-entry]'));
+    var chips = Array.prototype.slice.call(root.querySelectorAll('.chip'));
+    var count = root.querySelector('[data-filter-count]');
+    var empty = root.querySelector('[data-filter-empty]');
+    var resets = Array.prototype.slice.call(root.querySelectorAll('[data-filter-reset]'));
+    var active = {};
+
+    function apply() {
+      var q = (input && input.value ? input.value : '').trim().toLowerCase();
+      var terms = q ? q.split(/\s+/) : [];
+      var visible = 0;
+      cards.forEach(function (card) {
+        var text = card.getAttribute('data-text') || '';
+        var ok = terms.every(function (t) { return text.indexOf(t) !== -1; });
+        if (ok) {
+          for (var key in active) {
+            if (!active[key].length) continue;
+            var field = (card.getAttribute('data-' + key) || '').split('|');
+            var hit = active[key].some(function (v) { return field.indexOf(v) !== -1; });
+            if (!hit) { ok = false; break; }
+          }
+        }
+        card.hidden = !ok;
+        if (ok) visible++;
+      });
+      if (count) count.textContent = visible + (visible === 1 ? ' entry' : ' entries');
+      if (empty) empty.hidden = visible !== 0;
+      var any = !!q;
+      for (var k in active) { if (active[k].length) any = true; }
+      resets.forEach(function (r) {
+        if (!r.closest('[data-filter-empty]')) r.hidden = !any;
+      });
+    }
+
+    chips.forEach(function (chip) {
+      chip.addEventListener('click', function () {
+        var key = chip.getAttribute('data-facet');
+        var value = chip.getAttribute('data-value');
+        if (!active[key]) active[key] = [];
+        var i = active[key].indexOf(value);
+        if (i === -1) { active[key].push(value); chip.setAttribute('aria-pressed', 'true'); }
+        else { active[key].splice(i, 1); chip.setAttribute('aria-pressed', 'false'); }
+        apply();
+      });
+    });
+    if (input) input.addEventListener('input', apply);
+    resets.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        if (input) input.value = '';
+        active = {};
+        chips.forEach(function (c) { c.setAttribute('aria-pressed', 'false'); });
+        apply();
+      });
+    });
+
+    /* Deep links such as /tools/?tag=Drought */
+    var m = /[?&]tag=([^&]+)/.exec(location.search);
+    if (m) {
+      var want = decodeURIComponent(m[1].replace(/\+/g, ' '));
+      chips.forEach(function (c) { if (c.getAttribute('data-value') === want) c.click(); });
+    }
+    apply();
+  });
+})();
+</script>

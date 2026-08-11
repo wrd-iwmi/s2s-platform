@@ -1,0 +1,98 @@
+{%- comment -%}
+  Search box + filter chips over a set of pages.
+
+  Usage:
+    {% include filterable-list.html items=site.tools label="tools"
+       facet1_title="Topic" facet1_key="tags"
+       facet2_title="Region" facet2_key="regions"
+       facet3_title="Status" facet3_key="status" %}
+
+  Every card is rendered by the server, so the page works fully with
+  JavaScript switched off — the script only hides cards that do not match.
+
+  "badge" is an optional front-matter-independent extra label per item.
+{%- endcomment -%}
+
+{%- assign items = include.items -%}
+
+{%- comment -%} Collect the distinct values used for each facet. {%- endcomment -%}
+{%- assign tag_values = '' -%}
+{%- assign region_values = '' -%}
+{%- assign status_values = '' -%}
+{%- for it in items -%}
+  {%- for t in it.tags -%}{%- unless tag_values contains t -%}{%- assign tag_values = tag_values | append: t | append: '||' -%}{%- endunless -%}{%- endfor -%}
+  {%- for r in it.regions -%}{%- unless region_values contains r -%}{%- assign region_values = region_values | append: r | append: '||' -%}{%- endunless -%}{%- endfor -%}
+  {%- assign sv = it[include.facet3_key] | default: it.status -%}
+  {%- unless status_values contains sv -%}{%- assign status_values = status_values | append: sv | append: '||' -%}{%- endunless -%}
+{%- endfor -%}
+{%- assign tag_list = tag_values | split: '||' | sort -%}
+{%- assign region_list = region_values | split: '||' | sort -%}
+{%- assign status_list = status_values | split: '||' -%}
+
+<div class="split split--sidebar-left" data-filter-root>
+  <div>
+    <div class="filter-group">
+      <label class="filter-group__title" for="filter-q">Search {{ include.label }}</label>
+      <div class="search-box">
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="6.5" cy="6.5" r="4.5"/><path d="M10 10l4 4"/></svg>
+        <input class="search-input" id="filter-q" type="search" placeholder="Keyword…" autocomplete="off" data-filter-input>
+      </div>
+    </div>
+
+    {%- if include.facet3_title and status_list.size > 1 %}
+    <fieldset class="filter-group" style="border:0;padding:0;margin-inline:0">
+      <legend class="filter-group__title">{{ include.facet3_title }}</legend>
+      <div class="chips">
+        {%- for v in status_list %}<button class="chip" type="button" aria-pressed="false" data-facet="status" data-value="{{ v }}">{{ v }}</button>{% endfor %}
+      </div>
+    </fieldset>
+    {%- endif %}
+
+    {%- if include.facet1_title and tag_list.size > 0 %}
+    <fieldset class="filter-group" style="border:0;padding:0;margin-inline:0">
+      <legend class="filter-group__title">{{ include.facet1_title }}</legend>
+      <div class="chips">
+        {%- for v in tag_list %}<button class="chip" type="button" aria-pressed="false" data-facet="tags" data-value="{{ v }}">{{ v }}</button>{% endfor %}
+      </div>
+    </fieldset>
+    {%- endif %}
+
+    {%- if include.facet2_title and region_list.size > 0 %}
+    <fieldset class="filter-group" style="border:0;padding:0;margin-inline:0">
+      <legend class="filter-group__title">{{ include.facet2_title }}</legend>
+      <div class="chips">
+        {%- for v in region_list %}<button class="chip" type="button" aria-pressed="false" data-facet="regions" data-value="{{ v }}">{{ v }}</button>{% endfor %}
+      </div>
+    </fieldset>
+    {%- endif %}
+
+    <button class="btn btn--ghost btn--sm" type="button" data-filter-reset hidden>Clear all filters</button>
+  </div>
+
+  <div>
+    <h2 class="visually-hidden">Results</h2>
+    <p class="result-count" data-filter-count aria-live="polite">{{ items.size }} {% if items.size == 1 %}entry{% else %}entries{% endif %}</p>
+    <div class="grid grid--2" data-filter-list>
+      {%- for it in items -%}
+        {%- assign facet_status = it[include.facet3_key] | default: it.status -%}
+        {%- capture searchtext -%}{{ it.title }} {{ it.summary }} {{ it.tags | join: ' ' }} {{ it.regions | join: ' ' }} {{ it.search_extra }} {{ it.source }} {{ it.purpose }} {{ it.objective }} {{ it.problem }} {{ it.context }} {{ it.location }} {{ it.executive_summary }}{%- endcapture -%}
+      <article class="card card--link"
+               data-entry
+               data-tags="{{ it.tags | join: '|' }}"
+               data-regions="{{ it.regions | join: '|' }}"
+               data-status="{{ facet_status }}"
+               data-text="{{ searchtext | strip_html | normalize_whitespace | downcase | escape }}">
+        <h3><a href="{{ it.url | relative_url }}">{{ it.title }}</a></h3>
+        <p>{{ it.summary }}</p>
+        <div class="card__foot badge-row">
+          <span class="badge badge--neutral">{{ facet_status }}</span>
+          {%- if it.badge %}<span class="badge badge--blue">{{ it.badge }}</span>{% endif -%}
+          {%- if include.show_deliverables and it.deliverables.size > 0 %}<span class="badge badge--blue">{{ it.deliverables | join: ' · ' }}</span>{% endif -%}
+          {%- for t in it.tags limit: 3 %}<span class="badge badge--neutral">{{ t }}</span>{% endfor -%}
+        </div>
+      </article>
+      {%- endfor -%}
+    </div>
+    <p class="no-results" data-filter-empty hidden>No entries match these filters. <button class="btn btn--ghost btn--sm" type="button" data-filter-reset>Clear filters</button></p>
+  </div>
+</div>

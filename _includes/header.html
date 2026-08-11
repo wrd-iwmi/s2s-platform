@@ -1,0 +1,35 @@
+{%- comment -%} Site header and main menu. Menu items come from _data/navigation.yml {%- endcomment -%}
+<header class="site-header">
+  <div class="wrap-wide site-header__inner">
+    <a class="brand" href="{{ '/' | relative_url }}">
+      <img src="{{ '/assets/img/cgiar-climate-action.png' | relative_url }}" width="253" height="122" alt="CGIAR Climate Action">
+      <span class="brand__text">
+        <strong>{{ site.brand_line }}</strong>
+        <span>{{ site.lead_institute }}</span>
+      </span>
+    </a>
+
+    <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="site-nav" id="nav-toggle">
+      <svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2 4h12M2 8h12M2 12h12"/></svg>
+      Menu
+    </button>
+
+    <nav class="nav" id="site-nav" aria-label="Main">
+      <ul class="nav__list">
+        {%- for item in site.data.navigation.main -%}
+          {%- assign is_current = false -%}
+          {%- if page.url == item.url -%}{%- assign is_current = true -%}{%- endif -%}
+          {%- assign section = item.url | remove_first: '/' | split: '/' | first -%}
+          {%- assign page_section = page.url | remove_first: '/' | split: '/' | first -%}
+          {%- if section == page_section and section != '' -%}{%- assign is_current = true -%}{%- endif -%}
+          <li><a class="nav__link" href="{{ item.url | relative_url }}"{% if is_current %} aria-current="page"{% endif %}>{{ item.title }}</a></li>
+        {%- endfor -%}
+        <li>
+          <a class="nav__link" href="{{ '/search/' | relative_url }}"{% if page.url contains '/search' %} aria-current="page"{% endif %}>
+            <span aria-hidden="true">⌕</span> Search
+          </a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</header>

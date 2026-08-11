@@ -1,0 +1,98 @@
+---
+layout: detail
+kicker: Case study
+---
+<div class="split">
+  <div>
+    <section id="sec-context">
+      <h2>Context</h2>
+      <p class="lede" style="max-width:none">{{ page.context }}</p>
+      <div class="prose prose--wide">{{ content }}</div>
+    </section>
+
+    <section id="sec-climate-information" style="margin-top:3rem">
+      <h2>Climate information used</h2>
+      {% if page.climate_information.size > 0 %}<ul>{% for c in page.climate_information %}<li>{{ c }}</li>{% endfor %}</ul>{% else %}{% include placeholder.html what="Input datasets to be added" %}{% endif %}
+    </section>
+
+    <section id="sec-workflow" style="margin-top:3rem">
+      <h2>Workflow</h2>
+      <p>From the end user's decision back through the forecast chain — the entry point is the decision, not the dataset.</p>
+      {% if page.workflow.size > 0 %}{% include pipeline.html stages=page.workflow caption="The five stages of the S2S operational framework, as instantiated in this case." %}{% else %}{% include placeholder.html what="Workflow to be added" %}{% endif %}
+    </section>
+
+    <section id="sec-decision" style="margin-top:3rem">
+      <h2>Decision and application</h2>
+      {% if page.decision %}<p>{{ page.decision }}</p>{% else %}{% include placeholder.html what="Decision context to be added" %}{% endif %}
+      {%- if page.end_users.size > 0 %}
+      <p class="eyebrow" style="margin-top:1.5rem">End users</p>
+      <ul>{% for u in page.end_users %}<li>{{ u }}</li>{% endfor %}</ul>
+      {%- endif %}
+    </section>
+
+    <section id="sec-results" style="margin-top:3rem">
+      <h2>Results</h2>
+      {% if page.results %}<p>{{ page.results }}</p>{% else %}{% include placeholder.html what="Results to be added" note="Adoption and outcome evidence is being generated through the Deliverable 5 monitoring and learning activity and has not been published." %}{% endif %}
+    </section>
+
+    <section id="sec-lessons" style="margin-top:3rem">
+      <h2>Lessons</h2>
+      {% if page.lessons.size > 0 %}<ul>{% for l in page.lessons %}<li>{{ l }}</li>{% endfor %}</ul>{% else %}{% include placeholder.html what="Lessons to be added" %}{% endif %}
+    </section>
+
+    <section id="sec-related" style="margin-top:3rem">
+      <h2>Related resources</h2>
+      <div class="grid grid--2">
+        {%- if page.related_tools.size > 0 %}
+        <div>
+          <p class="eyebrow">Tools</p>
+          <ul class="link-list">
+            {%- for slug in page.related_tools -%}
+              {%- assign t = site.tools | where_exp: "i", "i.slug == slug" | first -%}
+              {%- if t %}<li><a href="{{ t.url | relative_url }}">{{ t.title }}<span>Tool</span></a></li>{% endif -%}
+            {%- endfor %}
+          </ul>
+        </div>
+        {%- endif %}
+        {%- if page.related_methods.size > 0 %}
+        <div>
+          <p class="eyebrow">Methods</p>
+          <ul class="link-list">
+            {%- for slug in page.related_methods -%}
+              {%- assign m = site.methods | where_exp: "i", "i.slug == slug" | first -%}
+              {%- if m %}<li><a href="{{ m.url | relative_url }}">{{ m.title }}<span>Method</span></a></li>{% endif -%}
+            {%- endfor %}
+          </ul>
+        </div>
+        {%- endif %}
+      </div>
+      {%- if page.links.size > 0 %}<div style="margin-top:1.5rem">{% include access-links.html links=page.links %}</div>{% endif %}
+    </section>
+  </div>
+
+  <aside class="stack">
+    <div class="meta-card">
+      <h2>Case metadata</h2>
+      <dl class="meta-list">
+        <div><dt>Location</dt><dd>{{ page.location }}</dd></div>
+        <div><dt>Status</dt><dd>{{ page.status }}</dd></div>
+        {%- if page.deliverables.size > 0 %}<div><dt>Deliverables</dt><dd>{{ page.deliverables | join: ', ' }}</dd></div>{% endif %}
+        {%- if page.team.size > 0 %}<div><dt>Researchers</dt><dd>{{ page.team | join: ', ' }}</dd></div>{% endif %}
+        {%- if page.partners.size > 0 %}<div><dt>Partners</dt><dd>{{ page.partners | join: ', ' }}</dd></div>{% endif %}
+        {%- if page.tags.size > 0 %}<div><dt>Topics</dt><dd>{{ page.tags | join: ', ' }}</dd></div>{% endif %}
+      </dl>
+    </div>
+    <nav class="toc" aria-label="On this page">
+      <h2>On this page</h2>
+      <ul>
+        <li><a href="#sec-context">Context</a></li>
+        <li><a href="#sec-climate-information">Climate information</a></li>
+        <li><a href="#sec-workflow">Workflow</a></li>
+        <li><a href="#sec-decision">Decision and application</a></li>
+        <li><a href="#sec-results">Results</a></li>
+        <li><a href="#sec-lessons">Lessons</a></li>
+        <li><a href="#sec-related">Related resources</a></li>
+      </ul>
+    </nav>
+  </aside>
+</div>

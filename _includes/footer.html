@@ -1,0 +1,30 @@
+{%- comment -%} Footer columns come from _data/navigation.yml {%- endcomment -%}
+<footer class="site-footer">
+  <div class="wrap-wide">
+    <div class="site-footer__grid">
+      {%- for col in site.data.navigation.footer %}
+      <div>
+        <h2>{{ col.heading }}</h2>
+        <ul>
+          {%- for link in col.links %}
+          <li><a href="{{ link.url | relative_url }}">{{ link.title }}</a></li>
+          {%- endfor %}
+          {%- if col.heading == 'About' %}
+          <li><a href="mailto:{{ site.contact_email }}">Contact</a></li>
+          {%- endif %}
+        </ul>
+      </div>
+      {%- endfor %}
+    </div>
+
+    <p style="margin-top:2rem;max-width:62ch;font-size:var(--t-xs);color:#93a7bd;">
+      <strong style="color:#c5d3e2;">Documentation status:</strong> {{ site.documentation_status }}
+      Sections marked as placeholders are not yet documented and should not be read as statements of capability.
+    </p>
+
+    <div class="site-footer__base">
+      <span>© {{ site.time | date: '%Y' }} {{ site.lead_institute }} · {{ site.programme }}. Research and development outputs.</span>
+      <span><a href="{{ '/about/#citation' | relative_url }}">How to cite</a> · <a href="{{ '/sitemap.xml' | relative_url }}">Sitemap</a></span>
+    </div>
+  </div>
+</footer>

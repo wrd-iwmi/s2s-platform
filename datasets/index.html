@@ -1,0 +1,16 @@
+---
+layout: page
+title: Dataset catalogue
+kicker: Data
+lede: The forecast, observational, reanalysis and ancillary datasets named in the programme's operational framework and country pilots.
+trail:
+  - label: Data & APIs
+    url: /apis/
+  - label: Datasets
+permalink: /datasets/
+---
+{% include callout.html variant="caution" title="Verify specifications against the provider" body="These entries record which datasets the programme uses and what for. Resolution, coverage and licensing are shown only where the programme material states them; otherwise they are marked as outstanding. Always take authoritative specifications from the data provider for the product version you are using." %}
+
+{%- assign items = site.datasets | sort: "weight" | reverse -%}
+{% include filterable-list.html items=items label="datasets"
+   facet1_title="Topic" facet2_title="Region" facet3_title="Role" facet3_key="role" %}

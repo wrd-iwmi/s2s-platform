@@ -1,0 +1,12 @@
+---
+layout: page
+title: Case studies
+kicker: Applications
+lede: How the same five-stage pipeline produces a canal-release advisory in India and a district cocoa yield outlook in Ghana. Each case runs from climate information through analysis and decision context to application and outcome.
+trail:
+  - label: Case studies
+permalink: /case-studies/
+---
+{%- assign items = site.case_studies | sort: "weight" | reverse -%}
+{% include filterable-list.html items=items label="case studies"
+   facet1_title="Topic" facet2_title="Region" facet3_title="Status" facet3_key="status" %}

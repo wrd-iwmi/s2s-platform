@@ -1,0 +1,49 @@
+# =============================================================================
+#  MAIN MENU
+#
+#  Reorder these lines to reorder the menu. Delete one to remove it.
+#  "url" is a path inside this site — always start it with a slash.
+# =============================================================================
+main:
+  - title: Programme
+    url: /programme/
+  - title: Tools
+    url: /tools/
+  - title: Methods
+    url: /methods/
+  - title: Data & APIs
+    url: /apis/
+  - title: Learn
+    url: /tutorials/
+  - title: Applications
+    url: /case-studies/
+  - title: About
+    url: /about/
+
+# =============================================================================
+#  FOOTER COLUMNS
+# =============================================================================
+footer:
+  - heading: Platform
+    links:
+      - { title: "Programme & framework", url: /programme/ }
+      - { title: "Tools & platforms",     url: /tools/ }
+      - { title: "Methods",               url: /methods/ }
+      - { title: "Data & APIs",           url: /apis/ }
+  - heading: Learn
+    links:
+      - { title: "Tutorials",          url: /tutorials/ }
+      - { title: "Dataset catalogue",  url: /datasets/ }
+      - { title: "Case studies",       url: /case-studies/ }
+      - { title: "Search everything",  url: /search/ }
+  - heading: Transparency
+    links:
+      - { title: "Data sources",            url: "/about/#data-sources" }
+      - { title: "Limitations",             url: "/about/#limitations" }
+      - { title: "Responsible use",         url: "/about/#responsible-use" }
+      - { title: "Citation & attribution",  url: "/about/#citation" }
+  - heading: About
+    links:
+      - { title: "About the platform", url: /about/ }
+      - { title: "Team",               url: "/about/#team" }
+      - { title: "Partners",           url: "/about/#partners" }

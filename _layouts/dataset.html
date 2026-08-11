@@ -1,0 +1,46 @@
+---
+layout: detail
+---
+<div class="split">
+  <div>
+    <section id="sec-use">
+      <h2>Use in this programme</h2>
+      <div class="prose prose--wide">{{ content }}</div>
+    </section>
+
+    <section id="sec-specifications" style="margin-top:3rem">
+      <h2>Specifications</h2>
+      <div class="table-scroll">
+        <table>
+          <tbody>
+            <tr><th scope="row">Source</th><td>{{ page.source }}</td></tr>
+            <tr><th scope="row">Role</th><td>{{ page.role }}</td></tr>
+            <tr><th scope="row">Variables</th><td>{% if page.variables.size > 0 %}{{ page.variables | join: ', ' }}{% else %}Information to be added{% endif %}</td></tr>
+            <tr><th scope="row">Spatial resolution</th><td>{{ page.spatial_resolution | default: "Information to be added" }}</td></tr>
+            <tr><th scope="row">Temporal resolution</th><td>{{ page.temporal_resolution | default: "Information to be added" }}</td></tr>
+            <tr><th scope="row">Temporal coverage</th><td>{{ page.temporal_coverage | default: "Information to be added" }}</td></tr>
+            <tr><th scope="row">Update frequency</th><td>{{ page.update_frequency | default: "Information to be added" }}</td></tr>
+            <tr><th scope="row">Licence</th><td>{{ page.licence | default: "Information to be added" }}</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="sec-access" style="margin-top:3rem">
+      <h2>Access</h2>
+      {% include access-links.html links=page.links empty_note="Access this dataset through its provider. A programme-specific access route has not been published." %}
+    </section>
+  </div>
+
+  <aside class="stack">
+    <div class="meta-card">
+      <h2>Dataset metadata</h2>
+      <dl class="meta-list">
+        <div><dt>Source</dt><dd>{{ page.source }}</dd></div>
+        <div><dt>Role</dt><dd>{{ page.role }}</dd></div>
+        {%- if page.regions.size > 0 %}<div><dt>Regions</dt><dd>{{ page.regions | join: ', ' }}</dd></div>{% endif %}
+        {%- if page.tags.size > 0 %}<div><dt>Topics</dt><dd>{{ page.tags | join: ', ' }}</dd></div>{% endif %}
+      </dl>
+    </div>
+  </aside>
+</div>

@@ -1,0 +1,210 @@
+# =============================================================================
+#  PROGRAMME PAGE CONTENT
+#  Three service pillars, the five-stage framework, six deliverables, partners.
+# =============================================================================
+
+intro: >-
+  Three service pillars, six deliverables, one five-stage operational framework.
+  This page is the map: every tool, method, API, tutorial and case study on this
+  site attaches to a stage of the framework and to one or more deliverables.
+
+pillars_heading: "Three service pillars"
+pillars_lede: >-
+  As climate variability intensifies, CGIAR requires a coordinated, systemwide
+  service for sub-seasonal (2–8 week) and seasonal forecasting to support
+  climate-smart agriculture, water management and early action.
+
+pillars:
+  - number: 1
+    when: "Q1 2026"
+    title: "CGIAR-wide needs assessment & recommendations"
+    body: >-
+      A comprehensive assessment of CGIAR-wide requirements for S2S and seasonal
+      forecasting, identifying capability gaps, priority variables, preferred
+      formats and interoperability needs. Includes a prioritised mapping of entry
+      points across CGIAR — Climate Action AoW2, SFP AoW1/AoW2, S4I climate
+      services, MFL digital twins, DTA forecasting activities, SAAF initiatives
+      and AICCRA teams — to guide sequenced engagement for 2026–2027.
+  - number: 2
+    title: "Forecast production and delivery"
+    body: >-
+      Generation of downscaled seasonal and S2S products, multi-variable impact
+      forecasts, and systemwide provision of datasets for SF's AoW1, AoW2 and
+      BDN, SAAF SPs and national programmes. Includes interoperability with the
+      AoW1 Data Hub and Alliance data infrastructure.
+  - number: 3
+    title: "Forecast access, capacity & early action integration"
+    body: >-
+      API access, metadata standards, harmonized data pipelines, integration with
+      CGIAR digital platforms, and targeted training for Centers and national
+      partners. Supports early warning systems, water accounting, digital
+      advisories and anticipatory finance mechanisms.
+
+pillars_note: >-
+  By 2026–2027 the capability will support initiatives in India, Ghana, Ethiopia,
+  Zambia, Sri Lanka and the Philippines — enhancing climate-smart agriculture,
+  irrigation efficiency, early action, and the CGIAR 2030 outcomes on climate
+  services, adaptive safety nets and farmer behaviour change.
+
+framework_heading: "S2S operational framework"
+framework_lede: >-
+  Every researcher's workflow — irrigation advisory, cocoa yield forecasting,
+  flood early warning — follows the same five-stage pipeline. The stages map
+  directly to D1–D6, and the framework standardises <em>how</em> data flows
+  between them.
+
+stages:
+  - name: "Needs and context"
+    detail: "Stakeholder consultations, decision calendars, risk maps, priority variables."
+    maps: "D1 needs assessment → defines what forecast products are needed"
+    colour: "#2b7f5f"
+    tint: "#f1f9f5"
+  - name: "Forecast and observational datasets"
+    detail: "S2S forecasts (IITM, ECMWF ERF, SEAS5, NMME) plus reanalysis and Earth observation. Observations: SMAP, GPM IMERG, AgERA5, CHIRPS, ERA5-Land, CMIP6."
+    maps: "D2 forecast dataset production → raw and bias-corrected products"
+    colour: "#2a63a8"
+    tint: "#f1f6fc"
+  - name: "Downscaling, modelling and indicator generation"
+    detail: "QBR / cGAN / ML downscaling → hydrological models (SAC-SMA, PARAM, HEC) → impact indicators: SPEI, VCI, ET anomaly, SPI, streamflow, soil moisture."
+    maps: "D2 downscaled products + D3 interoperability (STAC, APIs, GitHub)"
+    colour: "#5b4a92"
+    tint: "#f5f3fb"
+  - name: "Advisory pilots and capacity building"
+    detail: "CI-IDSS irrigation pilots, AWARE dashboards, CCIL community services, Ghana cocoa outlooks, Sri Lanka planting-window advisories, EA EWS. Farmer and telecom dissemination, NMHS training, forecast literacy modules."
+    maps: "D4 capacity strengthening + D5 advisory pilots"
+    colour: "#9b2c2c"
+    tint: "#fdf3f3"
+  - name: "Benchmarking and skill assessment"
+    detail: "Hindcast validation; RMSE, MAE, KGE, BSS and RPSS; multi-model ensemble."
+    maps: "D6 benchmark datasets + performance reports + scaling recommendations"
+    colour: "#b8721f"
+    tint: "#fdf7ec"
+
+framework_note_title: "Two cross-cutting flows"
+framework_note: >-
+  The D3 interoperability toolkit spans all five stages — STAC APIs, Python and R
+  wrappers, GitHub documentation and the FAIR data framework. And skill feedback
+  from Stage 5 returns to Stage 3, refining QBR parameters and model calibration
+  rather than being reported once and filed.
+
+six_layer_heading: "Six-layer model for S2S"
+six_layer_lede: >-
+  Where the operational framework describes the sequence of work, the six-layer
+  model describes the stack. It is the reference for deciding which layer a new
+  capability belongs in.
+
+deliverables_heading: "Six deliverables"
+deliverables_lede: "Expand any deliverable for its activities, team and the documentation it produces on this site."
+
+deliverables:
+  - id: D1
+    when: "Q1 2026"
+    title: "CGIAR-wide needs assessment & recommendations"
+    summary: >-
+      Assessment of CGIAR-wide requirements for S2S and seasonal forecasting
+      across Centers, AoWs, Initiatives and country programmes. Identifies
+      capability gaps, priority variables (rainfall, soil moisture, temperature,
+      heat stress, hydrology), preferred formats, interoperability needs and
+      delivery pathways, producing a systemwide recommendation framework to guide
+      2025–2027 investments and workplans.
+    activities:
+      - "Systemwide diagnostic and gap analysis — structured consultations and surveys with CGIAR Centers, AoWs, Initiatives and selected country programmes to map current S2S/seasonal forecast use, priority variables, formats, interoperability constraints and capacity gaps."
+      - "Recommendation framework and investment roadmap — synthesis into a CGIAR-wide framework defining priority variables, minimum technical standards, delivery pathways and a phased 2025–2027 implementation roadmap aligned with AoW workplans."
+    team: ["Giriraj", "Climate Services Specialist (hiring)", "Angie", "Ian", "Suman"]
+    links: []
+  - id: D2
+    title: "Enhanced seasonal & sub-seasonal forecast dataset"
+    summary: >-
+      Production of high-resolution CGIAR-wide S2S and seasonal datasets including
+      rainfall, temperature, soil moisture, heat-stress indices, evapotranspiration,
+      runoff and hydrological variables. Integrates downscaling techniques
+      (including QBR) and impact modelling across hydrology, crop and water balance.
+    activities:
+      - "Dataset generation and downscaling — high-resolution S2S and seasonal forecast datasets using multi-model ensembles, statistical and dynamical downscaling (including QBR) and bias correction."
+      - "Impact modelling and packaging for use — linking forecasts with hydrological, crop and water-balance models, packaged into analysis-ready formats tailored to SF AoW1, AoW2, BDN, SAAFs and priority country programmes."
+    team: ["Suman", "Climate Services Specialist (hiring)", "Giriraj", "Petra", "Naga", "Dhyey"]
+    links:
+      - { label: "Quantile Bin Resampling", url: /methods/quantile-bin-resampling/ }
+      - { label: "Coupled hydrology–crop impact modelling", url: /methods/impact-modelling/ }
+  - id: D3
+    title: "CGIAR forecast interoperability & data access toolkit"
+    summary: >-
+      A unified toolkit providing APIs, metadata standards and data pipelines to
+      connect climate forecasts with CGIAR digital platforms and the AoW1 Data Hub.
+      Ensures integration with advisory systems, early-warning dashboards and
+      decision-support tools using common protocols across CGIAR and partner agencies.
+    activities:
+      - "API and metadata standard development — standardised APIs, metadata schemas and data pipelines compatible with the AoW1 Data Hub and CGIAR digital platforms."
+      - "Platform integration and testing — integration with advisory systems, AWARE dashboards and decision-support tools, followed by interoperability testing and documentation with CGIAR and selected national partners."
+    team: ["Giriraj", "Angie", "Dhyey", "Kalpani"]
+    links:
+      - { label: "Interoperability toolkit", url: /tools/interoperability-toolkit/ }
+      - { label: "API catalogue", url: /apis/ }
+  - id: D4
+    title: "CGIAR S2S capacity strengthening & technical support programme"
+    summary: >-
+      Training modules, operational guidance and hands-on workshops for CGIAR
+      scientists, national meteorological services, regional and basin agencies and
+      extension networks. Covers S2S forecasting, temperature and heat-stress
+      analysis, hydrological modelling, API integration and advisory co-design, with
+      open-access e-learning, GitHub-based resources and helpdesk-style technical support.
+    activities:
+      - "Training and learning resource development — modular content (e-learning, manuals, notebooks) covering S2S forecasting, heat-stress analysis, hydrological modelling, API use and advisory co-design."
+      - "Hands-on support and helpdesk — regional workshops and country clinics, complemented by a GitHub-based knowledge repository and helpdesk-style technical support."
+    team: ["Niranga", "New hiring — CS and CRA", "Yakob", "Suman"]
+    links:
+      - { label: "Tutorials", url: /tutorials/ }
+  - id: D5
+    title: "Forecast-informed advisory pilots"
+    summary: >-
+      Co-developed pilots demonstrating how S2S and seasonal forecasts feed into
+      digital advisories, drought alerts, irrigation scheduling tools and
+      early-action protocols. Implemented with SF's AoW1, AoW2, BDN and SAAFs and
+      country programmes across India, Ghana, Ethiopia, Zambia, Sri Lanka and the
+      Philippines.
+    activities:
+      - "Co-design and pilot implementation — deploying pilots where S2S and seasonal forecasts inform digital advisories, drought alerts, irrigation scheduling and early-action triggers."
+      - "Monitoring, evidence and learning — assessing adoption, behavioural response, forecast use and links to early-warning protocols and safety-net financing."
+    team: ["Giriraj", "Angie", "Climate Services Specialist", "Naga", "Petra / Salomon", "Yakob / Mirriam"]
+    links:
+      - { label: "S2S irrigation advisory — South Asia", url: /case-studies/s2s-irrigation-advisory-south-asia/ }
+      - { label: "S2S cocoa yield forecasting — Ghana", url: /case-studies/cocoa-yield-forecasting-ghana/ }
+  - id: D6
+    title: "CGIAR S2S benchmarking dataset & performance report"
+    summary: >-
+      A region-specific benchmarking dataset and performance use-case reports
+      assessing S2S forecast skill for rainfall, soil moisture, heat stress and
+      hydrological outcomes, enabling CGIAR teams to evaluate reliability and
+      decision-usefulness and informing coordinated forecasting investments through 2027.
+    activities:
+      - "Skill assessment and benchmark dataset creation — region-specific benchmarking datasets, evaluating forecast skill using simple, decision-relevant metrics."
+      - "Performance reporting and scaling guidance — concise performance reports and guidance notes on reliability, decision-usefulness and recommendations."
+    team: ["New hiring", "Giriraj", "Suman", "Ian", "Naga", "Petra", "Angie", "Dhyey"]
+    links:
+      - { label: "Forecast verification and skill benchmarking", url: /methods/forecast-verification/ }
+
+partners_heading: "Partners"
+partners_lede: "Draft partner mapping across the innovation, demand and scaling functions."
+partners_note: "Partner list is recorded as draft in the programme material and is subject to confirmation."
+partners:
+  - group: Innovation
+    items:
+      - "WMO/WCRP S2S, ECMWF, NOAA GFS, IITM/IMD"
+      - "Google, Microsoft"
+      - "ACMAD, AGRHYMET, ICPAC"
+      - "IRRI Climate+, ICRISAT Digital Advisory iSAT"
+      - "CGIAR SP/A — SFP, SAAFs, MoA, WRMS Pvt. Ltd"
+  - group: Demand
+    items:
+      - "AICCRA networks in Zambia and Ghana"
+      - "ZMD, DMMU, WARMA (Zambia)"
+      - "DoM, DMC, NBRO, ID (Sri Lanka)"
+      - "Insurance partners (Sanasa, AIC, Munich Re)"
+      - "ICPAC, ACMAD, ICAR Centers, DOA Sri Lanka"
+  - group: Scaling
+    items:
+      - "WMO RCOFs, RCC networks (ICPAC, SAARC, AGRHYMET), global EWS4All partners"
+      - "National meteorological agencies, basin authorities"
+      - "NARES training academies, universities (IITM, UPLB, KU), regional training centres"
+      - "Insurance partners (Sanasa, AIC, Munich Re)"
+      - "WRMS Pvt. Ltd"

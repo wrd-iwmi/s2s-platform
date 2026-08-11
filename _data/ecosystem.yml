@@ -1,0 +1,30 @@
+# =============================================================================
+#  THE CLIMATE INFORMATION VALUE CHAIN (the diagram on the homepage)
+#
+#  Six boxes, left to right. Each has a title, up to three short detail lines,
+#  a colour and the page it links to. Keep titles short — they must fit a box.
+# =============================================================================
+- title: "Climate data"
+  lines: ["S2S & seasonal forecasts", "Earth observation", "Reanalysis, in-situ"]
+  url: /datasets/
+  colour: "#12365f"
+- title: "Forecast systems"
+  lines: ["IITM, ECMWF ERF", "SEAS5, NMME", "Multi-model ensembles"]
+  url: /datasets/
+  colour: "#0f6f7d"
+- title: "Processing & downscaling"
+  lines: ["Bias correction", "QBR downscaling", "ML / cGAN methods"]
+  url: /methods/
+  colour: "#2b7f5f"
+- title: "Indicators & products"
+  lines: ["SPI, SPEI, VCI", "ET anomaly, streamflow", "Yield probability"]
+  url: /methods/
+  colour: "#5b4a92"
+- title: "APIs & platforms"
+  lines: ["Interoperability toolkit", "Dashboards", "Digital twins"]
+  url: /apis/
+  colour: "#b8721f"
+- title: "Decision support"
+  lines: ["Irrigation scheduling", "Drought alerts", "Early action"]
+  url: /case-studies/
+  colour: "#8a3324"

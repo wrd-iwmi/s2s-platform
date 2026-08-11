@@ -1,0 +1,60 @@
+# =============================================================================
+#  COUNTRY MARKERS ON THE HOMEPAGE MAP
+#
+#  This drives a real OpenStreetMap map. To add a country, copy a block and
+#  change the values. To find lat/lon: open https://www.openstreetmap.org,
+#  right-click the spot, choose "Show address" and read the numbers, or just
+#  search the place name and read them from the address bar.
+#
+#  lat  = latitude,  positive north of the equator, negative south
+#  lon  = longitude, positive east of Greenwich, negative west
+#
+#  Nothing else on the site needs changing when you add a country.
+# =============================================================================
+
+# --- Map behaviour -----------------------------------------------------------
+settings:
+  # Where the map sits when the page loads. These defaults frame Africa and
+  # South/Southeast Asia together.
+  centre_lat: 12
+  centre_lon: 45
+  zoom: 3
+  # Height of the map in pixels.
+  height: 420
+  # true  = the map is a real interactive OpenStreetMap
+  # false = fall back to the lightweight schematic drawing (no map library)
+  interactive: true
+
+# --- Countries ---------------------------------------------------------------
+countries:
+  - name: Ghana
+    lat: 7.95
+    lon: -1.03
+    note: "Cocoa seasonal yield forecasting with COCOBOD and GMet"
+    url: /case-studies/cocoa-yield-forecasting-ghana/
+
+  - name: Ethiopia
+    lat: 9.15
+    lon: 40.49
+    note: "Country programme engagement"
+
+  - name: Zambia
+    lat: -13.13
+    lon: 27.85
+    note: "Country programme engagement; AICCRA networks, ZMD, DMMU, WARMA"
+
+  - name: India
+    lat: 20.59
+    lon: 78.96
+    note: "S2S irrigation advisory, drought triggers and basin benchmarking"
+    url: /case-studies/s2s-irrigation-advisory-south-asia/
+
+  - name: Sri Lanka
+    lat: 7.87
+    lon: 80.77
+    note: "Hindcast validation and advisory partners including DoM, DMC, NBRO"
+
+  - name: Philippines
+    lat: 12.88
+    lon: 121.77
+    note: "Country programme engagement"

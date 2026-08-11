@@ -1,0 +1,13 @@
+---
+layout: page
+title: Tools & platforms
+kicker: Capabilities
+lede: The dashboards, digital twins and toolkits that carry the programme's forecast products to irrigation engineers, drought managers, extension officers and farmers. Each tool has a full technical page.
+trail:
+  - label: Tools
+permalink: /tools/
+---
+{%- assign items = site.tools | sort: "weight" | reverse -%}
+{% include filterable-list.html items=items label="tools"
+   facet1_title="Topic" facet2_title="Region" facet3_title="Status" facet3_key="status"
+   show_deliverables=true %}

@@ -1,0 +1,15 @@
+---
+layout: page
+title: Methods
+kicker: Scientific library
+lede: Downscaling, bias correction, impact modelling, indicator generation and skill assessment. Every method page is written at three levels — an executive summary, a technical explanation, and implementation detail — so that a decision-maker and a climate scientist can both use the same page.
+trail:
+  - label: Methods
+permalink: /methods/
+---
+{% include callout.html variant="method" title="Reading these pages" body="Where a formulation, parameter set or reference implementation has not been published, the page says so explicitly rather than paraphrasing a summary into something that reads like a specification." %}
+
+{%- assign items = site.methods | sort: "weight" | reverse -%}
+{% include filterable-list.html items=items label="methods"
+   facet1_title="Topic" facet2_title="Region" facet3_title="Status" facet3_key="status"
+   show_deliverables=true %}

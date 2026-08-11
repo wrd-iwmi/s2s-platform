@@ -1,0 +1,14 @@
+---
+layout: page
+title: Tutorials
+kicker: Learn
+lede: Structured learning resources for using the programme's forecasts, models and APIs — developed under the CGIAR S2S Capacity Strengthening & Technical Support Programme for CGIAR scientists, national meteorological services, basin agencies and extension networks.
+trail:
+  - label: Tutorials
+permalink: /tutorials/
+---
+{% include callout.html variant="caution" title="Learning pathway, not yet a library" body="The modules below are the training programme committed to in the workplan. Each page records its objective, prerequisites and intended scope. Step-by-step content is published as each module is developed — pages are marked Planned until then." %}
+
+{%- assign items = site.tutorials | sort: "weight" | reverse -%}
+{% include filterable-list.html items=items label="tutorials"
+   facet1_title="Topic" facet3_title="Difficulty" facet3_key="difficulty" %}

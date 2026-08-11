@@ -1,0 +1,83 @@
+---
+layout: detail
+kicker: Tutorial
+---
+{%- assign ordered = site.tutorials | sort: 'weight' | reverse -%}
+{%- assign position = 0 -%}
+{%- for t in ordered -%}
+  {%- if t.url == page.url %}{% assign position = forloop.index %}{% endif -%}
+{%- endfor -%}
+{%- assign prev_i = position | minus: 2 -%}
+{%- assign next_i = position -%}
+{%- assign prev = ordered[prev_i] -%}
+{%- assign next = ordered[next_i] -%}
+
+<div class="split">
+  <div>
+    <p class="result-count">Module {{ position }} of {{ ordered.size }} in the learning pathway</p>
+
+    <section id="sec-objective">
+      <h2>Objective</h2>
+      <p class="lede" style="max-width:none">{{ page.objective }}</p>
+    </section>
+
+    <section id="sec-before-you-start" style="margin-top:3rem">
+      <h2>Before you start</h2>
+      <div class="grid grid--2">
+        <div>
+          <p class="eyebrow">Prerequisites</p>
+          {% if page.prerequisites.size > 0 %}<ul>{% for p in page.prerequisites %}<li>{{ p }}</li>{% endfor %}</ul>{% else %}<p style="font-size:var(--t-sm);color:var(--c-muted)">None stated.</p>{% endif %}
+        </div>
+        <div>
+          <p class="eyebrow">Required data and tools</p>
+          {% if page.requirements.size > 0 %}<ul>{% for r in page.requirements %}<li>{{ r }}</li>{% endfor %}</ul>{% else %}<p style="font-size:var(--t-sm);color:var(--c-muted)">To be confirmed with the module content.</p>{% endif %}
+        </div>
+      </div>
+    </section>
+
+    <section id="sec-steps" style="margin-top:3rem">
+      <h2>Steps</h2>
+      {% include notebook-toolbar.html %}
+      <div class="prose prose--wide{% if page.generated_from_notebook %} nb{% endif %}">{{ content }}</div>
+      {%- unless page.status == 'Operational' %}
+      {% include placeholder.html what="Step-by-step content in development" note="Instructions, code snippets, expected output and troubleshooting are published as the module is developed under Deliverable 4." %}
+      {%- endunless %}
+    </section>
+
+    <section id="sec-resources" style="margin-top:3rem">
+      <h2>Resources and further reading</h2>
+      {% include access-links.html links=page.links empty_note="Supporting material for this module has not been published yet." %}
+    </section>
+
+    <nav style="margin-top:3rem;display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap" aria-label="Tutorial navigation">
+      {% if prev and position > 1 %}<a class="btn btn--secondary btn--sm" href="{{ prev.url | relative_url }}">← {{ prev.title }}</a>{% else %}<span></span>{% endif %}
+      {% if next and position < ordered.size %}<a class="btn btn--secondary btn--sm" href="{{ next.url | relative_url }}">{{ next.title }} →</a>{% else %}<span></span>{% endif %}
+    </nav>
+  </div>
+
+  <aside class="stack">
+    <div class="meta-card">
+      <h2>Module details</h2>
+      <dl class="meta-list">
+        <div><dt>Difficulty</dt><dd>{{ page.difficulty }}</dd></div>
+        <div><dt>Estimated time</dt><dd>{{ page.estimated_time | default: "Information to be added" }}</dd></div>
+        <div><dt>Status</dt><dd>{{ page.status }}</dd></div>
+        {%- if page.deliverables.size > 0 %}<div><dt>Deliverables</dt><dd>{{ page.deliverables | join: ', ' }}</dd></div>{% endif %}
+        {%- if page.tags.size > 0 %}<div><dt>Topics</dt><dd>{{ page.tags | join: ', ' }}</dd></div>{% endif %}
+      </dl>
+    </div>
+    {%- assign rt_slug = page.related_tool -%}
+    {%- assign rt = site.tools | where_exp: "i", "i.slug == rt_slug" | first -%}
+    {%- assign rm_slug = page.related_method -%}
+    {%- assign rm = site.methods | where_exp: "i", "i.slug == rm_slug" | first -%}
+    {%- if rt or rm %}
+    <div class="meta-card">
+      <h2>Related</h2>
+      <ul class="link-list">
+        {% if rt %}<li><a href="{{ rt.url | relative_url }}">{{ rt.title }}<span>Tool</span></a></li>{% endif %}
+        {% if rm %}<li><a href="{{ rm.url | relative_url }}">{{ rm.title }}<span>Method</span></a></li>{% endif %}
+      </ul>
+    </div>
+    {%- endif %}
+  </aside>
+</div>

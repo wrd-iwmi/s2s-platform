@@ -1,0 +1,5 @@
+{%- if include.text -%}
+<div class="citation"><code>{{ include.text }}</code></div>
+{%- else -%}
+{% include placeholder.html what="Citation to be confirmed" note="A formal citation for this page has not been agreed yet. Please contact the team before citing this work." %}
+{%- endif -%}

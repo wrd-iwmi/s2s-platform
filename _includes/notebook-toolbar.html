@@ -1,0 +1,41 @@
+{%- comment -%}
+  Shown at the top of a tutorial that was generated from a Jupyter notebook.
+  Reads `notebook:` from the page's front matter (the converter adds it) and
+  offers the reader the notebook itself: download, view, or run in Colab.
+
+  Set `colab_repo` in _config.yml to enable the Colab button, e.g.
+    colab_repo: iwmi/climate-services
+    colab_branch: main
+{%- endcomment -%}
+{%- if page.notebook -%}
+{%- assign nb_path = page.notebook | remove_first: '/' -%}
+<div class="nb__toolbar">
+  <span class="nb__toolbar-label">Jupyter notebook</span>
+
+  <a class="btn btn--secondary btn--sm" href="{{ page.notebook | relative_url }}" download>
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M8 2v8M5 7l3 3 3-3M3 13h10"/></svg>
+    Download .ipynb
+  </a>
+
+  {%- if site.colab_repo and site.colab_repo != '' %}
+  <a class="btn btn--secondary btn--sm" rel="noopener"
+     href="https://colab.research.google.com/github/{{ site.colab_repo }}/blob/{{ site.colab_branch | default: 'main' }}/{{ nb_path }}">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M8 2a6 6 0 1 0 0 12A6 6 0 0 0 8 2zM7 6l3 2-3 2z"/></svg>
+    Run in Colab ↗
+  </a>
+  <a class="btn btn--secondary btn--sm" rel="noopener"
+     href="https://nbviewer.org/github/{{ site.colab_repo }}/blob/{{ site.colab_branch | default: 'main' }}/{{ nb_path }}">
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.4" aria-hidden="true"><path d="M4 2h8v12H4zM6 5h4M6 8h4M6 11h2"/></svg>
+    View on nbviewer ↗
+  </a>
+  {%- endif %}
+</div>
+
+<div class="callout callout--note">
+  <p style="margin:0">
+    The page below is this notebook, rendered in full — every code cell and every
+    output it produced when it was last run. Use the buttons above to open or run
+    the notebook yourself.
+  </p>
+</div>
+{%- endif -%}

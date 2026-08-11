@@ -1,0 +1,150 @@
+---
+layout: detail
+kicker: Tool
+---
+{%- assign meta_items = "" | split: "" -%}
+<div class="split">
+  <div>
+    <section id="sec-overview">
+      <h2>Overview</h2>
+      {%- if page.problem and page.problem != "" %}
+      <p><strong>Problem addressed.</strong> {{ page.problem }}</p>
+      {%- else %}
+      {% include placeholder.html what="Problem statement to be added" %}
+      {%- endif %}
+      <div class="prose prose--wide">{{ content }}</div>
+    </section>
+
+    {%- if page.capabilities.size > 0 %}
+    <section id="sec-capabilities" style="margin-top:3rem">
+      <h2>Key capabilities</h2>
+      <div class="grid grid--2">
+        {%- for c in page.capabilities %}
+        <div class="card card--flat">
+          <h3>{{ c.title }}</h3>
+          <p>{{ c.description }}</p>
+        </div>
+        {%- endfor %}
+      </div>
+    </section>
+    {%- endif %}
+
+    <section id="sec-how-it-works" style="margin-top:3rem">
+      <h2>How it works</h2>
+      {%- if page.workflow.size > 0 -%}
+        {%- capture cap %}Simplified data flow for {{ page.title }}. Each stage corresponds to a stage of the programme's operational framework.{% endcapture -%}
+        {% include pipeline.html stages=page.workflow caption=cap %}
+      {%- else -%}
+        {% include placeholder.html what="Architecture and workflow to be added" %}
+      {%- endif %}
+    </section>
+
+    <section id="sec-outputs" style="margin-top:3rem">
+      <h2>Outputs</h2>
+      {%- if page.outputs.size > 0 %}
+      <ul>{% for o in page.outputs %}<li>{{ o }}</li>{% endfor %}</ul>
+      {%- else %}
+      {% include placeholder.html what="Output products to be added" %}
+      {%- endif %}
+    </section>
+
+    <section id="sec-access" style="margin-top:3rem">
+      <h2>How to access</h2>
+      {% include access-links.html links=page.links empty_note="Public access routes for this capability have not been published yet." %}
+    </section>
+
+    <section id="sec-related" style="margin-top:3rem">
+      <h2>Related documentation</h2>
+      <div class="grid grid--2">
+        {%- if page.related_methods.size > 0 %}
+        <div>
+          <p class="eyebrow">Methods</p>
+          <ul class="link-list">
+            {%- for slug in page.related_methods -%}
+              {%- assign m = site.methods | where_exp: "i", "i.slug == slug" | first -%}
+              {%- if m %}<li><a href="{{ m.url | relative_url }}">{{ m.title }}<span>Method</span></a></li>{% endif -%}
+            {%- endfor %}
+          </ul>
+        </div>
+        {%- endif %}
+        {%- if page.related_apis.size > 0 %}
+        <div>
+          <p class="eyebrow">APIs</p>
+          <ul class="link-list">
+            {%- for slug in page.related_apis -%}
+              {%- assign a = site.apis | where_exp: "i", "i.slug == slug" | first -%}
+              {%- if a %}<li><a href="{{ a.url | relative_url }}">{{ a.title }}<span>API</span></a></li>{% endif -%}
+            {%- endfor %}
+          </ul>
+        </div>
+        {%- endif %}
+        {%- if page.related_tutorials.size > 0 %}
+        <div>
+          <p class="eyebrow">Tutorials</p>
+          <ul class="link-list">
+            {%- for slug in page.related_tutorials -%}
+              {%- assign t = site.tutorials | where_exp: "i", "i.slug == slug" | first -%}
+              {%- if t %}<li><a href="{{ t.url | relative_url }}">{{ t.title }}<span>{{ t.difficulty }}</span></a></li>{% endif -%}
+            {%- endfor %}
+          </ul>
+        </div>
+        {%- endif %}
+        {%- if page.related_case_studies.size > 0 %}
+        <div>
+          <p class="eyebrow">Case studies</p>
+          <ul class="link-list">
+            {%- for slug in page.related_case_studies -%}
+              {%- assign c = site.case_studies | where_exp: "i", "i.slug == slug" | first -%}
+              {%- if c %}<li><a href="{{ c.url | relative_url }}">{{ c.title }}<span>Applied</span></a></li>{% endif -%}
+            {%- endfor %}
+          </ul>
+        </div>
+        {%- endif %}
+      </div>
+    </section>
+
+    <section id="sec-limitations" style="margin-top:3rem">
+      <h2>Limitations and documentation status</h2>
+      <div class="callout callout--limitation">
+        <p style="margin:0">
+          This is a research and development capability. Where this page shows a placeholder,
+          the information has not been documented in the programme material — it has not been
+          withheld, and it should not be assumed. Please contact the team before relying on
+          this capability operationally.
+        </p>
+      </div>
+    </section>
+
+    <section id="sec-citation" style="margin-top:3rem">
+      <h2>Citation and attribution</h2>
+      {% include citation.html text=page.citation %}
+    </section>
+  </div>
+
+  <aside class="stack">
+    <div class="meta-card">
+      <h2>Metadata</h2>
+      <dl class="meta-list">
+        <div><dt>Status</dt><dd>{{ page.status }}</dd></div>
+        <div><dt>Organisation</dt><dd>{{ page.organisation | default: "IWMI — CGIAR Climate Action" }}</dd></div>
+        {%- if page.deliverables.size > 0 %}<div><dt>Deliverables</dt><dd>{{ page.deliverables | join: ', ' }}</dd></div>{% endif %}
+        {%- if page.regions.size > 0 %}<div><dt>Geographic scope</dt><dd>{{ page.regions | join: ', ' }}</dd></div>{% endif %}
+        {%- if page.team.size > 0 %}<div><dt>Team</dt><dd>{{ page.team | join: ', ' }}</dd></div>{% endif %}
+        {%- if page.tags.size > 0 %}<div><dt>Topics</dt><dd>{{ page.tags | join: ', ' }}</dd></div>{% endif %}
+      </dl>
+    </div>
+    <nav class="toc" aria-label="On this page">
+      <h2>On this page</h2>
+      <ul>
+        <li><a href="#sec-overview">Overview</a></li>
+        {%- if page.capabilities.size > 0 %}<li><a href="#sec-capabilities">Key capabilities</a></li>{% endif %}
+        <li><a href="#sec-how-it-works">How it works</a></li>
+        <li><a href="#sec-outputs">Outputs</a></li>
+        <li><a href="#sec-access">How to access</a></li>
+        <li><a href="#sec-related">Related documentation</a></li>
+        <li><a href="#sec-limitations">Limitations</a></li>
+        <li><a href="#sec-citation">Citation</a></li>
+      </ul>
+    </nav>
+  </aside>
+</div>

@@ -1,0 +1,31 @@
+{%- comment -%}
+  <head> contents: SEO tags, Open Graph, favicon, stylesheet.
+  Written by hand rather than with a plugin so the build has no dependencies.
+{%- endcomment -%}
+{%- assign page_title = include.title | default: page.title -%}
+{%- assign page_desc = include.description | default: page.description | default: site.description -%}
+{%- if page_title == site.title -%}
+  {%- assign full_title = site.title -%}
+{%- else -%}
+  {%- assign full_title = page_title | append: " — " | append: site.short_name -%}
+{%- endif -%}
+{%- assign canonical = page.url | replace: 'index.html', '' | absolute_url -%}
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{{ full_title | strip_html | normalize_whitespace }}</title>
+<meta name="description" content="{{ page_desc | strip_html | normalize_whitespace | truncate: 300 }}">
+<link rel="canonical" href="{{ canonical }}">
+<link rel="icon" href="{{ '/assets/favicon.svg' | relative_url }}" type="image/svg+xml">
+<meta name="theme-color" content="#0a2340">
+
+<meta property="og:type" content="{{ include.type | default: 'website' }}">
+<meta property="og:title" content="{{ full_title | strip_html | normalize_whitespace }}">
+<meta property="og:description" content="{{ page_desc | strip_html | normalize_whitespace | truncate: 300 }}">
+<meta property="og:url" content="{{ canonical }}">
+<meta property="og:site_name" content="{{ site.title }}">
+<meta property="og:image" content="{{ '/assets/img/og-image.svg' | absolute_url }}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ full_title | strip_html | normalize_whitespace }}">
+<meta name="twitter:description" content="{{ page_desc | strip_html | normalize_whitespace | truncate: 300 }}">
+
+<link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">

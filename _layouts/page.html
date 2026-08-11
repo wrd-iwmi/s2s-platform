@@ -1,0 +1,30 @@
+---
+layout: base
+---
+{%- if page.trail %}
+<nav class="breadcrumbs wrap" aria-label="Breadcrumb">
+  <ol>
+    <li><a href="{{ '/' | relative_url }}">Home</a></li>
+    {%- for item in page.trail %}
+    <li>
+      {%- if item.url and forloop.last == false -%}
+        <a href="{{ item.url | relative_url }}">{{ item.label }}</a>
+      {%- else -%}
+        <span aria-current="page">{{ item.label }}</span>
+      {%- endif -%}
+    </li>
+    {%- endfor %}
+  </ol>
+</nav>
+{%- endif %}
+<div class="page-head">
+  <div class="wrap">
+    {%- if page.kicker %}<p class="eyebrow">{{ page.kicker }}</p>{% endif %}
+    <h1>{{ page.title }}</h1>
+    {%- if page.lede %}<p class="lede">{{ page.lede }}</p>{% endif %}
+    {{ content_head }}
+  </div>
+</div>
+<div class="wrap section">
+  {{ content }}
+</div>

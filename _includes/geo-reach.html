@@ -1,0 +1,91 @@
+{%- comment -%}
+  Geographic reach.
+
+  Reads _data/geography.yml. When `settings.interactive` is true this renders a
+  real OpenStreetMap map via Leaflet; when false it falls back to the
+  lightweight schematic drawing.
+
+  Performance notes, because much of the audience is on modest connections:
+    * Leaflet's CSS and JS are only requested when the map scrolls into view.
+    * Nothing is downloaded at all if the visitor never reaches this section.
+    * The country list below the map is rendered server-side, so the
+      information is available with JavaScript off, on a screen reader, and
+      while the tiles are still loading.
+{%- endcomment -%}
+
+{%- assign g = site.data.geography -%}
+{%- assign settings = g.settings -%}
+{%- assign countries = g.countries -%}
+
+<div class="geo">
+  {%- if settings.interactive %}
+  <figure class="diagram" style="margin:0">
+    <div class="map"
+         id="geo-map"
+         data-map
+         data-centre-lat="{{ settings.centre_lat }}"
+         data-centre-lon="{{ settings.centre_lon }}"
+         data-zoom="{{ settings.zoom }}"
+         style="height:{{ settings.height }}px"
+         role="application"
+         aria-label="Interactive map of programme countries. The same countries are listed beside the map.">
+      <div class="map__placeholder" data-map-placeholder>
+        <span>Map loads when you scroll here</span>
+      </div>
+      <script type="application/json" data-map-points>
+        [
+          {%- for c in countries -%}
+          {
+            "name": {{ c.name | jsonify }},
+            "lat": {{ c.lat }},
+            "lon": {{ c.lon }},
+            "note": {{ c.note | jsonify }},
+            "url": {% if c.url %}{{ c.url | relative_url | jsonify }}{% else %}null{% endif %}
+          }{%- unless forloop.last -%},{%- endunless -%}
+          {%- endfor -%}
+        ]
+      </script>
+    </div>
+    <figcaption>
+      Map data © <a href="https://www.openstreetmap.org/copyright" rel="noopener">OpenStreetMap</a> contributors.
+      Markers show countries with programme engagement; they do not represent coverage extents.
+    </figcaption>
+  </figure>
+
+  {%- else %}
+  {%- comment -%} Schematic fallback — no map library, a few KB of inline SVG. {%- endcomment -%}
+  <figure class="diagram" style="margin:0">
+    <svg viewBox="0 0 620 300" role="img" aria-label="Schematic map showing programme countries in Africa and Asia" style="background:#f6f8fa;border:1px solid #dde3ea;border-radius:8px">
+      <path d="M150 40 L215 34 L250 52 L262 96 L246 130 L236 176 L206 232 L176 250 L156 226 L146 178 L124 132 L118 86 Z" fill="#e3eaf2" stroke="#c9d4e0" stroke-width="1"/>
+      <path d="M300 34 L392 28 L470 44 L520 70 L534 104 L500 128 L470 120 L440 138 L404 132 L372 108 L338 96 L308 72 Z" fill="#e3eaf2" stroke="#c9d4e0" stroke-width="1"/>
+      <path d="M424 138 L470 128 L492 152 L482 186 L452 196 L430 172 Z" fill="#e3eaf2" stroke="#c9d4e0" stroke-width="1"/>
+      <path d="M500 150 L546 148 L560 176 L536 196 L508 184 Z" fill="#e3eaf2" stroke="#c9d4e0" stroke-width="1"/>
+      <text x="176" y="150" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10" fill="#9aa6b4" letter-spacing="1">AFRICA</text>
+      <text x="410" y="76" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10" fill="#9aa6b4" letter-spacing="1">ASIA</text>
+      {%- comment -%}
+        Project lat/lon onto the schematic box so the fallback stays correct when
+        somebody adds a country: x from longitude −20…150, y from latitude 40…−40.
+      {%- endcomment -%}
+      {%- for c in countries -%}
+        {%- assign x = c.lon | plus: 20.0 | times: 2.6 | plus: 110 -%}
+        {%- assign y = c.lat | times: -2.7 | plus: 145 -%}
+        {%- assign lx = x | plus: 11 -%}
+        {%- assign ly = y | plus: 4 -%}
+      <circle cx="{{ x }}" cy="{{ y }}" r="12" fill="#0f6f7d" opacity="0.14"/>
+      <circle cx="{{ x }}" cy="{{ y }}" r="4.5" fill="#0f6f7d" stroke="#fff" stroke-width="1.4"/>
+      <text x="{{ lx }}" y="{{ ly }}" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10.5" font-weight="600" fill="#14181d">{{ c.name }}</text>
+      {%- endfor -%}
+    </svg>
+    <figcaption>Schematic locator. Marker positions are indicative and do not represent programme coverage extents.</figcaption>
+  </figure>
+  {%- endif %}
+
+  <ul class="geo__list">
+    {%- for c in countries %}
+    <li>
+      <strong>{% if c.url %}<a href="{{ c.url | relative_url }}">{{ c.name }}</a>{% else %}{{ c.name }}{% endif %}</strong>
+      <span>{{ c.note }}</span>
+    </li>
+    {%- endfor %}
+  </ul>
+</div>

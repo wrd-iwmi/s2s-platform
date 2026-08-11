@@ -1,0 +1,129 @@
+---
+layout: detail
+kicker: Method
+---
+<div class="split">
+  <div>
+    <section id="sec-levels">
+      <noscript>
+        <style>
+          .levels__tabs { display: none; }
+          .levels__panel[hidden] { display: block !important; }
+          .levels__panel + .levels__panel { border-top: 1px solid var(--c-line); }
+        </style>
+      </noscript>
+      <div class="levels" data-levels="method-levels">
+        <div class="levels__tabs" role="tablist" aria-label="Level of detail">
+          <button class="levels__tab" type="button" role="tab" id="method-levels-tab-0" aria-controls="method-levels-panel-0" aria-selected="true" tabindex="0">1 — Summary</button>
+          <button class="levels__tab" type="button" role="tab" id="method-levels-tab-1" aria-controls="method-levels-panel-1" aria-selected="false" tabindex="-1">2 — Technical</button>
+          <button class="levels__tab" type="button" role="tab" id="method-levels-tab-2" aria-controls="method-levels-panel-2" aria-selected="false" tabindex="-1">3 — Implementation</button>
+        </div>
+
+        <div class="levels__panel" role="tabpanel" id="method-levels-panel-0" aria-labelledby="method-levels-tab-0">
+          <p class="lede" style="max-width:none">{{ page.executive_summary }}</p>
+          {%- if page.objective %}<p><strong>Objective.</strong> {{ page.objective }}</p>{% endif %}
+        </div>
+
+        <div class="levels__panel" role="tabpanel" id="method-levels-panel-1" aria-labelledby="method-levels-tab-1" hidden>
+          {%- if page.inputs.size > 0 or page.outputs.size > 0 %}
+          <div class="meta-grid" style="margin-bottom:1.5rem">
+            {%- if page.inputs.size > 0 %}
+            <div>
+              <p class="eyebrow">Input datasets</p>
+              <ul style="font-size:var(--t-sm);margin:0">{% for i in page.inputs %}<li>{{ i }}</li>{% endfor %}</ul>
+            </div>
+            {%- endif %}
+            {%- if page.outputs.size > 0 %}
+            <div>
+              <p class="eyebrow">Outputs</p>
+              <ul style="font-size:var(--t-sm);margin:0">{% for o in page.outputs %}<li>{{ o }}</li>{% endfor %}</ul>
+            </div>
+            {%- endif %}
+          </div>
+          {%- endif %}
+          <div class="prose prose--wide">{{ content }}</div>
+        </div>
+
+        <div class="levels__panel" role="tabpanel" id="method-levels-panel-2" aria-labelledby="method-levels-tab-2" hidden>
+          <h3>Validation</h3>
+          {% if page.validation %}<p>{{ page.validation }}</p>{% else %}{% include placeholder.html what="Validation approach to be added" %}{% endif %}
+          <h3>Uncertainty</h3>
+          {% if page.uncertainty %}<p>{{ page.uncertainty }}</p>{% else %}{% include placeholder.html what="Uncertainty characterisation to be added" %}{% endif %}
+          <h3>Computational requirements</h3>
+          {% if page.compute_notes %}<p>{{ page.compute_notes }}</p>{% else %}{% include placeholder.html what="Computational requirements to be added" %}{% endif %}
+          <h3>Reproducibility</h3>
+          {% if page.reproducibility %}<p>{{ page.reproducibility }}</p>{% else %}{% include placeholder.html what="Reproducibility information to be added" note="Code, configuration and the data needed to reproduce this method have not been published." %}{% endif %}
+        </div>
+      </div>
+    </section>
+
+    <section id="sec-assessment" style="margin-top:3rem">
+      <h2>Strengths and limitations</h2>
+      <div class="grid grid--2">
+        <div>
+          <p class="eyebrow">Strengths</p>
+          {% if page.strengths.size > 0 %}<ul>{% for s in page.strengths %}<li>{{ s }}</li>{% endfor %}</ul>{% else %}{% include placeholder.html what="Strengths to be added" %}{% endif %}
+        </div>
+        <div>
+          <p class="eyebrow">Limitations</p>
+          {% if page.limitations.size > 0 %}<ul>{% for s in page.limitations %}<li>{{ s }}</li>{% endfor %}</ul>{% else %}{% include placeholder.html what="Limitations to be added" %}{% endif %}
+        </div>
+      </div>
+    </section>
+
+    <section id="sec-access" style="margin-top:3rem">
+      <h2>Code and data access</h2>
+      {% include access-links.html links=page.links empty_note="Code and data for this method have not been published yet." %}
+    </section>
+
+    <section id="sec-references" style="margin-top:3rem">
+      <h2>References</h2>
+      {%- if page.references.size > 0 %}
+      <ol style="font-size:var(--t-sm)">
+        {%- for r in page.references %}
+        <li>{% if r.url %}<a href="{{ r.url }}" rel="noopener">{{ r.citation }}</a>{% else %}{{ r.citation }}{% endif %}</li>
+        {%- endfor %}
+      </ol>
+      {%- else %}
+      {% include placeholder.html what="References to be added" note="No publications for this method have been supplied in the project material. References are deliberately left empty rather than populated with plausible citations." %}
+      {%- endif %}
+    </section>
+
+    {%- if page.related_tools.size > 0 %}
+    <section id="sec-related" style="margin-top:3rem">
+      <h2>Where this method is used</h2>
+      <ul class="link-list">
+        {%- for slug in page.related_tools -%}
+          {%- assign t = site.tools | where_exp: "i", "i.slug == slug" | first -%}
+          {%- if t %}<li><a href="{{ t.url | relative_url }}">{{ t.title }}<span>Tool</span></a></li>{% endif -%}
+        {%- endfor %}
+      </ul>
+    </section>
+    {%- endif %}
+  </div>
+
+  <aside class="stack">
+    <div class="meta-card">
+      <h2>Method metadata</h2>
+      <dl class="meta-list">
+        <div><dt>Status</dt><dd>{{ page.status }}</dd></div>
+        {%- if page.spatial_scale %}<div><dt>Spatial scale</dt><dd>{{ page.spatial_scale }}</dd></div>{% endif %}
+        {%- if page.temporal_scale %}<div><dt>Temporal scale</dt><dd>{{ page.temporal_scale }}</dd></div>{% endif %}
+        {%- if page.deliverables.size > 0 %}<div><dt>Deliverables</dt><dd>{{ page.deliverables | join: ', ' }}</dd></div>{% endif %}
+        {%- if page.regions.size > 0 %}<div><dt>Regions</dt><dd>{{ page.regions | join: ', ' }}</dd></div>{% endif %}
+        {%- if page.team.size > 0 %}<div><dt>Team</dt><dd>{{ page.team | join: ', ' }}</dd></div>{% endif %}
+        {%- if page.tags.size > 0 %}<div><dt>Topics</dt><dd>{{ page.tags | join: ', ' }}</dd></div>{% endif %}
+      </dl>
+    </div>
+    <nav class="toc" aria-label="On this page">
+      <h2>On this page</h2>
+      <ul>
+        <li><a href="#sec-levels">Three levels of detail</a></li>
+        <li><a href="#sec-assessment">Strengths and limitations</a></li>
+        <li><a href="#sec-access">Code and data</a></li>
+        <li><a href="#sec-references">References</a></li>
+        {%- if page.related_tools.size > 0 %}<li><a href="#sec-related">Where it is used</a></li>{% endif %}
+      </ul>
+    </nav>
+  </aside>
+</div>

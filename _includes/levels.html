@@ -1,0 +1,19 @@
+{%- comment -%}
+  Three-level progressive disclosure used on method pages.
+  Panels are passed in as page content by the method layout.
+{%- endcomment -%}
+<noscript>
+  <style>
+    .levels__tabs { display: none; }
+    .levels__panel[hidden] { display: block !important; }
+    .levels__panel + .levels__panel { border-top: 1px solid var(--c-line); }
+  </style>
+</noscript>
+<div class="levels" data-levels="method-levels">
+  <div class="levels__tabs" role="tablist" aria-label="Level of detail">
+    <button class="levels__tab" type="button" role="tab" id="method-levels-tab-0" aria-controls="method-levels-panel-0" aria-selected="true" tabindex="0">1 — Summary</button>
+    <button class="levels__tab" type="button" role="tab" id="method-levels-tab-1" aria-controls="method-levels-panel-1" aria-selected="false" tabindex="-1">2 — Technical</button>
+    <button class="levels__tab" type="button" role="tab" id="method-levels-tab-2" aria-controls="method-levels-panel-2" aria-selected="false" tabindex="-1">3 — Implementation</button>
+  </div>
+  {{ include.panels }}
+</div>

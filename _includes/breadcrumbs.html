@@ -1,0 +1,22 @@
+{%- comment -%}
+  Usage: {% include breadcrumbs.html trail="Tools|/tools/;Quantile Bin Resampling" %}
+  Items are separated by ";" and an item may carry a link after a "|".
+{%- endcomment -%}
+<nav class="breadcrumbs wrap" aria-label="Breadcrumb">
+  <ol>
+    <li><a href="{{ '/' | relative_url }}">Home</a></li>
+    {%- assign items = include.trail | split: ';' -%}
+    {%- for item in items -%}
+      {%- assign parts = item | split: '|' -%}
+      {%- assign label = parts[0] -%}
+      {%- assign href = parts[1] -%}
+      <li>
+        {%- if href and forloop.last == false -%}
+          <a href="{{ href | relative_url }}">{{ label }}</a>
+        {%- else -%}
+          <span aria-current="page">{{ label }}</span>
+        {%- endif -%}
+      </li>
+    {%- endfor -%}
+  </ol>
+</nav>

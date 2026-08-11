@@ -1,0 +1,17 @@
+---
+permalink: /sitemap.xml
+layout: null
+---
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+{%- assign pages = site.pages | where_exp: "p", "p.output != false" -%}
+{%- for p in pages -%}
+{%- if p.url contains '.xml' or p.url contains '.txt' or p.url contains '404' %}{% continue %}{% endif %}
+  <url><loc>{{ p.url | absolute_url }}</loc></url>
+{%- endfor -%}
+{%- assign docs = "" | split: "" -%}
+{%- assign docs = docs | concat: site.tools | concat: site.methods | concat: site.apis | concat: site.tutorials | concat: site.case_studies | concat: site.datasets -%}
+{%- for doc in docs %}
+  <url><loc>{{ doc.url | absolute_url }}</loc></url>
+{%- endfor %}
+</urlset>

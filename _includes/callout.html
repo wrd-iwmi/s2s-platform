@@ -1,0 +1,8 @@
+{%- comment -%}
+  {% include callout.html variant="caution" title="Heads up" body="Text here." %}
+  variant: note (default) | caution | limitation | method
+{%- endcomment -%}
+<aside class="callout callout--{{ include.variant | default: 'note' }}">
+  {%- if include.title %}<strong class="callout__title">{{ include.title }}</strong>{% endif %}
+  <p style="margin:0">{{ include.body }}</p>
+</aside>

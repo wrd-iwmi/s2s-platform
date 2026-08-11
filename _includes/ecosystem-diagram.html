@@ -1,0 +1,62 @@
+{%- comment -%} The climate information value chain. Reads _data/ecosystem.yml {%- endcomment -%}
+<figure class="diagram" aria-labelledby="ecosystem-caption">
+  <svg viewBox="0 0 900 200" role="img"
+       aria-label="Climate information value chain: climate data, forecast systems, processing and downscaling, indicators and products, APIs and platforms, decision support and applications."
+       preserveAspectRatio="xMidYMid meet" style="max-width:100%">
+    <defs>
+      <marker id="eco-arrow" viewBox="0 0 8 8" refX="6" refY="4" markerWidth="6" markerHeight="6" orient="auto">
+        <path d="M0 0 8 4 0 8z" fill="#c3ccd6"/>
+      </marker>
+    </defs>
+    <text x="8" y="22" font-family="ui-sans-serif, system-ui, sans-serif" font-size="10.5" font-weight="600" fill="#0f6f7d" letter-spacing="1.4">THE CLIMATE INFORMATION VALUE CHAIN</text>
+    <line x1="8" y1="32" x2="892" y2="32" stroke="#e4e9ef" stroke-width="1"/>
+
+    {%- for n in site.data.ecosystem -%}
+      {%- assign x = forloop.index0 | times: 149 | plus: 8 -%}
+      {%- assign tx = x | plus: 12 -%}
+      {%- assign words = n.title | split: ' ' -%}
+      <g>
+        <rect x="{{ x }}" y="48" width="134" height="98" rx="6" fill="#ffffff" stroke="{{ n.colour }}" stroke-width="1.1"/>
+        <rect x="{{ x }}" y="48" width="134" height="4" rx="2" fill="{{ n.colour }}"/>
+        <text x="{{ tx }}" y="76" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12" font-weight="600" fill="#0a2340">
+          {%- assign line = '' -%}
+          {%- assign emitted = 0 -%}
+          {%- for w in words -%}
+            {%- if line == '' -%}
+              {%- assign candidate = w -%}
+            {%- else -%}
+              {%- assign candidate = line | append: ' ' | append: w -%}
+            {%- endif -%}
+            {%- if candidate.size > 15 and line != '' -%}
+              <tspan x="{{ tx }}"{% if emitted > 0 %} dy="14"{% endif %}>{{ line }}</tspan>
+              {%- assign emitted = emitted | plus: 1 -%}
+              {%- assign line = w -%}
+            {%- else -%}
+              {%- assign line = candidate -%}
+            {%- endif -%}
+          {%- endfor -%}
+          <tspan x="{{ tx }}"{% if emitted > 0 %} dy="14"{% endif %}>{{ line }}</tspan>
+        </text>
+        <text x="{{ tx }}" y="116" font-family="ui-sans-serif, system-ui, sans-serif" font-size="8.5" fill="#5e6874">
+          {%- for d in n.lines limit: 3 -%}
+          <tspan x="{{ tx }}"{% unless forloop.first %} dy="11"{% endunless %}>{{ d }}</tspan>
+          {%- endfor -%}
+        </text>
+      </g>
+      {%- unless forloop.last -%}
+        {%- assign lx1 = x | plus: 136 -%}
+        {%- assign lx2 = x | plus: 146 -%}
+        <line x1="{{ lx1 }}" y1="97" x2="{{ lx2 }}" y2="97" stroke="#c3ccd6" stroke-width="1.4" marker-end="url(#eco-arrow)"/>
+      {%- endunless -%}
+    {%- endfor -%}
+
+    <path d="M770 162 Q 480 186 260 164" fill="none" stroke="#d7dde4" stroke-width="1" stroke-dasharray="3 3" marker-end="url(#eco-arrow)"/>
+    <text x="330" y="192" font-family="ui-sans-serif, system-ui, sans-serif" font-size="8.5" fill="#8a92a0">Skill feedback from benchmarking refines downscaling and model calibration</text>
+  </svg>
+  <figcaption id="ecosystem-caption">
+    Each stage of the value chain is documented on this site.
+    <span class="tag-list" style="margin-top:.5rem">
+      {%- for n in site.data.ecosystem %}<a href="{{ n.url | relative_url }}">{{ n.title }}</a>{% endfor -%}
+    </span>
+  </figcaption>
+</figure>

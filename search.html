@@ -1,0 +1,90 @@
+---
+layout: page
+title: Search
+kicker: Find anything
+lede: One index across tools, methods, APIs, tutorials, case studies and datasets. Type a keyword or combine the filters — results update as you type.
+trail:
+  - label: Search
+permalink: /search/
+---
+{%- comment -%}
+  Build one combined list. Each entry carries a "kind" used as the Type filter.
+{%- endcomment -%}
+{%- assign everything = "" | split: "" -%}
+{%- assign everything = everything | concat: site.tools | concat: site.methods | concat: site.apis | concat: site.tutorials | concat: site.case_studies | concat: site.datasets -%}
+{%- assign everything = everything | sort: "title" -%}
+
+<div class="split split--sidebar-left" data-filter-root>
+  <div>
+    <div class="filter-group">
+      <label class="filter-group__title" for="filter-q">Search everything</label>
+      <div class="search-box">
+        <svg width="15" height="15" viewBox="0 0 15 15" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="6.5" cy="6.5" r="4.5"/><path d="M10 10l4 4"/></svg>
+        <input class="search-input" id="filter-q" type="search" placeholder="Keyword…" autocomplete="off" data-filter-input>
+      </div>
+    </div>
+
+    <fieldset class="filter-group" style="border:0;padding:0;margin-inline:0">
+      <legend class="filter-group__title">Type</legend>
+      <div class="chips">
+        {%- assign kinds = "Tool,Method,API,Tutorial,Case study,Dataset" | split: ',' -%}
+        {%- for k in kinds %}<button class="chip" type="button" aria-pressed="false" data-facet="status" data-value="{{ k }}">{{ k }}</button>{% endfor %}
+      </div>
+    </fieldset>
+
+    {%- assign tag_values = '' -%}
+    {%- for it in everything -%}{%- for t in it.tags -%}{%- unless tag_values contains t -%}{%- assign tag_values = tag_values | append: t | append: '||' -%}{%- endunless -%}{%- endfor -%}{%- endfor -%}
+    {%- assign tag_list = tag_values | split: '||' | sort -%}
+    <fieldset class="filter-group" style="border:0;padding:0;margin-inline:0">
+      <legend class="filter-group__title">Topic</legend>
+      <div class="chips">
+        {%- for v in tag_list %}<button class="chip" type="button" aria-pressed="false" data-facet="tags" data-value="{{ v }}">{{ v }}</button>{% endfor %}
+      </div>
+    </fieldset>
+
+    {%- assign region_values = '' -%}
+    {%- for it in everything -%}{%- for r in it.regions -%}{%- unless region_values contains r -%}{%- assign region_values = region_values | append: r | append: '||' -%}{%- endunless -%}{%- endfor -%}{%- endfor -%}
+    {%- assign region_list = region_values | split: '||' | sort -%}
+    <fieldset class="filter-group" style="border:0;padding:0;margin-inline:0">
+      <legend class="filter-group__title">Region</legend>
+      <div class="chips">
+        {%- for v in region_list %}<button class="chip" type="button" aria-pressed="false" data-facet="regions" data-value="{{ v }}">{{ v }}</button>{% endfor %}
+      </div>
+    </fieldset>
+
+    <button class="btn btn--ghost btn--sm" type="button" data-filter-reset hidden>Clear all filters</button>
+  </div>
+
+  <div>
+    <h2 class="visually-hidden">Results</h2>
+    <p class="result-count" data-filter-count aria-live="polite">{{ everything.size }} entries</p>
+    <div class="grid grid--2" data-filter-list>
+      {%- for it in everything -%}
+        {%- case it.collection -%}
+          {%- when 'tools' %}{% assign kind = 'Tool' %}
+          {%- when 'methods' %}{% assign kind = 'Method' %}
+          {%- when 'apis' %}{% assign kind = 'API' %}
+          {%- when 'tutorials' %}{% assign kind = 'Tutorial' %}
+          {%- when 'case_studies' %}{% assign kind = 'Case study' %}
+          {%- when 'datasets' %}{% assign kind = 'Dataset' %}
+        {%- endcase -%}
+        {%- capture searchtext -%}{{ it.title }} {{ it.summary }} {{ kind }} {{ it.tags | join: ' ' }} {{ it.regions | join: ' ' }} {{ it.purpose }} {{ it.objective }} {{ it.problem }} {{ it.context }} {{ it.location }} {{ it.source }} {{ it.executive_summary }} {{ it.variables | join: ' ' }}{%- endcapture -%}
+      <article class="card card--link"
+               data-entry
+               data-tags="{{ it.tags | join: '|' }}"
+               data-regions="{{ it.regions | join: '|' }}"
+               data-status="{{ kind }}"
+               data-text="{{ searchtext | strip_html | normalize_whitespace | downcase | escape }}">
+        <h3><a href="{{ it.url | relative_url }}">{{ it.title }}</a></h3>
+        <p>{{ it.summary }}</p>
+        <div class="card__foot badge-row">
+          <span class="badge badge--neutral">{{ kind }}</span>
+          <span class="badge badge--blue">{{ it.status | default: it.role }}</span>
+          {%- for t in it.tags limit: 2 %}<span class="badge badge--neutral">{{ t }}</span>{% endfor -%}
+        </div>
+      </article>
+      {%- endfor -%}
+    </div>
+    <p class="no-results" data-filter-empty hidden>No entries match these filters. <button class="btn btn--ghost btn--sm" type="button" data-filter-reset>Clear filters</button></p>
+  </div>
+</div>

@@ -1,0 +1,27 @@
+# =============================================================================
+#  THE SIX-LAYER REFERENCE MODEL (shown on the Programme page)
+# =============================================================================
+- number: 1
+  name: "Data Sources"
+  body: "Satellite / Earth observation, NWP and GCM models, in-situ stations, reanalysis climatologies"
+  colour: "#12365f"
+- number: 2
+  name: "Data Engine"
+  body: "Ingestion and quality control, bias correction and QBR downscaling, coupled hydrology–crop models, ensemble generation"
+  colour: "#14543e"
+- number: 3
+  name: "Forecast Tiers"
+  body: "Short-term (1–10 days), sub-seasonal S2S (2–8 weeks), seasonal (1–6 months)"
+  colour: "#8a3324"
+- number: 4
+  name: "Derived Indicators"
+  body: "Drought / soil moisture, hydrological, agro-climate, probabilistic composite indicators"
+  colour: "#5b4a92"
+- number: 5
+  name: "Application Services"
+  body: "Agriculture, water management, early warning / DRR, safety nets and anticipatory finance"
+  colour: "#2b6b3f"
+- number: 6
+  name: "Delivery and Frontend"
+  body: "Web dashboards, mobile / SMS, APIs, AI advisory interfaces"
+  colour: "#4a5a6a"

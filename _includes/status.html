@@ -1,0 +1,6 @@
+{%- comment -%} Status pill. The label always carries the meaning, never colour alone. {%- endcomment -%}
+{%- assign s = include.status -%}
+{%- assign cls = 'status--planned' -%}
+{%- if s == 'Operational' %}{% assign cls = 'status--operational' %}{% endif -%}
+{%- if s == 'In development' or s == 'Pilot' %}{% assign cls = 'status--development' %}{% endif -%}
+<span class="status {{ cls }}">{{ s }}</span>

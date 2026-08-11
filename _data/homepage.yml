@@ -1,0 +1,106 @@
+# =============================================================================
+#  HOMEPAGE CONTENT
+#
+#  Everything visible on the front page is in this file. Edit the words here —
+#  you never need to open an HTML file to change the homepage.
+# =============================================================================
+
+hero:
+  eyebrow: "CGIAR Climate Action · International Water Management Institute (IWMI)"
+  heading: "Seasonal-to-subseasonal climate intelligence"
+  lede: >-
+    A CGIAR-wide shared service for sub-seasonal (2–8 week) and seasonal
+    forecasting — downscaled forecast datasets, documented methods,
+    interoperability APIs, training resources and advisory pilots for
+    climate-smart agriculture, water management and early action across Asia
+    and Africa.
+  buttons:
+    - { label: "Explore tools",       url: /tools/,         style: primary }
+    - { label: "Access data & APIs",  url: /apis/,          style: secondary }
+    - { label: "Explore methods",     url: /methods/,       style: secondary }
+    - { label: "Case studies",        url: /case-studies/,  style: secondary }
+  facts:
+    - { value: "2–8 weeks",  label: "Sub-seasonal window" }
+    - { value: "1–6 months", label: "Seasonal window" }
+    - { value: "6",          label: "Countries by 2026–27" }
+    - { value: "6",          label: "Programme deliverables" }
+
+why:
+  heading: "Why the S2S window"
+  lede: >-
+    Short-range weather forecasts arrive too late to change a planting or
+    water-release decision. Seasonal forecasts lack the timing precision those
+    decisions need. The sub-seasonal window between them is where advice on
+    planting, irrigation scheduling, drought readiness and heat-stress
+    preparedness actually lands.
+  paragraphs:
+    - >-
+      This platform documents the shared service CGIAR is building in that
+      window: a novel downscaling method (Quantile Bin Resampling), coupled
+      climate–hydrology–crop models, and an interoperability layer that lets any
+      CGIAR platform consume the same products in the same way.
+    - >-
+      Operationally generated variables include rainfall, soil moisture,
+      evapotranspiration, temperature, heat-stress indices and agro-climate
+      indicators relevant to the major CGIAR systems.
+  at_a_glance:
+    - { term: "Lead institute", value: "International Water Management Institute (IWMI)" }
+    - { term: "Programme",      value: "CGIAR Climate Action" }
+    - { term: "Forecast tiers", value: "Short-term 1–10 days · S2S 2–8 weeks · Seasonal 1–6 months" }
+    - { term: "Countries",      value: "India, Ghana, Ethiopia, Zambia, Sri Lanka, Philippines" }
+    - { term: "Status",         value: "Research and development capability, 2026–2027" }
+
+pathways:
+  heading: "Start here"
+  lede: >-
+    Six entry points into the platform. Every page also stands on its own if you
+    arrive from a search engine.
+  # "count_from" pulls a live count from a collection. Use "none" for a fixed page.
+  items:
+    - label: "Tools & platforms"
+      url: /tools/
+      count_from: tools
+      description: "Dashboards, digital twins and the interoperability toolkit that deliver forecast products to users."
+    - label: "Methods"
+      url: /methods/
+      count_from: methods
+      description: "Downscaling, bias correction, impact modelling and skill assessment, documented at three levels of detail."
+    - label: "Data & APIs"
+      url: /apis/
+      count_from: apis
+      description: "The forecast access layer, catalogue and client libraries — plus the datasets behind them."
+    - label: "Tutorials"
+      url: /tutorials/
+      count_from: tutorials
+      description: "Structured learning paths for using the forecasts, the models and the APIs."
+    - label: "Case studies"
+      url: /case-studies/
+      count_from: case_studies
+      description: "How the same five-stage pipeline produces an irrigation advisory in India and a yield outlook in Ghana."
+    - label: "Programme & framework"
+      url: /programme/
+      count_from: none
+      count_label: "6 deliverables"
+      description: "The six deliverables, the operational framework and the six-layer reference model."
+
+ecosystem:
+  heading: "The climate information ecosystem"
+  lede: >-
+    Every capability on this site sits somewhere on this chain. Follow it from
+    left to right to see how a raw forecast field becomes a decision an
+    irrigation engineer or an extension officer can act on.
+
+featured:
+  heading: "Featured capabilities"
+  lede: "The platforms and toolkits currently carrying the programme's forecast products to users."
+
+geography:
+  heading: "Where the work is happening"
+  lede: >-
+    By 2026–2027 the capability supports initiatives in six countries, enhancing
+    climate-smart agriculture, irrigation efficiency and early action.
+
+closing_note: >-
+  Products documented here are under active development. Where the programme
+  material does not yet describe something — an endpoint, a validation result, a
+  licence — this site shows a visible placeholder rather than an assumed value.

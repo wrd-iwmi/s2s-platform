@@ -1,0 +1,19 @@
+{%- comment -%}
+  Metadata sidebar card.
+  Usage: {% include meta-list.html title="Metadata" items=my_items %}
+  where my_items is a list of {term, value} — value may be a string or a list.
+{%- endcomment -%}
+<div class="meta-card">
+  {%- if include.title %}<h2>{{ include.title }}</h2>{% endif %}
+  <dl class="meta-list">
+    {%- for row in include.items -%}
+      {%- assign v = row.value -%}
+      {%- if v.size > 0 -%}
+      <div>
+        <dt>{{ row.term }}</dt>
+        <dd>{% if v.first and v.first != v %}{{ v | join: ', ' }}{% else %}{{ v }}{% endif %}</dd>
+      </div>
+      {%- endif -%}
+    {%- endfor -%}
+  </dl>
+</div>

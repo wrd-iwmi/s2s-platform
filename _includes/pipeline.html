@@ -1,0 +1,24 @@
+{%- comment -%}
+  Vertical stage diagram. Reads a list of { stage, detail }.
+  Usage: {% include pipeline.html stages=page.workflow caption="…" %}
+  Rendered as an ordered list so it stays readable on a phone and in a screen reader.
+{%- endcomment -%}
+{%- assign colours = "#2b7f5f,#2a63a8,#5b4a92,#9b2c2c,#b8721f,#0f6f7d" | split: ',' -%}
+{%- assign tints = "#f1f9f5,#f1f6fc,#f5f3fb,#fdf3f3,#fdf7ec,#f0f8fa" | split: ',' -%}
+<figure class="diagram">
+  <ol class="pipeline" style="list-style:none;padding:0;margin:0">
+    {%- for s in include.stages -%}
+      {%- assign i = forloop.index0 | modulo: 6 -%}
+      <li class="pipeline__stage" style="--stage-color:{{ colours[i] }};--stage-bg:{{ tints[i] }}">
+        <h3><span class="pipeline__num">Stage {{ forloop.index }}</span> <span>{{ s.stage }}</span></h3>
+        <p style="margin:0;font-size:var(--t-sm);color:var(--c-ink-2)">{{ s.detail }}</p>
+      </li>
+      {%- unless forloop.last -%}
+      <li class="pipeline__arrow" aria-hidden="true">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" focusable="false"><path d="M7 1v12M3 9l4 4 4-4"/></svg>
+      </li>
+      {%- endunless -%}
+    {%- endfor -%}
+  </ol>
+  {%- if include.caption %}<figcaption>{{ include.caption }}</figcaption>{% endif %}
+</figure>

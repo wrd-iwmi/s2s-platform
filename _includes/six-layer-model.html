@@ -1,0 +1,18 @@
+{%- comment -%} Reads _data/six_layer_model.yml {%- endcomment -%}
+<figure class="diagram">
+  <div class="layers">
+    {%- for l in site.data.six_layer_model %}
+    <div class="layer">
+      <div class="layer__label" style="--layer-color:{{ l.colour }}">
+        <span>Layer {{ l.number }}</span>
+        {{ l.name }}
+      </div>
+      <div class="layer__body">{{ l.body }}</div>
+    </div>
+    {%- endfor %}
+  </div>
+  <figcaption>
+    The six-layer reference model separates the concerns of an S2S service, from raw
+    observation through to the interface a farmer or engineer actually uses.
+  </figcaption>
+</figure>
