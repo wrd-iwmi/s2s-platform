@@ -1,0 +1,74 @@
+{
+ "type": "FeatureCollection",
+ "_comment": "DEMONSTRATION GEOMETRY ONLY. Coarse rectangles, not real boundaries. Replace with your own file.",
+ "features": [
+  {
+   "type": "Feature",
+   "properties": {
+    "name": "Example area A",
+    "note": "Demonstration polygon \u2014 not programme data"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       75.5,
+       11.5
+      ],
+      [
+       79.0,
+       11.5
+      ],
+      [
+       79.0,
+       14.0
+      ],
+      [
+       75.5,
+       14.0
+      ],
+      [
+       75.5,
+       11.5
+      ]
+     ]
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "name": "Example area B",
+    "note": "Demonstration polygon \u2014 not programme data"
+   },
+   "geometry": {
+    "type": "Polygon",
+    "coordinates": [
+     [
+      [
+       -2.5,
+       5.8
+      ],
+      [
+       -0.5,
+       5.8
+      ],
+      [
+       -0.5,
+       7.4
+      ],
+      [
+       -2.5,
+       7.4
+      ],
+      [
+       -2.5,
+       5.8
+      ]
+     ]
+    ]
+   }
+  }
+ ]
+}

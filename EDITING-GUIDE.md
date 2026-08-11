@@ -278,6 +278,33 @@ Latitude is positive north of the equator, longitude positive east of Greenwich.
 Nothing else needs changing; the marker, its tooltip and the list beside the map
 all update.
 
+### Changing the map size
+
+Also in `_data/geography.yml`, under `settings`:
+
+```yaml
+  height: 340          # pixels on a laptop
+  height_mobile: 260   # pixels on a phone
+```
+
+### Drawing basins, districts or station networks
+
+Put a GeoJSON file in `assets/geo/`, then add a block under `layers:` in the
+same file:
+
+```yaml
+layers:
+  - name: "Cauvery basin"
+    file: assets/geo/cauvery-basin.geojson
+    colour: "#0f6f7d"
+    fill_opacity: 0.15
+    label_field: name
+```
+
+Points, lines and polygons all work, and a layer switcher appears on the map
+automatically. `assets/geo/README.md` covers the options, how to convert from a
+shapefile, and how to shrink a large boundary file.
+
 ---
 
 ## If you would rather use Word

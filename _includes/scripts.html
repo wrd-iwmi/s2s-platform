@@ -60,8 +60,9 @@
   });
 
   /* ---- Interactive map (Leaflet + OpenStreetMap) ------------------------
-     Leaflet is fetched only when a map scrolls into view, so a visitor who
-     never reaches the map section downloads nothing extra.                  */
+     Leaflet, the tiles and any GeoJSON layers are fetched only when the map
+     scrolls into view, so a visitor who never reaches the map section
+     downloads nothing extra.                                                */
   var LEAFLET_CSS = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
   var LEAFLET_JS  = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.js';
 
@@ -76,7 +77,7 @@
     js.onload = done;
     js.onerror = function () {
       /* Offline, blocked, or the CDN is unreachable. The country list beside
-         the map carries the same information, so just remove the empty box. */
+         the map carries the same information, so remove the empty box. */
       Array.prototype.forEach.call(document.querySelectorAll('[data-map]'), function (el) {
         el.style.display = 'none';
       });
@@ -84,11 +85,91 @@
     document.head.appendChild(js);
   }
 
+  function readJSON(root, selector) {
+    var el = root.querySelector(selector);
+    if (!el) return null;
+    try { return JSON.parse(el.textContent); } catch (e) { return null; }
+  }
+
+  function escapeHTML(v) {
+    return String(v).replace(/[&<>"]/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
+    });
+  }
+
+  /* Build a popup from a feature's properties, using the fields the site
+     author asked for (or all of them, if they did not say). */
+  function featurePopup(props, cfg) {
+    if (!props) return '';
+    var fields = cfg.popupFields || Object.keys(props);
+    var title = cfg.labelField && props[cfg.labelField];
+    var html = title ? '<strong>' + escapeHTML(title) + '</strong>' : '';
+    var rows = [];
+    fields.forEach(function (f) {
+      if (f === cfg.labelField) return;
+      var v = props[f];
+      if (v === undefined || v === null || v === '') return;
+      rows.push('<div><span style="color:#5e6874">' + escapeHTML(f) + ':</span> ' + escapeHTML(v) + '</div>');
+    });
+    if (rows.length) html += (html ? '<div style="margin-top:.35rem">' : '<div>') + rows.join('') + '</div>';
+    return html;
+  }
+
+  function addGeoJSONLayer(map, cfg, overlays, bounds, onDone) {
+    fetch(cfg.url)
+      .then(function (r) {
+        if (!r.ok) throw new Error(r.status + ' ' + r.statusText);
+        return r.json();
+      })
+      .then(function (data) {
+        var layer = L.geoJSON(data, {
+          style: function () {
+            return {
+              color: cfg.colour,
+              weight: cfg.weight,
+              fillColor: cfg.colour,
+              fillOpacity: cfg.fillOpacity,
+              opacity: 0.9
+            };
+          },
+          pointToLayer: function (feature, latlng) {
+            return L.circleMarker(latlng, {
+              radius: cfg.pointRadius,
+              color: '#ffffff',
+              weight: 1.5,
+              fillColor: cfg.colour,
+              fillOpacity: 0.95
+            });
+          },
+          onEachFeature: function (feature, lyr) {
+            var html = featurePopup(feature.properties, cfg);
+            if (html) lyr.bindPopup(html);
+            var label = cfg.labelField && feature.properties && feature.properties[cfg.labelField];
+            if (label) lyr.bindTooltip(String(label), { direction: 'top', sticky: true });
+          }
+        });
+
+        overlays[cfg.name] = layer;
+        if (cfg.show !== false) layer.addTo(map);
+
+        try {
+          var b = layer.getBounds();
+          if (b.isValid()) bounds.push(b.getSouthWest(), b.getNorthEast());
+        } catch (e) { /* empty layer */ }
+
+        onDone();
+      })
+      .catch(function (err) {
+        /* A missing or malformed file must never take the map down. */
+        console.warn('Map layer "' + cfg.name + '" could not be loaded from ' +
+                     cfg.url + ' — ' + err.message);
+        onDone();
+      });
+  }
+
   function initMap(el) {
-    var pointsEl = el.querySelector('[data-map-points]');
-    if (!pointsEl) return;
-    var points;
-    try { points = JSON.parse(pointsEl.textContent); } catch (e) { return; }
+    var points = readJSON(el, '[data-map-points]') || [];
+    var layerCfgs = readJSON(el, '[data-map-layers]') || [];
 
     var placeholder = el.querySelector('[data-map-placeholder]');
     if (placeholder) placeholder.parentNode.removeChild(placeholder);
@@ -96,33 +177,57 @@
     var map = L.map(el, {
       center: [parseFloat(el.getAttribute('data-centre-lat')), parseFloat(el.getAttribute('data-centre-lon'))],
       zoom: parseInt(el.getAttribute('data-zoom'), 10),
-      scrollWheelZoom: false,
+      scrollWheelZoom: false,          /* so the page still scrolls over the map */
       attributionControl: true
     });
 
+    /* Minimal attribution. The OpenStreetMap licence requires credit, so it
+       cannot be removed — but it can be small. The full credit, with a link,
+       is also in the caption underneath the map. */
+    map.attributionControl.setPrefix(false);   /* drops the "Leaflet" prefix */
+
     L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
       maxZoom: 12,
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+      attribution: '<a href="https://www.openstreetmap.org/copyright" title="© OpenStreetMap contributors">© OSM</a>'
     }).addTo(map);
 
     var bounds = [];
+    var markers = L.layerGroup();
+
     points.forEach(function (p) {
       var marker = L.circleMarker([p.lat, p.lon], {
         radius: 8, color: '#ffffff', weight: 2,
         fillColor: '#0f6f7d', fillOpacity: 0.95
-      }).addTo(map);
-      var html = '<strong>' + p.name + '</strong><br>' + p.note;
+      });
+      var html = '<strong>' + escapeHTML(p.name) + '</strong><br>' + escapeHTML(p.note);
       if (p.url) html += '<br><a href="' + p.url + '">Read the case study</a>';
       marker.bindPopup(html);
       marker.bindTooltip(p.name, { direction: 'top' });
+      marker.addTo(markers);
       bounds.push([p.lat, p.lon]);
     });
+    markers.addTo(map);
 
-    if (bounds.length > 1) map.fitBounds(bounds, { padding: [40, 40] });
+    var wantFit = el.getAttribute('data-fit') !== 'false';
+    function refit() {
+      if (!wantFit || bounds.length < 2) return;
+      map.fitBounds(L.latLngBounds(bounds), { padding: [30, 30] });
+    }
+    refit();
 
-    /* Wheel zoom only after a click, so the map never hijacks page scrolling. */
-    map.on('click', function () { map.scrollWheelZoom.enable(); });
-    map.on('mouseout', function () { map.scrollWheelZoom.disable(); });
+    if (!layerCfgs.length) return;
+
+    var overlays = { 'Programme countries': markers };
+    var pending = layerCfgs.length;
+    layerCfgs.forEach(function (cfg) {
+      addGeoJSONLayer(map, cfg, overlays, bounds, function () {
+        pending -= 1;
+        if (pending === 0) {
+          refit();
+          L.control.layers(null, overlays, { collapsed: true, position: 'topright' }).addTo(map);
+        }
+      });
+    });
   }
 
   var maps = Array.prototype.slice.call(document.querySelectorAll('[data-map]'));

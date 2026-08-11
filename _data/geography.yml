@@ -1,31 +1,40 @@
 # =============================================================================
-#  COUNTRY MARKERS ON THE HOMEPAGE MAP
+#  THE MAP ON THE HOMEPAGE
 #
-#  This drives a real OpenStreetMap map. To add a country, copy a block and
-#  change the values. To find lat/lon: open https://www.openstreetmap.org,
-#  right-click the spot, choose "Show address" and read the numbers, or just
-#  search the place name and read them from the address bar.
+#  Three things live here:
+#    1. settings  — size and behaviour of the map
+#    2. countries — the pin markers
+#    3. layers    — optional GeoJSON files (points, lines or polygons)
 #
-#  lat  = latitude,  positive north of the equator, negative south
-#  lon  = longitude, positive east of Greenwich, negative west
+#  To find a latitude and longitude: open https://www.openstreetmap.org, search
+#  the place, and read the numbers from the address bar — or right-click the
+#  spot and choose "Show address".
 #
-#  Nothing else on the site needs changing when you add a country.
+#  lat = latitude,  positive north of the equator, negative south
+#  lon = longitude, positive east of Greenwich, negative west
 # =============================================================================
 
-# --- Map behaviour -----------------------------------------------------------
+# --- 1. MAP SETTINGS ---------------------------------------------------------
 settings:
-  # Where the map sits when the page loads. These defaults frame Africa and
-  # South/Southeast Asia together.
+  # Where the map sits when it loads, if fit_to_data is false.
   centre_lat: 12
   centre_lon: 45
   zoom: 3
-  # Height of the map in pixels.
-  height: 420
-  # true  = the map is a real interactive OpenStreetMap
-  # false = fall back to the lightweight schematic drawing (no map library)
+
+  # Height in pixels. Keep it modest — the country list beside the map carries
+  # the same information, and a tall map pushes the rest of the page down.
+  height: 340
+  height_mobile: 260
+
+  # true  = zoom automatically so everything (markers and any layers) is visible
+  # false = use centre_lat / centre_lon / zoom above
+  fit_to_data: true
+
+  # true  = a real OpenStreetMap map
+  # false = the lightweight schematic drawing, no map library, works offline
   interactive: true
 
-# --- Countries ---------------------------------------------------------------
+# --- 2. COUNTRY MARKERS ------------------------------------------------------
 countries:
   - name: Ghana
     lat: 7.95
@@ -58,3 +67,56 @@ countries:
     lat: 12.88
     lon: 121.77
     note: "Country programme engagement"
+
+# --- 3. GEOJSON LAYERS -------------------------------------------------------
+#  Points, lines or polygons — basin boundaries, command areas, station
+#  networks, districts, anything.
+#
+#  TO ADD ONE:
+#    1. Put the .geojson file in  assets/geo/
+#    2. Add a block below.
+#    3. That is all. A layer switcher appears automatically when there is more
+#       than one layer.
+#
+#  Fields:
+#    name          Shown in the layer switcher. Required.
+#    file          Path from the site root. Required.
+#    colour        Line colour, and fill colour for polygons.
+#    fill_opacity  0 to 1. Use 0 for outline-only polygons.
+#    weight        Line thickness in pixels.
+#    point_radius  Size of point markers, if the file contains points.
+#    label_field   Property name to use as the marker tooltip / popup heading.
+#    popup_fields  Properties to list in the popup. Omit to show all of them.
+#    show          false = present in the switcher but off when the page loads.
+#
+#  Keep files under about 1 MB. Simplify geometry first if a boundary file is
+#  large — mapshaper.org does this in the browser, no install.
+#
+#  Two demonstration files ship with the site. They are NOT programme data.
+#  Uncomment a block to see how a layer behaves, then replace it with yours.
+layers:
+ - name: "Countries"
+   file: assets/geo/countryboundaries.geojson
+   colour: "#8a4b1e"
+   fill_opacity: 0.15
+   weight: 1.5
+   # label_field: NAM_0
+   popup_fields: [NAM_0]
+   show: true
+
+#  - name: "Example — study areas (demo)"
+#    file: assets/geo/EXAMPLE-areas.geojson
+#    colour: "#8a4b1e"
+#    fill_opacity: 0.15
+#    weight: 1.5
+#    label_field: name
+#    popup_fields: [name, note]
+#    show: true
+#
+#  - name: "Example — observation sites (demo)"
+#    file: assets/geo/EXAMPLE-points.geojson
+#    colour: "#5b4a92"
+#    point_radius: 5
+#    label_field: name
+#    popup_fields: [name, type, note]
+#    show: true

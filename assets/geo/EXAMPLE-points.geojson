@@ -1,0 +1,51 @@
+{
+ "type": "FeatureCollection",
+ "_comment": "DEMONSTRATION GEOMETRY ONLY. Invented locations. Replace with your own file.",
+ "features": [
+  {
+   "type": "Feature",
+   "properties": {
+    "name": "Example site 1",
+    "type": "Demonstration point",
+    "note": "Not a real station \u2014 shows how point styling works"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     77.6,
+     12.9
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "name": "Example site 2",
+    "type": "Demonstration point",
+    "note": "Not a real station \u2014 shows how point styling works"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     -1.6,
+     6.7
+    ]
+   }
+  },
+  {
+   "type": "Feature",
+   "properties": {
+    "name": "Example site 3",
+    "type": "Demonstration point",
+    "note": "Not a real station \u2014 shows how point styling works"
+   },
+   "geometry": {
+    "type": "Point",
+    "coordinates": [
+     80.6,
+     7.3
+    ]
+   }
+  }
+ ]
+}

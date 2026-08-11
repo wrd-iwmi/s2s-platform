@@ -162,8 +162,20 @@ faithful, but they cannot tell whether the content is correct.
 
 ## The map
 
-`_data/geography.yml` drives the homepage map. Each country has a name, a
-latitude, a longitude and a note; adding one is four lines.
+`_data/geography.yml` drives the homepage map — three sections:
+
+- **`settings`** — height (`340` desktop / `260` mobile), starting view, and
+  `fit_to_data` to zoom automatically around everything on the map.
+- **`countries`** — the pin markers. Name, lat, lon, note, optional link.
+- **`layers`** — optional GeoJSON files from `assets/geo/`. Points, lines or
+  polygons, each with its own colour, fill opacity, line weight and popup
+  fields. A layer switcher appears automatically once one is configured.
+  `assets/geo/README.md` is the full guide, including how to convert a
+  shapefile and how to simplify a large boundary.
+
+Layers are fetched with `fetch()` when the map becomes visible. A missing or
+malformed file logs a console warning and is skipped — it can never take the
+map down.
 
 Leaflet and the OpenStreetMap tiles are fetched from a CDN **only when the map
 scrolls into view**, so a reader who never reaches that section downloads
@@ -176,6 +188,11 @@ inline-SVG schematic, which needs no network at all.
 
 There is no API key and no billing account, which is why this uses
 OpenStreetMap rather than Google Maps.
+
+The attribution is deliberately minimal — 9&nbsp;px, translucent, and the
+"Leaflet" prefix removed. It cannot be removed entirely: the OpenStreetMap
+licence requires credit. The full credit with a working link is repeated in the
+caption underneath the map.
 
 ---
 

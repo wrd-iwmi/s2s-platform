@@ -2,20 +2,23 @@
   Geographic reach.
 
   Reads _data/geography.yml. When `settings.interactive` is true this renders a
-  real OpenStreetMap map via Leaflet; when false it falls back to the
-  lightweight schematic drawing.
+  real OpenStreetMap map via Leaflet; when false it falls back to a lightweight
+  schematic drawing that needs no network at all.
 
   Performance notes, because much of the audience is on modest connections:
-    * Leaflet's CSS and JS are only requested when the map scrolls into view.
+    * Leaflet's CSS and JS, the map tiles and any GeoJSON layers are requested
+      only when the map scrolls into view.
     * Nothing is downloaded at all if the visitor never reaches this section.
-    * The country list below the map is rendered server-side, so the
-      information is available with JavaScript off, on a screen reader, and
-      while the tiles are still loading.
+    * The country list below the map is rendered server-side, so the information
+      is available with JavaScript off, on a screen reader, and while tiles load.
 {%- endcomment -%}
 
 {%- assign g = site.data.geography -%}
 {%- assign settings = g.settings -%}
 {%- assign countries = g.countries -%}
+{%- assign layers = g.layers -%}
+{%- assign map_height = settings.height | default: 340 -%}
+{%- assign map_height_mobile = settings.height_mobile | default: 260 -%}
 
 <div class="geo">
   {%- if settings.interactive %}
@@ -26,12 +29,14 @@
          data-centre-lat="{{ settings.centre_lat }}"
          data-centre-lon="{{ settings.centre_lon }}"
          data-zoom="{{ settings.zoom }}"
-         style="height:{{ settings.height }}px"
+         data-fit="{% if settings.fit_to_data == false %}false{% else %}true{% endif %}"
+         style="--map-h:{{ map_height }}px;--map-h-sm:{{ map_height_mobile }}px"
          role="application"
          aria-label="Interactive map of programme countries. The same countries are listed beside the map.">
       <div class="map__placeholder" data-map-placeholder>
         <span>Map loads when you scroll here</span>
       </div>
+
       <script type="application/json" data-map-points>
         [
           {%- for c in countries -%}
@@ -45,10 +50,32 @@
           {%- endfor -%}
         ]
       </script>
+
+      {%- if layers.size > 0 %}
+      <script type="application/json" data-map-layers>
+        [
+          {%- for l in layers -%}
+          {
+            "name": {{ l.name | jsonify }},
+            "url": {{ l.file | prepend: '/' | replace: '//', '/' | relative_url | jsonify }},
+            "colour": {{ l.colour | default: '#0f6f7d' | jsonify }},
+            "fillOpacity": {{ l.fill_opacity | default: 0.15 }},
+            "weight": {{ l.weight | default: 1.5 }},
+            "pointRadius": {{ l.point_radius | default: 5 }},
+            "labelField": {{ l.label_field | jsonify }},
+            "popupFields": {% if l.popup_fields %}{{ l.popup_fields | jsonify }}{% else %}null{% endif %},
+            "show": {% if l.show == false %}false{% else %}true{% endif %}
+          }{%- unless forloop.last -%},{%- endunless -%}
+          {%- endfor -%}
+        ]
+      </script>
+      {%- endif %}
     </div>
     <figcaption>
-      Map data © <a href="https://www.openstreetmap.org/copyright" rel="noopener">OpenStreetMap</a> contributors.
-      Markers show countries with programme engagement; they do not represent coverage extents.
+      Markers show countries with programme engagement; they do not represent
+      coverage extents. Map data ©
+      <a href="https://www.openstreetmap.org/copyright" rel="noopener">OpenStreetMap</a>
+      contributors.
     </figcaption>
   </figure>
 

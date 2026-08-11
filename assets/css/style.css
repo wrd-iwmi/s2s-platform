@@ -516,7 +516,7 @@ caption { caption-side: bottom; padding-top: var(--s-3); color: var(--c-muted); 
    18. MAP / GEOGRAPHY
    -------------------------------------------------------------------------- */
 .geo { display: grid; gap: var(--s-6); }
-@media (min-width: 860px) { .geo { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); align-items: center; } }
+@media (min-width: 860px) { .geo { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); align-items: start; } }
 .geo__list { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--s-3); }
 .geo__list li { margin: 0; display: grid; gap: 2px; padding-left: var(--s-4); border-left: 2px solid var(--c-teal-600); }
 .geo__list strong { font-size: var(--t-sm); color: var(--c-blue-900); }
@@ -559,15 +559,21 @@ caption { caption-side: bottom; padding-top: var(--s-3); color: var(--c-muted); 
 
 /* --------------------------------------------------------------------------
    20. MAP (Leaflet + OpenStreetMap)
+   Height comes from --map-h, set per map in _data/geography.yml.
    -------------------------------------------------------------------------- */
 .map {
   position: relative;
+  height: var(--map-h, 340px);
   border: 1px solid var(--c-line);
   border-radius: var(--r-lg);
   background: var(--c-surface-2);
   overflow: hidden;
   z-index: 0; /* keeps Leaflet panes below the sticky site header */
 }
+@media (max-width: 640px) {
+  .map { height: var(--map-h-sm, 260px); }
+}
+
 .map__placeholder {
   position: absolute; inset: 0;
   display: flex; align-items: center; justify-content: center;
@@ -576,12 +582,37 @@ caption { caption-side: bottom; padding-top: var(--s-3); color: var(--c-muted); 
     repeating-linear-gradient(0deg, transparent, transparent 39px, #e4e9ef 39px, #e4e9ef 40px),
     repeating-linear-gradient(90deg, transparent, transparent 39px, #e4e9ef 39px, #e4e9ef 40px);
 }
+
 .map .leaflet-container { font: inherit; font-size: var(--t-sm); background: var(--c-surface-2); }
-.map .leaflet-popup-content { margin: 0.75rem 1rem; font-size: var(--t-sm); line-height: 1.5; }
+.map .leaflet-popup-content { margin: 0.7rem 0.9rem; font-size: var(--t-sm); line-height: 1.5; }
 .map .leaflet-popup-content strong { color: var(--c-blue-900); }
 .map .leaflet-popup-content a { color: var(--c-blue-700); }
-.map .leaflet-control-attribution { font-size: 10px; background: rgba(255,255,255,0.85); }
 .map .leaflet-bar a { color: var(--c-blue-900); }
+.map .leaflet-tooltip { font-size: var(--t-xs); padding: 2px 6px; }
+
+/* Minimal attribution. The OpenStreetMap licence requires credit, so this
+   cannot be removed — but it can be unobtrusive. The full credit with a link
+   is repeated in the caption underneath the map. */
+.map .leaflet-control-attribution {
+  font-size: 9px;
+  line-height: 1.4;
+  padding: 0 4px;
+  background: rgba(255, 255, 255, 0.7);
+  color: var(--c-ink-3);
+  border-radius: var(--r-sm) 0 0 0;
+}
+.map .leaflet-control-attribution a { color: var(--c-ink-3); text-decoration: none; }
+.map .leaflet-control-attribution a:hover { color: var(--c-blue-700); text-decoration: underline; }
+
+/* Layer switcher, shown only when GeoJSON layers are configured. */
+.map .leaflet-control-layers {
+  border: 1px solid var(--c-line);
+  border-radius: var(--r-md);
+  box-shadow: var(--shadow-1);
+  font-size: var(--t-xs);
+}
+.map .leaflet-control-layers-expanded { padding: var(--s-3) var(--s-4) var(--s-3) var(--s-3); }
+.map .leaflet-control-layers label { margin-bottom: 2px; color: var(--c-ink-2); }
 
 /* --------------------------------------------------------------------------
    21. JUPYTER NOTEBOOK RENDERING
