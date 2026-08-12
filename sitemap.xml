@@ -6,7 +6,7 @@ layout: null
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 {%- assign pages = site.pages | where_exp: "p", "p.output != false" -%}
 {%- for p in pages -%}
-{%- if p.url contains '.xml' or p.url contains '.txt' or p.url contains '404' %}{% continue %}{% endif %}
+{%- if p.url contains '.xml' or p.url contains '.txt' or p.url contains '404' or p.sitemap == false %}{% continue %}{% endif %}
   <url><loc>{{ p.url | absolute_url }}</loc></url>
 {%- endfor -%}
 {%- assign docs = "" | split: "" -%}

@@ -5,8 +5,8 @@
 #  "url" is a path inside this site — always start it with a slash.
 # =============================================================================
 main:
-  - title: Programme
-    url: /programme/
+  - title: About
+    url: /about/
   - title: Tools
     url: /tools/
   - title: Methods
@@ -17,8 +17,6 @@ main:
     url: /tutorials/
   - title: Applications
     url: /case-studies/
-  - title: About
-    url: /about/
 
 # =============================================================================
 #  FOOTER COLUMNS
@@ -26,7 +24,6 @@ main:
 footer:
   - heading: Platform
     links:
-      - { title: "Programme & framework", url: /programme/ }
       - { title: "Tools & platforms",     url: /tools/ }
       - { title: "Methods",               url: /methods/ }
       - { title: "Data & APIs",           url: /apis/ }
@@ -38,12 +35,13 @@ footer:
       - { title: "Search everything",  url: /search/ }
   - heading: Transparency
     links:
-      - { title: "Data sources",            url: "/about/#data-sources" }
+      - { title: "Dataset provenance",      url: /datasets/ }
       - { title: "Limitations",             url: "/about/#limitations" }
       - { title: "Responsible use",         url: "/about/#responsible-use" }
       - { title: "Citation & attribution",  url: "/about/#citation" }
   - heading: About
     links:
-      - { title: "About the platform", url: /about/ }
-      - { title: "Team",               url: "/about/#team" }
-      - { title: "Partners",           url: "/about/#partners" }
+      - { title: "About the platform",     url: /about/ }
+      - { title: "Programme & framework",  url: "/about/#framework" }
+      - { title: "Team",                   url: "/about/#team" }
+      - { title: "Partners",               url: "/about/#partners" }

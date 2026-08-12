@@ -1,0 +1,419 @@
+{
+ "openapi": "3.0.2",
+ "info": {
+  "title": "ENSO Dashboard API \u2014 selected endpoints",
+  "version": "1.0.0",
+  "description": "A curated subset of the ENSO Dashboard API, chosen so you can try the service without reading 146 endpoint definitions first. Requests go to the live service.\n\nMost responses carry a `method` block alongside the values \u2014 the formula, the processing steps, the upstream sources and, where relevant, an explicit statement of limits. Carry that through to your own users rather than discarding it.\n\n**The full API** \u2014 all 146 endpoints across twelve groups \u2014 is at [enso.iwmi.org/ENSO_api/docs](https://enso.iwmi.org/ENSO_api/docs)."
+ },
+ "servers": [
+  {
+   "url": "https://enso.iwmi.org/ENSO_api",
+   "description": "Live service"
+  }
+ ],
+ "tags": [
+  {
+   "name": "ENSO indices",
+   "description": "Core indices and phase diagnostics."
+  },
+  {
+   "name": "Briefings",
+   "description": "Composed products that combine several inputs."
+  },
+  {
+   "name": "Impacts",
+   "description": "Crop and food-price links to ENSO phase."
+  },
+  {
+   "name": "Catalogue",
+   "description": "What the API serves."
+  }
+ ],
+ "paths": {
+  "/api/v1/enso/current-phase": {
+   "get": {
+    "tags": [
+     "ENSO indices"
+    ],
+    "summary": "Current ENSO phase",
+    "description": "The latest ONI value with its season, phase code and label. Start here.",
+    "responses": {
+     "200": {
+      "description": "Successful response",
+      "content": {
+       "application/json": {}
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/enso/oni": {
+   "get": {
+    "tags": [
+     "ENSO indices"
+    ],
+    "summary": "Oceanic Ni\u00f1o Index series",
+    "description": "ONI series. Optionally restrict the start year or change the lead.",
+    "responses": {
+     "200": {
+      "description": "Successful response",
+      "content": {
+       "application/json": {}
+      }
+     }
+    },
+    "parameters": [
+     {
+      "name": "lead_months",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "type": "integer",
+       "default": 3
+      },
+      "description": "Lead time in months."
+     },
+     {
+      "name": "start_year",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "type": "integer"
+      },
+      "description": "First year of the returned series.",
+      "example": 2000
+     }
+    ]
+   }
+  },
+  "/api/v1/enso/oni-historical": {
+   "get": {
+    "tags": [
+     "ENSO indices"
+    ],
+    "summary": "Full historical ONI record",
+    "description": "The complete monthly ONI record.",
+    "responses": {
+     "200": {
+      "description": "Successful response",
+      "content": {
+       "application/json": {}
+      }
+     }
+    },
+    "parameters": [
+     {
+      "name": "start_year",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "type": "integer",
+       "default": 1950
+      },
+      "description": "First year returned."
+     }
+    ]
+   }
+  },
+  "/api/v1/enso/probabilities": {
+   "get": {
+    "tags": [
+     "ENSO indices"
+    ],
+    "summary": "Phase probabilities for a season",
+    "description": "El Ni\u00f1o, neutral, La Ni\u00f1a and strong-El Ni\u00f1o probabilities for a three-month window, with the climatological baseline and the full derivation including its stated limits.",
+    "responses": {
+     "200": {
+      "description": "Successful response",
+      "content": {
+       "application/json": {}
+      }
+     }
+    },
+    "parameters": [
+     {
+      "name": "window",
+      "in": "query",
+      "required": true,
+      "schema": {
+       "type": "string",
+       "enum": [
+        "DJF",
+        "JFM",
+        "FMA",
+        "MAM",
+        "AMJ",
+        "MJJ",
+        "JJA",
+        "JAS",
+        "ASO",
+        "SON",
+        "OND",
+        "NDJ"
+       ]
+      },
+      "description": "Three-month season label.",
+      "example": "DJF"
+     }
+    ]
+   }
+  },
+  "/api/v1/enso/soi": {
+   "get": {
+    "tags": [
+     "ENSO indices"
+    ],
+    "summary": "Southern Oscillation Index",
+    "description": "SOI series. No parameters.",
+    "responses": {
+     "200": {
+      "description": "Successful response",
+      "content": {
+       "application/json": {}
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/enso/iod": {
+   "get": {
+    "tags": [
+     "ENSO indices"
+    ],
+    "summary": "Indian Ocean Dipole",
+    "description": "IOD series. No parameters.",
+    "responses": {
+     "200": {
+      "description": "Successful response",
+      "content": {
+       "application/json": {}
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/enso/events": {
+   "get": {
+    "tags": [
+     "ENSO indices"
+    ],
+    "summary": "Historical ENSO events",
+    "description": "Catalogue of past El Ni\u00f1o and La Ni\u00f1a events. No parameters.",
+    "responses": {
+     "200": {
+      "description": "Successful response",
+      "content": {
+       "application/json": {}
+      }
+     }
+    }
+   }
+  },
+  "/api/v1/enso/kpis": {
+   "get": {
+    "tags": [
+     "ENSO indices"
+    ],
+    "summary": "Headline indicators",
+    "description": "Summary indicators, optionally for one country.",
+    "responses": {
+     "200": {
+      "description": "Successful response",
+      "content": {
+       "application/json": {}
+      }
+     }
+    },
+    "parameters": [
+     {
+      "name": "iso3",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "type": "string"
+      },
+      "description": "ISO3 country code, e.g. IND, GHA, ZMB.",
+      "example": "IND"
+     }
+    ]
+   }
+  },
+  "/api/v1/dashboard/outlook": {
+   "get": {
+    "tags": [
+     "Briefings"
+    ],
+    "summary": "Outlook",
+    "description": "Composed outlook for a country or globally.",
+    "responses": {
+     "200": {
+      "description": "Successful response",
+      "content": {
+       "application/json": {}
+      }
+     }
+    },
+    "parameters": [
+     {
+      "name": "iso3",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "type": "string",
+       "default": "GLB"
+      },
+      "description": "ISO3 country code, or GLB for global.",
+      "example": "GHA"
+     },
+     {
+      "name": "lead",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "type": "integer",
+       "default": 3
+      },
+      "description": "Lead time in months."
+     },
+     {
+      "name": "commodity",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "type": "string"
+      },
+      "description": "Optional commodity filter."
+     }
+    ]
+   }
+  },
+  "/api/v1/dashboard/country-brief": {
+   "get": {
+    "tags": [
+     "Briefings"
+    ],
+    "summary": "Country brief",
+    "description": "A single-country briefing combining forecast, price and impact signals.",
+    "responses": {
+     "200": {
+      "description": "Successful response",
+      "content": {
+       "application/json": {}
+      }
+     }
+    },
+    "parameters": [
+     {
+      "name": "iso3",
+      "in": "query",
+      "required": true,
+      "schema": {
+       "type": "string"
+      },
+      "description": "ISO3 country code.",
+      "example": "LKA"
+     },
+     {
+      "name": "scenario",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "type": "string",
+       "default": "2026"
+      },
+      "description": "Analogue-year scenario."
+     },
+     {
+      "name": "layer",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "type": "string",
+       "default": "precip"
+      },
+      "description": "Map layer to summarise."
+     }
+    ]
+   }
+  },
+  "/api/v1/crops/enso-risk": {
+   "get": {
+    "tags": [
+     "Impacts"
+    ],
+    "summary": "Crop risk by ENSO phase",
+    "description": "Crop-level risk associated with the current ENSO phase for one country.",
+    "responses": {
+     "200": {
+      "description": "Successful response",
+      "content": {
+       "application/json": {}
+      }
+     }
+    },
+    "parameters": [
+     {
+      "name": "iso3",
+      "in": "query",
+      "required": true,
+      "schema": {
+       "type": "string"
+      },
+      "description": "ISO3 country code.",
+      "example": "PHL"
+     }
+    ]
+   }
+  },
+  "/api/v1/fao/current": {
+   "get": {
+    "tags": [
+     "Impacts"
+    ],
+    "summary": "FAO Food Price Index, current",
+    "description": "Latest FAO Food Price Index value.",
+    "responses": {
+     "200": {
+      "description": "Successful response",
+      "content": {
+       "application/json": {}
+      }
+     }
+    },
+    "parameters": [
+     {
+      "name": "mode",
+      "in": "query",
+      "required": false,
+      "schema": {
+       "type": "string",
+       "default": "nominal",
+       "enum": [
+        "nominal",
+        "real"
+       ]
+      },
+      "description": "nominal or real."
+     }
+    ]
+   }
+  },
+  "/api/v1/catalog/summary": {
+   "get": {
+    "tags": [
+     "Catalogue"
+    ],
+    "summary": "Catalogue summary",
+    "description": "Machine-readable summary of the layers and products the API serves. Useful as a first call when building an integration.",
+    "responses": {
+     "200": {
+      "description": "Successful response",
+      "content": {
+       "application/json": {}
+      }
+     }
+    }
+   }
+  }
+ }
+}

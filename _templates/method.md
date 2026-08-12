@@ -76,5 +76,5 @@ Equations, tables and diagrams belong here.
 
 ## Where it sits in the framework
 
-Which stage of the [operational framework]({{ site.baseurl }}/programme/#framework)
+Which stage of the [operational framework]({{ site.baseurl }}/about/#framework)
 this method belongs to, and what runs before and after it.

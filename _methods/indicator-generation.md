@@ -38,7 +38,7 @@ related_tools:
 
 ## Position in the six-layer model
 
-Indicator generation is Layer&nbsp;4 of the [six-layer model]({{ site.baseurl }}/programme/#six-layer-model):
+Indicator generation is Layer&nbsp;4 of the [six-layer model]({{ site.baseurl }}/about/#six-layer-model):
 drought and soil moisture indicators, hydrological indicators, agro-climate
 indicators and probabilistic composite indicators sit between the forecast tiers
 and the application services that consume them.

@@ -48,7 +48,7 @@ links:
 
 ## Where it sits in the framework
 
-QBR is the core of Stage&nbsp;3 of the [S2S operational framework]({{ site.baseurl }}/programme/#framework):
+QBR is the core of Stage&nbsp;3 of the [S2S operational framework]({{ site.baseurl }}/about/#framework):
 downscaling, modelling and indicator generation. It is applied after bias
 correction and before the impact models that convert climate fields into
 decision-relevant indicators.

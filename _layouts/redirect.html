@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Moved to {{ page.redirect_to }}</title>
+    <meta name="description" content="This page has moved to {{ page.redirect_to }}.">
+    <link rel="canonical" href="{{ page.redirect_to | absolute_url }}">
+    <meta http-equiv="refresh" content="0; url={{ page.redirect_to | relative_url }}">
+    <meta name="robots" content="noindex, follow">
+    <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
+  </head>
+  <body>
+    <main id="main" class="wrap section">
+      <h1>This page has moved</h1>
+      <p class="lede">
+        The programme description now lives on the
+        <a href="{{ page.redirect_to | relative_url }}">About page</a>.
+        You should be redirected automatically.
+      </p>
+    </main>
+  </body>
+</html>

@@ -109,10 +109,9 @@ kicker: Method
         <div><dt>Status</dt><dd>{{ page.status }}</dd></div>
         {%- if page.spatial_scale %}<div><dt>Spatial scale</dt><dd>{{ page.spatial_scale }}</dd></div>{% endif %}
         {%- if page.temporal_scale %}<div><dt>Temporal scale</dt><dd>{{ page.temporal_scale }}</dd></div>{% endif %}
-        {%- if page.deliverables.size > 0 %}<div><dt>Deliverables</dt><dd>{{ page.deliverables | join: ', ' }}</dd></div>{% endif %}
+        {%- if page.deliverables.size > 0 %}<div><dt>Deliverables</dt><dd>{% include deliverable-names.html codes=page.deliverables %}</dd></div>{% endif %}
         {%- if page.regions.size > 0 %}<div><dt>Regions</dt><dd>{{ page.regions | join: ', ' }}</dd></div>{% endif %}
-        {%- if page.team.size > 0 %}<div><dt>Team</dt><dd>{{ page.team | join: ', ' }}</dd></div>{% endif %}
-        {%- if page.tags.size > 0 %}<div><dt>Topics</dt><dd>{{ page.tags | join: ', ' }}</dd></div>{% endif %}
+                {%- if page.tags.size > 0 %}<div><dt>Topics</dt><dd>{{ page.tags | join: ', ' }}</dd></div>{% endif %}
       </dl>
     </div>
     <nav class="toc" aria-label="On this page">

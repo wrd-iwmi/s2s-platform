@@ -80,7 +80,7 @@ at the right lead time, with a version stamp that lets somebody reconstruct the
 decision six months later.
 
 The toolkit is the connective tissue of the programme: it spans all five stages
-of the [S2S operational framework]({{ site.baseurl }}/programme/#framework) rather than sitting at
+of the [S2S operational framework]({{ site.baseurl }}/about/#framework) rather than sitting at
 one point in the chain.
 
 ## Scope

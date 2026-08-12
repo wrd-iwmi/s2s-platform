@@ -1,0 +1,118 @@
+{%- comment -%}
+  Google Analytics 4.
+
+  Loads only when `google_analytics` is set in _config.yml. Empty that field and
+  no script is requested and no cookie is set — useful for a staging copy, or if
+  the site ever needs to run without analytics.
+
+  Beyond page views, this records the things that matter for a documentation
+  platform: which files people download, which outbound links they follow, and
+  whether they go on to the repository. All of it is derived from clicks on the
+  page — no personal data is collected and nothing is sent anywhere else.
+{%- endcomment -%}
+{%- if site.google_analytics and site.google_analytics != '' -%}
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ site.google_analytics }}"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){ dataLayer.push(arguments); }
+  gtag('js', new Date());
+  gtag('config', '{{ site.google_analytics }}', {
+    /* Keep the sub-path out of every page path so reports read cleanly. */
+    page_path: location.pathname.replace('{{ site.baseurl }}', '') || '/'
+  });
+
+  (function () {
+    'use strict';
+
+    var REPO = {{ site.repo_url | default: '' | jsonify }};
+    var FILE_TYPES = /\.(ipynb|geojson|json|csv|xlsx|docx|pdf|zip|tif|tiff|nc|zarr|png|svg)$/i;
+
+    function send(name, params) {
+      if (typeof gtag !== 'function') return;
+      gtag('event', name, params);
+    }
+
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest ? e.target.closest('a') : null;
+      if (!a || !a.getAttribute('href')) return;
+
+      var href = a.getAttribute('href');
+      var url;
+      try { url = new URL(a.href, location.href); } catch (err) { return; }
+
+      var label = (a.textContent || '').trim().slice(0, 100);
+      var sameHost = url.hostname === location.hostname;
+
+      /* --- File downloads ------------------------------------------------ */
+      if (FILE_TYPES.test(url.pathname) || a.hasAttribute('download')) {
+        var ext = (url.pathname.match(FILE_TYPES) || [])[1] || 'file';
+        send('file_download', {
+          file_name: url.pathname.split('/').pop(),
+          file_extension: ext.toLowerCase(),
+          link_url: url.href,
+          link_text: label,
+          page_path: location.pathname
+        });
+        return;
+      }
+
+      if (sameHost) return;
+
+      /* --- Repository: clones, forks, ZIP downloads all start here ------- */
+      if (REPO && url.href.indexOf(REPO) === 0) {
+        var action = 'repo_visit';
+        if (/\/archive\//.test(url.pathname)) action = 'repo_zip_download';
+        else if (/\/fork/.test(url.pathname)) action = 'repo_fork_click';
+        else if (/\/releases/.test(url.pathname)) action = 'repo_release_click';
+        send(action, { link_url: url.href, link_text: label, page_path: location.pathname });
+        return;
+      }
+
+      /* --- Notebook services --------------------------------------------- */
+      if (/colab\.research\.google\.com/.test(url.hostname)) {
+        send('notebook_open', { service: 'colab', link_url: url.href, page_path: location.pathname });
+        return;
+      }
+      if (/nbviewer\.org/.test(url.hostname)) {
+        send('notebook_open', { service: 'nbviewer', link_url: url.href, page_path: location.pathname });
+        return;
+      }
+
+      /* --- Everything else leaving the site ------------------------------ */
+      send('outbound_click', {
+        link_domain: url.hostname,
+        link_url: url.href,
+        link_text: label,
+        page_path: location.pathname
+      });
+    }, true);
+
+    /* --- Site search: what people look for, and whether they find it ----- */
+    var searchInput = document.querySelector('[data-filter-input]');
+    if (searchInput) {
+      var timer = null;
+      searchInput.addEventListener('input', function () {
+        clearTimeout(timer);
+        timer = setTimeout(function () {
+          var term = searchInput.value.trim();
+          if (term.length < 3) return;
+          var counter = document.querySelector('[data-filter-count]');
+          send('search', {
+            search_term: term.toLowerCase(),
+            results: counter ? parseInt(counter.textContent, 10) : undefined,
+            page_path: location.pathname
+          });
+        }, 1200);   /* only once they have stopped typing */
+      });
+    }
+
+    /* --- Map layers: are the GeoJSON overlays actually used? ------------- */
+    document.addEventListener('click', function (e) {
+      if (!e.target.closest) return;
+      if (e.target.closest('.leaflet-control-layers')) {
+        send('map_layer_toggle', { page_path: location.pathname });
+      }
+    }, true);
+  })();
+</script>
+{%- endif -%}

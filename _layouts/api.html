@@ -10,6 +10,18 @@ kicker: API
       <div class="prose prose--wide">{{ content }}</div>
     </section>
 
+    {%- if page.swagger_spec %}
+    <section id="sec-try" style="margin-top:3rem">
+      <h2>Try the API</h2>
+      <p>
+        Selected endpoints, live. Open one, press <strong>Try it out</strong>,
+        fill in any parameters and press <strong>Execute</strong> — the request
+        goes to the real service and the response comes back below.
+      </p>
+      {% include swagger.html %}
+    </section>
+    {%- endif %}
+
     <section id="sec-endpoints" style="margin-top:3rem">
       <h2>Endpoints</h2>
       {%- if page.base_url %}
@@ -40,8 +52,8 @@ kicker: API
               </table>
             </div>
             {%- endif %}
-            {%- if ep.example_request %}<h4>Example request</h4><pre><code>{{ ep.example_request }}</code></pre>{% endif %}
-            {%- if ep.example_response %}<h4>Example response</h4><pre><code>{{ ep.example_response }}</code></pre>{% endif %}
+            {%- if ep.example_request %}<h3>Example request</h3><pre><code>{{ ep.example_request }}</code></pre>{% endif %}
+            {%- if ep.example_response %}<h3>Example response</h3><pre><code>{{ ep.example_response }}</code></pre>{% endif %}
           </div>
         </details>
         {%- endfor %}
@@ -96,15 +108,15 @@ kicker: API
       <dl class="meta-list">
         <div><dt>Version</dt><dd>{{ page.version }}</dd></div>
         <div><dt>Status</dt><dd>{{ page.status }}</dd></div>
-        {%- if page.deliverables.size > 0 %}<div><dt>Deliverables</dt><dd>{{ page.deliverables | join: ', ' }}</dd></div>{% endif %}
-        {%- if page.team.size > 0 %}<div><dt>Team</dt><dd>{{ page.team | join: ', ' }}</dd></div>{% endif %}
-        {%- if page.tags.size > 0 %}<div><dt>Topics</dt><dd>{{ page.tags | join: ', ' }}</dd></div>{% endif %}
+        {%- if page.deliverables.size > 0 %}<div><dt>Deliverables</dt><dd>{% include deliverable-names.html codes=page.deliverables %}</dd></div>{% endif %}
+                {%- if page.tags.size > 0 %}<div><dt>Topics</dt><dd>{{ page.tags | join: ', ' }}</dd></div>{% endif %}
       </dl>
     </div>
     <nav class="toc" aria-label="On this page">
       <h2>On this page</h2>
       <ul>
         <li><a href="#sec-purpose">Purpose</a></li>
+        {%- if page.swagger_spec %}<li><a href="#sec-try">Try the API</a></li>{% endif %}
         <li><a href="#sec-endpoints">Endpoints</a></li>
         <li><a href="#sec-reference">Reference</a></li>
         <li><a href="#sec-access">Documentation links</a></li>

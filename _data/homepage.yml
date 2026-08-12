@@ -78,7 +78,7 @@ pathways:
       count_from: case_studies
       description: "How the same five-stage pipeline produces an irrigation advisory in India and a yield outlook in Ghana."
     - label: "Programme & framework"
-      url: /programme/
+      url: "/about/#framework"
       count_from: none
       count_label: "6 deliverables"
       description: "The six deliverables, the operational framework and the six-layer reference model."

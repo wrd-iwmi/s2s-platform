@@ -1,0 +1,53 @@
+{%- comment -%}
+  The S2S operational framework.
+
+  Each stage is a row: the stage description on the left, the outputs it hands
+  to the next stage on the right, with a connecting line running down the chain.
+
+  Reads `stages` from _data/programme.yml. To add a stage, add a block there —
+  nothing here needs changing.
+
+  Built as an ordered list rather than an image, so it stays readable on a
+  phone, in a screen reader, and with CSS disabled. On narrow screens the
+  outputs box stacks underneath its stage.
+{%- endcomment -%}
+{%- assign stages = site.data.programme.stages -%}
+
+<figure class="diagram flow" aria-label="The five stages of the S2S operational framework and the outputs of each">
+  <ol class="flow__list">
+    {%- for s in stages %}
+    <li class="flow__row" style="--stage-color:{{ s.colour }};--stage-bg:{{ s.tint }}">
+
+      <div class="flow__rail" aria-hidden="true">
+        <span class="flow__dot"></span>
+        {%- unless forloop.last %}<span class="flow__line"></span>{% endunless %}
+      </div>
+
+      <div class="flow__stage">
+        <h3>
+          <span class="flow__num">Stage {{ forloop.index }}</span>
+          <span>{{ s.name }}</span>
+        </h3>
+        <p>{{ s.detail }}</p>
+      </div>
+
+      <div class="flow__outputs">
+        <p class="flow__outputs-title">Outputs</p>
+        {%- if s.outputs.size > 0 %}
+        <ul>
+          {%- for o in s.outputs %}<li>{{ o }}</li>{% endfor %}
+        </ul>
+        {%- else %}
+        <p class="flow__outputs-empty">Information to be added</p>
+        {%- endif %}
+      </div>
+
+    </li>
+    {%- endfor %}
+  </ol>
+
+  <figcaption>
+    Read down the left column for the sequence of work, and across to see what
+    each stage hands to the next.
+  </figcaption>
+</figure>

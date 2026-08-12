@@ -76,9 +76,8 @@ kicker: Case study
       <dl class="meta-list">
         <div><dt>Location</dt><dd>{{ page.location }}</dd></div>
         <div><dt>Status</dt><dd>{{ page.status }}</dd></div>
-        {%- if page.deliverables.size > 0 %}<div><dt>Deliverables</dt><dd>{{ page.deliverables | join: ', ' }}</dd></div>{% endif %}
-        {%- if page.team.size > 0 %}<div><dt>Researchers</dt><dd>{{ page.team | join: ', ' }}</dd></div>{% endif %}
-        {%- if page.partners.size > 0 %}<div><dt>Partners</dt><dd>{{ page.partners | join: ', ' }}</dd></div>{% endif %}
+        {%- if page.deliverables.size > 0 %}<div><dt>Deliverables</dt><dd>{% include deliverable-names.html codes=page.deliverables %}</dd></div>{% endif %}
+                {%- if page.partners.size > 0 %}<div><dt>Partners</dt><dd>{{ page.partners | join: ', ' }}</dd></div>{% endif %}
         {%- if page.tags.size > 0 %}<div><dt>Topics</dt><dd>{{ page.tags | join: ', ' }}</dd></div>{% endif %}
       </dl>
     </div>

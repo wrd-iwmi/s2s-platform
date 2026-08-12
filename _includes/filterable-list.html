@@ -87,7 +87,7 @@
         <div class="card__foot badge-row">
           <span class="badge badge--neutral">{{ facet_status }}</span>
           {%- if it.badge %}<span class="badge badge--blue">{{ it.badge }}</span>{% endif -%}
-          {%- if include.show_deliverables and it.deliverables.size > 0 %}<span class="badge badge--blue">{{ it.deliverables | join: ' · ' }}</span>{% endif -%}
+          {%- if include.show_deliverables and it.deliverables.size > 0 %}{% include deliverable-labels.html codes=it.deliverables %}{% endif -%}
           {%- for t in it.tags limit: 3 %}<span class="badge badge--neutral">{{ t }}</span>{% endfor -%}
         </div>
       </article>

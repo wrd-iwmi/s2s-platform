@@ -114,7 +114,7 @@ title: CGIAR Climate Action — S2S Platform
         <p>{{ t.summary }}</p>
         <div class="card__foot badge-row" style="align-items:center">
           {% include status.html status=t.status %}
-          {%- for dl in t.deliverables %}<span class="badge badge--blue">{{ dl }}</span>{% endfor %}
+          {% include deliverable-labels.html codes=t.deliverables %}
         </div>
       </article>
       {%- endfor %}

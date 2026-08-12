@@ -69,7 +69,7 @@ related_methods:
 ## Why this case matters
 
 This is the reference implementation of the [five-stage operational
-framework]({{ site.baseurl }}/programme/#framework). Every stage in the generic framework has a
+framework]({{ site.baseurl }}/about/#framework). Every stage in the generic framework has a
 concrete counterpart here, which makes it the clearest worked example of how a
 forecast becomes a decision.
 

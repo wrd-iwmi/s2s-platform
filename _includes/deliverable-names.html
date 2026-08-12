@@ -1,0 +1,9 @@
+{%- comment -%} Comma-separated short labels for a list of deliverable codes. {%- endcomment -%}
+{%- assign names = "" -%}
+{%- for code in include.codes -%}
+  {%- assign d = site.data.programme.deliverables | where: "id", code | first -%}
+  {%- if d -%}
+    {%- assign names = names | append: d.short_label | append: "|" -%}
+  {%- endif -%}
+{%- endfor -%}
+{{- names | split: "|" | join: ", " -}}

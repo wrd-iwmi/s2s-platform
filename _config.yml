@@ -26,7 +26,8 @@ url: "https://wrd-iwmi.github.io"
 # -----------------------------------------------------------------------------
 title: "CGIAR Climate Action — S2S Platform"
 short_name: "S2S Platform"
-brand_line: "Seasonal-to-Subseasonal Platform"
+brand_line: "CGIAR Climate Action Seasonal to Subseasonal"
+brand_line_2: "Knowledge Hub"
 lead_institute: "International Water Management Institute (IWMI)"
 programme: "CGIAR Climate Action"
 contact_email: "iwmi@cgiar.org"
@@ -36,6 +37,29 @@ repo_url: "https://github.com/wrd-iwmi/s2s-platform"
 # tutorials. Format: ORG/REPO. Leave empty to hide those buttons.
 colab_repo: "wrd-iwmi/s2s-platform"
 colab_branch: "main"
+
+# -----------------------------------------------------------------------------
+#  LOGOS shown at the right of the header
+#
+#  To swap a logo: put the new file in assets/img/ and change the "file" line.
+#  To add one: copy a block. To remove one: delete its block.
+#  Use SVG where you have it, otherwise a PNG about 400 px wide.
+#  Order here is the order left-to-right on the page.
+# -----------------------------------------------------------------------------
+logos:
+  - file: /assets/img/iwmi.png
+    alt: "International Water Management Institute"
+    url: "https://www.iwmi.cgiar.org/"
+  - file: /assets/img/cgiar-climate-action.png
+    alt: "CGIAR Climate Action"
+    url: "https://www.cgiar.org/"
+
+# -----------------------------------------------------------------------------
+#  ANALYTICS
+#  GA4 measurement ID, format G-XXXXXXXXXX. Leave empty to switch tracking off
+#  entirely — no script is loaded and no cookie is set.
+# -----------------------------------------------------------------------------
+google_analytics: "G-NQSWBCK6QN"
 
 description: >-
   Technical platform of the IWMI-led CGIAR Climate Action work on
@@ -117,6 +141,7 @@ exclude:
   - README.md
   - EDITING-GUIDE.md
   - SETUP-GITHUB-PAGES.md
+  - ANALYTICS.md
   - _templates
   - intake-forms
   - .nojekyll.note

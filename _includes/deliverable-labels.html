@@ -1,0 +1,15 @@
+{%- comment -%}
+  Renders deliverable badges from a list of internal codes.
+
+    {% include deliverable-labels.html codes=page.deliverables %}
+
+  Content files keep writing `deliverables: [D2, D3]` — those codes are internal
+  keys only. What a reader sees is the short label from _data/programme.yml,
+  so no page ever displays "D2".
+{%- endcomment -%}
+{%- for code in include.codes -%}
+  {%- assign d = site.data.programme.deliverables | where: "id", code | first -%}
+  {%- if d -%}
+    <span class="badge badge--blue">{{ d.short_label | default: d.title }}</span>
+  {%- endif -%}
+{%- endfor -%}

@@ -44,6 +44,9 @@ layout: base
         {%- for b in page.badges %}<span class="badge badge--neutral">{{ b }}</span>{% endfor %}
       </span>
       {%- endif %}
+      {%- if page.deliverables.size > 0 %}
+      <span class="badge-row">{% include deliverable-labels.html codes=page.deliverables %}</span>
+      {%- endif %}
       {%- if page.updated %}<span>Last updated {{ page.updated | date: '%Y-%m-%d' }}</span>{% endif %}
     </div>
   </div>

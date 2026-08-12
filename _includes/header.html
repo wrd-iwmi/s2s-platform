@@ -1,11 +1,21 @@
-{%- comment -%} Site header and main menu. Menu items come from _data/navigation.yml {%- endcomment -%}
+{%- comment -%}
+  Site header.
+
+  Left  : site name, linking home.
+  Right : partner logos, from `logos:` in _config.yml.
+  Middle: the main menu, from _data/navigation.yml.
+
+  Logos are configured, not hard-coded — drop a new file in assets/img/ and
+  change one line in _config.yml. A logo whose file is missing simply does not
+  render, so a half-finished set never breaks the header.
+{%- endcomment -%}
 <header class="site-header">
   <div class="wrap-wide site-header__inner">
+
     <a class="brand" href="{{ '/' | relative_url }}">
-      <img src="{{ '/assets/img/cgiar-climate-action.png' | relative_url }}" width="253" height="122" alt="CGIAR Climate Action">
       <span class="brand__text">
         <strong>{{ site.brand_line }}</strong>
-        <span>{{ site.lead_institute }}</span>
+        <span>{{ site.brand_line_2 }}</span>
       </span>
     </a>
 
@@ -31,5 +41,29 @@
         </li>
       </ul>
     </nav>
+
+    {%- if site.logos.size > 0 %}
+    <div class="site-header__logos">
+      {%- for logo in site.logos %}
+        {%- comment -%}
+          Only render a logo whose file is actually present, so a half-finished
+          set never shows a broken image.
+        {%- endcomment -%}
+        {%- assign exists = site.static_files | where: "path", logo.file | first -%}
+        {%- if exists -%}
+        {%- if logo.url and logo.url != '' -%}
+        <a href="{{ logo.url }}" rel="noopener" class="site-logo" title="{{ logo.alt }}">
+          <img src="{{ logo.file | relative_url }}" alt="{{ logo.alt }}" loading="eager" decoding="async">
+        </a>
+        {%- else -%}
+        <span class="site-logo">
+          <img src="{{ logo.file | relative_url }}" alt="{{ logo.alt }}" loading="eager" decoding="async">
+        </span>
+        {%- endif -%}
+        {%- endif -%}
+      {%- endfor %}
+    </div>
+    {%- endif %}
+
   </div>
 </header>

@@ -55,26 +55,47 @@ framework_lede: >-
 
 stages:
   - name: "Needs and context"
+    outputs:
+      - Capability gap analysis
+      - Priority variable list
+      - Recommendation framework
     detail: "Stakeholder consultations, decision calendars, risk maps, priority variables."
     maps: "D1 needs assessment → defines what forecast products are needed"
     colour: "#2b7f5f"
     tint: "#f1f9f5"
   - name: "Forecast and observational datasets"
+    outputs:
+      - Raw multi-model forecast fields
+      - Bias-corrected products
+      - Harmonised observational archive
     detail: "S2S forecasts (IITM, ECMWF ERF, SEAS5, NMME) plus reanalysis and Earth observation. Observations: SMAP, GPM IMERG, AgERA5, CHIRPS, ERA5-Land, CMIP6."
     maps: "D2 forecast dataset production → raw and bias-corrected products"
     colour: "#2a63a8"
     tint: "#f1f6fc"
   - name: "Downscaling, modelling and indicator generation"
+    outputs:
+      - Downscaled rainfall and temperature
+      - Streamflow, soil moisture, ET deficit
+      - SPI, SPEI, VCI and composite indicators
+      - Analysis-ready GeoTIFF and Zarr
     detail: "QBR / cGAN / ML downscaling → hydrological models (SAC-SMA, PARAM, HEC) → impact indicators: SPEI, VCI, ET anomaly, SPI, streamflow, soil moisture."
     maps: "D2 downscaled products + D3 interoperability (STAC, APIs, GitHub)"
     colour: "#5b4a92"
     tint: "#f5f3fb"
   - name: "Advisory pilots and capacity building"
+    outputs:
+      - District drought triggers
+      - 1–7 day alerts and 7–30 day outlooks
+      - Training modules and notebooks
     detail: "CI-IDSS irrigation pilots, AWARE dashboards, CCIL community services, Ghana cocoa outlooks, Sri Lanka planting-window advisories, EA EWS. Farmer and telecom dissemination, NMHS training, forecast literacy modules."
     maps: "D4 capacity strengthening + D5 advisory pilots"
     colour: "#9b2c2c"
     tint: "#fdf3f3"
   - name: "Benchmarking and skill assessment"
+    outputs:
+      - Region-specific hindcast datasets
+      - Skill scores: RMSE, KGE, BSS, RPSS
+      - Performance and scaling guidance
     detail: "Hindcast validation; RMSE, MAE, KGE, BSS and RPSS; multi-model ensemble."
     maps: "D6 benchmark datasets + performance reports + scaling recommendations"
     colour: "#b8721f"
@@ -98,6 +119,7 @@ deliverables_lede: "Expand any deliverable for its activities, team and the docu
 
 deliverables:
   - id: D1
+    short_label: "Needs assessment"
     when: "Q1 2026"
     title: "CGIAR-wide needs assessment & recommendations"
     summary: >-
@@ -110,9 +132,10 @@ deliverables:
     activities:
       - "Systemwide diagnostic and gap analysis — structured consultations and surveys with CGIAR Centers, AoWs, Initiatives and selected country programmes to map current S2S/seasonal forecast use, priority variables, formats, interoperability constraints and capacity gaps."
       - "Recommendation framework and investment roadmap — synthesis into a CGIAR-wide framework defining priority variables, minimum technical standards, delivery pathways and a phased 2025–2027 implementation roadmap aligned with AoW workplans."
-    team: ["Giriraj", "Climate Services Specialist (hiring)", "Angie", "Ian", "Suman"]
+    team: ["Giriraj", "Angie", "Ian", "Suman"]
     links: []
   - id: D2
+    short_label: "Forecast datasets"
     title: "Enhanced seasonal & sub-seasonal forecast dataset"
     summary: >-
       Production of high-resolution CGIAR-wide S2S and seasonal datasets including
@@ -122,11 +145,12 @@ deliverables:
     activities:
       - "Dataset generation and downscaling — high-resolution S2S and seasonal forecast datasets using multi-model ensembles, statistical and dynamical downscaling (including QBR) and bias correction."
       - "Impact modelling and packaging for use — linking forecasts with hydrological, crop and water-balance models, packaged into analysis-ready formats tailored to SF AoW1, AoW2, BDN, SAAFs and priority country programmes."
-    team: ["Suman", "Climate Services Specialist (hiring)", "Giriraj", "Petra", "Naga", "Dhyey"]
+    team: ["Suman", "Giriraj", "Petra", "Naga", "Dhyey"]
     links:
       - { label: "Quantile Bin Resampling", url: /methods/quantile-bin-resampling/ }
       - { label: "Coupled hydrology–crop impact modelling", url: /methods/impact-modelling/ }
   - id: D3
+    short_label: "Interoperability toolkit"
     title: "CGIAR forecast interoperability & data access toolkit"
     summary: >-
       A unified toolkit providing APIs, metadata standards and data pipelines to
@@ -141,6 +165,7 @@ deliverables:
       - { label: "Interoperability toolkit", url: /tools/interoperability-toolkit/ }
       - { label: "API catalogue", url: /apis/ }
   - id: D4
+    short_label: "Capacity strengthening"
     title: "CGIAR S2S capacity strengthening & technical support programme"
     summary: >-
       Training modules, operational guidance and hands-on workshops for CGIAR
@@ -151,10 +176,11 @@ deliverables:
     activities:
       - "Training and learning resource development — modular content (e-learning, manuals, notebooks) covering S2S forecasting, heat-stress analysis, hydrological modelling, API use and advisory co-design."
       - "Hands-on support and helpdesk — regional workshops and country clinics, complemented by a GitHub-based knowledge repository and helpdesk-style technical support."
-    team: ["Niranga", "New hiring — CS and CRA", "Yakob", "Suman"]
+    team: ["Niranga", "Yakob", "Suman"]
     links:
       - { label: "Tutorials", url: /tutorials/ }
   - id: D5
+    short_label: "Advisory pilots"
     title: "Forecast-informed advisory pilots"
     summary: >-
       Co-developed pilots demonstrating how S2S and seasonal forecasts feed into
@@ -165,11 +191,12 @@ deliverables:
     activities:
       - "Co-design and pilot implementation — deploying pilots where S2S and seasonal forecasts inform digital advisories, drought alerts, irrigation scheduling and early-action triggers."
       - "Monitoring, evidence and learning — assessing adoption, behavioural response, forecast use and links to early-warning protocols and safety-net financing."
-    team: ["Giriraj", "Angie", "Climate Services Specialist", "Naga", "Petra / Salomon", "Yakob / Mirriam"]
+    team: ["Giriraj", "Angie", "Naga", "Petra / Salomon", "Yakob / Mirriam"]
     links:
       - { label: "S2S irrigation advisory — South Asia", url: /case-studies/s2s-irrigation-advisory-south-asia/ }
       - { label: "S2S cocoa yield forecasting — Ghana", url: /case-studies/cocoa-yield-forecasting-ghana/ }
   - id: D6
+    short_label: "Benchmarking"
     title: "CGIAR S2S benchmarking dataset & performance report"
     summary: >-
       A region-specific benchmarking dataset and performance use-case reports
@@ -179,7 +206,7 @@ deliverables:
     activities:
       - "Skill assessment and benchmark dataset creation — region-specific benchmarking datasets, evaluating forecast skill using simple, decision-relevant metrics."
       - "Performance reporting and scaling guidance — concise performance reports and guidance notes on reliability, decision-usefulness and recommendations."
-    team: ["New hiring", "Giriraj", "Suman", "Ian", "Naga", "Petra", "Angie", "Dhyey"]
+    team: ["Giriraj", "Suman", "Ian", "Naga", "Petra", "Angie", "Dhyey"]
     links:
       - { label: "Forecast verification and skill benchmarking", url: /methods/forecast-verification/ }
 

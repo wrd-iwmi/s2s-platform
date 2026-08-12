@@ -96,9 +96,9 @@ countries:
 #  Uncomment a block to see how a layer behaves, then replace it with yours.
 layers:
   - name: "Countries"
-    file: assets/geo/countryboundaries.min.geojson   # simplified: 565 KB. See assets/geo/README.md
+    file: assets/geo/countryboundaries.json #countryboundaries.min.geojson   # simplified: 565 KB. See assets/geo/README.md
     colour: "#8a4b1e"
-    fill_opacity: 0.15
+    fill_opacity: 0.7 #0.15
     weight: 1.5
     label_field: NAM_0
     popup_fields: [NAM_0]

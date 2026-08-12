@@ -1,0 +1,104 @@
+{%- comment -%}
+  Embedded Swagger UI.
+
+  Set `swagger_spec` in an API page's front matter and the interactive console
+  appears, with a "Try it out" button on every endpoint.
+
+      swagger_spec: /assets/api/enso-selected.json
+
+  Swagger UI is ~1 MB, so it is loaded **only when scrolled into view**. A reader
+  who never reaches the console downloads nothing for it — the same treatment the
+  map gets.
+{%- endcomment -%}
+{%- if page.swagger_spec -%}
+<div class="swagger"
+     data-swagger
+     data-spec="{{ page.swagger_spec | relative_url }}">
+  <div class="swagger__placeholder" data-swagger-placeholder>
+    <span>Interactive console loads when you scroll here</span>
+  </div>
+</div>
+
+<script>
+(function () {
+  'use strict';
+
+  var CSS = 'https://unpkg.com/swagger-ui-dist@5.17.14/swagger-ui.css';
+  var JS  = 'https://unpkg.com/swagger-ui-dist@5.17.14/swagger-ui-bundle.js';
+
+  function notice(el, text) {
+    var box = document.createElement('div');
+    box.className = 'swagger__notice';
+    box.setAttribute('role', 'status');
+    box.innerHTML = text;
+    el.appendChild(box);
+  }
+
+  function start(el) {
+    var placeholder = el.querySelector('[data-swagger-placeholder]');
+
+    var css = document.createElement('link');
+    css.rel = 'stylesheet';
+    css.href = CSS;
+    document.head.appendChild(css);
+
+    var js = document.createElement('script');
+    js.src = JS;
+    js.onload = function () {
+      if (placeholder) placeholder.parentNode.removeChild(placeholder);
+      var mount = document.createElement('div');
+      el.appendChild(mount);
+      try {
+        window.SwaggerUIBundle({
+          url: el.getAttribute('data-spec'),
+          domNode: mount,
+          deepLinking: false,
+          docExpansion: 'list',
+          defaultModelsExpandDepth: -1,   /* schemas are on the live docs */
+          tryItOutEnabled: true,
+          supportedSubmitMethods: ['get'],
+          persistAuthorization: false,
+          syntaxHighlight: { activate: true, theme: 'agate' }
+        });
+      } catch (err) {
+        notice(el, 'The interactive console could not start. Use the ' +
+                   '<a href="https://enso.iwmi.org/ENSO_api/docs">full API documentation</a> instead.');
+      }
+    };
+    js.onerror = function () {
+      if (placeholder) placeholder.parentNode.removeChild(placeholder);
+      notice(el, 'The interactive console could not be loaded — it is fetched ' +
+                 'from a CDN, which this network may block. The ' +
+                 '<a href="https://enso.iwmi.org/ENSO_api/docs">full API documentation</a> ' +
+                 'is served from the API itself and should work.');
+    };
+    document.head.appendChild(js);
+  }
+
+  var panels = Array.prototype.slice.call(document.querySelectorAll('[data-swagger]'));
+  if (!panels.length) return;
+
+  if (location.protocol === 'file:') {
+    panels.forEach(function (el) {
+      var placeholder = el.querySelector('[data-swagger-placeholder]');
+      if (placeholder) placeholder.parentNode.removeChild(placeholder);
+      notice(el, 'The interactive console does not run when this page is opened ' +
+                 'from a folder — browsers block file access. It works on the ' +
+                 'published site.');
+    });
+    return;
+  }
+
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) { io.unobserve(entry.target); start(entry.target); }
+      });
+    }, { rootMargin: '300px' });
+    panels.forEach(function (el) { io.observe(el); });
+  } else {
+    panels.forEach(start);
+  }
+})();
+</script>
+{%- endif -%}

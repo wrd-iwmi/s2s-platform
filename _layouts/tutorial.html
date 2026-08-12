@@ -62,7 +62,7 @@ kicker: Tutorial
         <div><dt>Difficulty</dt><dd>{{ page.difficulty }}</dd></div>
         <div><dt>Estimated time</dt><dd>{{ page.estimated_time | default: "Information to be added" }}</dd></div>
         <div><dt>Status</dt><dd>{{ page.status }}</dd></div>
-        {%- if page.deliverables.size > 0 %}<div><dt>Deliverables</dt><dd>{{ page.deliverables | join: ', ' }}</dd></div>{% endif %}
+        {%- if page.deliverables.size > 0 %}<div><dt>Deliverables</dt><dd>{% include deliverable-names.html codes=page.deliverables %}</dd></div>{% endif %}
         {%- if page.tags.size > 0 %}<div><dt>Topics</dt><dd>{{ page.tags | join: ', ' }}</dd></div>{% endif %}
       </dl>
     </div>
