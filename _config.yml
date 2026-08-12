@@ -34,7 +34,7 @@ brand_lines:
 brand_line_2: "Knowledge Hub"
 lead_institute: "International Water Management Institute (IWMI)"
 programme: "CGIAR Climate Action"
-contact_email: "iwmi@cgiar.org"
+contact_email: "wrd@iwmi.org"
 repo_url: "https://github.com/wrd-iwmi/s2s-platform"
 
 # Needed only for the "Run in Colab" and "View on nbviewer" buttons on notebook
