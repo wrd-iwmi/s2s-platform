@@ -14,6 +14,9 @@ problem: ''
 related_apis:
   - enso-dashboard-api
 links:
+  - label: ENSO Dashboard
+    url: https://enso.iwmi.org/
+    kind: Web application
   - label: ENSO Dashboard API documentation
     url: /apis/enso-dashboard-api/
     kind: API
@@ -24,7 +27,7 @@ links:
 
 ## Status of this page
 
-The dashboard's **API is live and documented in full** — see the
+The dashboard and its API is live — see the
 [ENSO Dashboard API]({{ site.baseurl }}/apis/enso-dashboard-api/), which lists
 146 endpoints across twelve groups, read from the live OpenAPI specification.
 
