@@ -96,7 +96,7 @@ countries:
 #  Uncomment a block to see how a layer behaves, then replace it with yours.
 layers:
   - name: "Countries"
-    file: assets/geo/countryboundaries1.geojson
+    file: assets/geo/countryboundaries1.json #assets/geo/countryboundaries1.geojson
     colour: "#8a4b1e"
     fill_opacity: 0.15
     weight: 1.5
