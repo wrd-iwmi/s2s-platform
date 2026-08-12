@@ -1,4 +1,8 @@
 ---
+#  KEPT FOR REFERENCE, NOT PUBLISHED.
+#  `published: false` keeps this file in the repository but leaves it out of
+#  the built site. Delete that line to bring the page back.
+published: false
 title: S2S irrigation advisory — South Asia
 summary: Sub-seasonal forecasts downscaled to irrigation command scale to inform canal release timing and district drought triggers, delivered through three platforms serving three different user tiers.
 status: Pilot

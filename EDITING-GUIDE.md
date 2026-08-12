@@ -307,6 +307,37 @@ shapefile, and how to shrink a large boundary file.
 
 ---
 
+## Linking a team member to their profile
+
+In `about.md`, each team row can carry an optional `url`. Add one and the name
+becomes a link; leave it out and the name is plain text. You can fill these in
+one person at a time.
+
+```yaml
+  - name: "Dhyey Bhatpuria"
+    role: "Datasets, interoperability, benchmarking"
+    deliverables: "Forecast datasets, Interoperability toolkit, Benchmarking"
+    url: "https://www.iwmi.org/people/dhyey-bhatpuria/"
+```
+
+IWMI profile pages follow the pattern
+`https://www.iwmi.org/people/firstname-lastname/` — but **open the link before
+you add it**. Not everyone has a profile, and some use a different spelling.
+
+> **Do not** write the name as a markdown link like
+> `name: "[Dhyey](https://…)"`. Settings values are not treated as markdown, so
+> that renders as literal brackets on the page. Use the separate `url` field.
+
+---
+
+## Keeping a page without publishing it
+
+Add `published: false` to a page's settings block. The file stays in the
+repository but is left out of the built site, so nothing is lost and nothing
+appears. Delete the line to publish it again.
+
+---
+
 ## If you would rather use Word
 
 There are Word forms in the `intake-forms/` folder — one for each kind of page.

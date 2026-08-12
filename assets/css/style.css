@@ -959,3 +959,25 @@ caption { caption-side: bottom; padding-top: var(--s-3); color: var(--c-muted); 
   font-size: var(--t-md); line-height: 1.6; color: var(--c-ink);
 }
 .coming-soon__contact { margin: 0; font-size: var(--t-sm); color: var(--c-ink-2); }
+
+/* --------------------------------------------------------------------------
+   27. PERSON LINK
+   A team member's name linking to their profile. The arrow marks it as
+   leaving the site; it is decorative, with the meaning carried by the
+   visually-hidden text beside it.
+   -------------------------------------------------------------------------- */
+.person-link {
+  color: var(--c-blue-700);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 2px;
+  white-space: nowrap;
+}
+.person-link:hover { color: var(--c-blue-900); }
+.person-link__icon {
+  font-size: 0.8em;
+  margin-left: 0.25em;
+  color: var(--c-ink-3);
+  text-decoration: none;
+  display: inline-block;
+}
+.person-link:hover .person-link__icon { color: var(--c-blue-700); }

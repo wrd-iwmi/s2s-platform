@@ -1,4 +1,9 @@
 ---
+#  SUPERSEDED, NOT PUBLISHED.
+#  This combined page was split into _tools/sadms.md and
+#  _tools/sukharakshak-ai.md, which are the live pages. Kept for reference;
+#  `published: false` leaves it out of the built site.
+published: false
 title: SADMS / SukhaRakshak AI
 summary: Drought monitoring and advisory platform used to issue district-level drought triggers and to reach users through SMS and WhatsApp channels.
 status: Operational

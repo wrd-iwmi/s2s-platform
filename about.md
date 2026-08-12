@@ -8,18 +8,57 @@ trail:
 permalink: /about/
 
 # ---------------------------------------------------------------------------
-#  TEAM TABLE — edit these rows to update the team list
+#  TEAM TABLE
+#
+#  Each row: name, role, deliverables, and an optional url.
+#
+#  Adding a bio link
+#  -----------------
+#  Add a `url:` to the row and the name becomes a link. IWMI profile pages
+#  follow the pattern  https://www.iwmi.org/people/firstname-lastname/
+#  — but check the link works before adding it; not everyone has a profile,
+#  and some use a different spelling.
+#
+#  Leave `url` out and the name renders as plain text. Both are fine, so the
+#  table can be filled in one person at a time.
 # ---------------------------------------------------------------------------
 team:
-  - { name: "Giriraj Amarnath", role: "Programme lead",                             deliverables: "Needs assessment, Forecast datasets, Interoperability toolkit, Advisory pilots, Benchmarking" }
-  - { name: "Niranga Alahacoon",  role: "Capacity strengthening",                   deliverables: "Capacity strengthening" }
-  - { name: "[Dhyey Bhatpuria](https://www.iwmi.org/people/dhyey-bhatpuria/)",  role: "Datasets, interoperability, benchmarking",   deliverables: "Forecast datasets, Interoperability toolkit, Benchmarking" }
-  - { name: "Suman Padhee",     role: "Forecast datasets and downscaling",          deliverables: "Needs assessment, Forecast datasets, Capacity strengthening, Benchmarking" }
-  - { name: "Kalpani Jaymini",  role: "Interoperability toolkit",                   deliverables: "Interoperability toolkit" }
-  - { name: "Yakob Umer",       role: "Capacity strengthening, pilots",             deliverables: "Capacity strengthening, Advisory pilots" }
-  - { name: "Surya Kiran Guniganti", role: "Forecast datasets and downscaling",     deliverables: "Advisory pilots" }
-  - { name: "Mirriam Makungwe", role: "Advisory pilots",                            deliverables: "Advisory pilots" }
- # - { name: "Salomon",          role: "Ghana cocoa yield forecasting",              deliverables: "Advisory pilots" }
+  - name: "Giriraj Amarnath"
+    role: "Programme lead"
+    deliverables: "Needs assessment, Forecast datasets, Interoperability toolkit, Advisory pilots, Benchmarking"
+
+  - name: "Niranga Alahacoon"
+    role: "Capacity strengthening"
+    deliverables: "Capacity strengthening"
+
+  - name: "Dhyey Bhatpuria"
+    role: "Datasets, interoperability, benchmarking"
+    deliverables: "Forecast datasets, Interoperability toolkit, Benchmarking"
+    url: "https://www.iwmi.org/people/dhyey-bhatpuria/"
+
+  - name: "Suman Padhee"
+    role: "Forecast datasets and downscaling"
+    deliverables: "Needs assessment, Forecast datasets, Capacity strengthening, Benchmarking"
+
+  - name: "Kalpani Jaymini"
+    role: "Interoperability toolkit"
+    deliverables: "Interoperability toolkit"
+
+  - name: "Yakob Umer"
+    role: "Capacity strengthening, pilots"
+    deliverables: "Capacity strengthening, Advisory pilots"
+
+  - name: "Surya Kiran Guniganti"
+    role: "Forecast datasets and downscaling"
+    deliverables: "Advisory pilots"
+
+  - name: "Mirriam Makungwe"
+    role: "Advisory pilots"
+    deliverables: "Advisory pilots"
+
+# - name: "Salomon"
+#   role: "Ghana cocoa yield forecasting"
+#   deliverables: "Advisory pilots"
 
 contributors: ["Aniruddha Saha", "Mohamed Yousuf"]
 
@@ -209,14 +248,25 @@ gaps:
 <section id="team" style="margin-top:4rem">
   <h2>Team</h2>
   <p style="max-width:68ch">
-    Team members named across the programme's six deliverables.
+    Team members named across the programme's six deliverables. Linked names go
+    to a profile on the IWMI website.
   </p>
   <div class="table-scroll" style="max-width:78ch">
     <table>
       <thead><tr><th>Name</th><th>Contribution</th><th>Deliverables</th></tr></thead>
       <tbody>
         {%- for t in page.team %}
-        <tr><td>{{ t.name }}</td><td>{{ t.role }}</td><td>{{ t.deliverables }}</td></tr>
+        <tr>
+          <td>
+            {%- if t.url -%}
+              <a class="person-link" href="{{ t.url }}" rel="noopener">{{ t.name }}<span class="person-link__icon" aria-hidden="true">↗</span><span class="visually-hidden"> — profile on the IWMI website</span></a>
+            {%- else -%}
+              {{ t.name }}
+            {%- endif -%}
+          </td>
+          <td>{{ t.role }}</td>
+          <td>{{ t.deliverables }}</td>
+        </tr>
         {%- endfor %}
       </tbody>
     </table>
