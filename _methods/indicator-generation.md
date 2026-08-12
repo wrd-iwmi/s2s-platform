@@ -33,7 +33,8 @@ limitations:
 - Standardised indices require a stable reference period; results shift if the baseline changes
 related_tools:
 - interoperability-toolkit
-- sadms-sukharakshak
+- sadms
+coming_soon: true
 ---
 
 ## Position in the six-layer model

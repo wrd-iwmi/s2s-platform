@@ -87,7 +87,7 @@
   --w-page: 1080px;
   --w-prose: 68ch;
 
-  --header-h: 78px;
+  --header-h: 92px;
 }
 
 /* --------------------------------------------------------------------------
@@ -328,31 +328,35 @@ caption { caption-side: bottom; padding-top: var(--s-3); color: var(--c-muted); 
 .brand {
   display: flex; align-items: center; gap: var(--s-3);
   text-decoration: none; color: inherit; flex: none;
-  max-width: 22ch;
 }
-.brand__text { line-height: 1.2; }
-.brand__text strong {
+/* Every line in the title uses the same font size and the same fixed line
+   box, so the gaps between them are identical by construction rather than by
+   eye. Changing --brand-leading moves all three together. */
+.brand__text {
+  --brand-leading: 1.35em;
+  display: block;
+}
+.brand__line {
   display: block;
   font-size: var(--t-sm);
+  line-height: var(--brand-leading);
   color: var(--c-blue-900);
   font-weight: 600;
   letter-spacing: -0.005em;
+  white-space: nowrap;
 }
-.brand__text span {
-  display: block;
-  font-size: var(--t-xs);
+.brand__line--hub {
   color: var(--c-teal-600);
-  font-weight: 600;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
 }
-@media (max-width: 700px) {
-  .brand { max-width: 16ch; }
-  .brand__text strong { font-size: var(--t-xs); }
+@media (max-width: 760px) {
+  .brand { max-width: none; }
+  .brand__line { font-size: var(--t-xs); }
 }
 @media (max-width: 440px) {
-  /* Below this the title crowds out the menu button. */
-  .brand__text strong { display: none; }
+  /* Keep only the hub line; the full title crowds out the menu button. */
+  .brand__line:not(.brand__line--hub) { display: none; }
 }
 
 .nav { margin-left: auto; }
@@ -837,7 +841,7 @@ caption { caption-side: bottom; padding-top: var(--s-3); color: var(--c-muted); 
 .site-logo { display: flex; align-items: center; }
 .site-logo img {
   display: block;
-  height: 44px;
+  height: 52px;
   width: auto;
   max-width: 150px;
   object-fit: contain;
@@ -850,10 +854,10 @@ caption { caption-side: bottom; padding-top: var(--s-3); color: var(--c-muted); 
 @media (max-width: 1079px) {
   /* Menu collapses; keep the logos beside the toggle but slightly smaller. */
   .site-header__logos { margin-left: auto; padding-left: 0; border-left: 0; gap: var(--s-3); }
-  .site-logo img { height: 36px; max-width: 120px; }
+  .site-logo img { height: 42px; max-width: 130px; }
 }
 @media (max-width: 560px) {
-  .site-logo img { height: 30px; max-width: 92px; }
+  .site-logo img { height: 34px; max-width: 100px; }
   .site-header__logos { gap: var(--s-2); }
 }
 /* Below this the header would be unreadably crowded — drop to one mark. */
@@ -906,3 +910,52 @@ caption { caption-side: bottom; padding-top: var(--s-3); color: var(--c-muted); 
 .swagger .swagger-ui select,
 .swagger .swagger-ui input[type=text] { font-family: var(--f-sans); }
 .swagger .swagger-ui .responses-inner { padding-bottom: var(--s-4); }
+
+/* --------------------------------------------------------------------------
+   25. API CONSOLE PANEL
+   Points at the API's own interactive docs, where cross-origin restrictions
+   do not apply.
+   -------------------------------------------------------------------------- */
+.api-console {
+  display: grid;
+  gap: var(--s-4);
+  align-items: center;
+  padding: var(--s-5);
+  border: 1px solid var(--c-line);
+  border-left: 3px solid var(--c-teal-600);
+  border-radius: var(--r-lg);
+  background: var(--c-teal-100);
+  margin-bottom: var(--s-5);
+}
+@media (min-width: 760px) {
+  .api-console { grid-template-columns: minmax(0, 1fr) auto; gap: var(--s-6); }
+}
+.api-console__title {
+  margin: 0 0 var(--s-2);
+  font-size: var(--t-xs); text-transform: uppercase; letter-spacing: 0.08em;
+  font-weight: 700; color: var(--c-teal-600);
+}
+.api-console__text { margin: 0; font-size: var(--t-sm); color: var(--c-ink-2); }
+.api-console .btn-row { margin: 0; }
+
+/* --------------------------------------------------------------------------
+   26. COMING SOON
+   -------------------------------------------------------------------------- */
+.coming-soon {
+  border: 1px solid var(--c-line);
+  border-left: 3px solid var(--c-teal-600);
+  border-radius: var(--r-lg);
+  background: var(--c-surface-2);
+  padding: var(--s-7) var(--s-6);
+  max-width: 62ch;
+}
+.coming-soon__label {
+  margin: 0 0 var(--s-3);
+  font-size: var(--t-xs); text-transform: uppercase; letter-spacing: 0.1em;
+  font-weight: 700; color: var(--c-teal-600);
+}
+.coming-soon__text {
+  margin: 0 0 var(--s-4);
+  font-size: var(--t-md); line-height: 1.6; color: var(--c-ink);
+}
+.coming-soon__contact { margin: 0; font-size: var(--t-sm); color: var(--c-ink-2); }

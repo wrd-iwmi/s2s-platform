@@ -1,68 +1,118 @@
 ---
-title: AWARE
-summary: Early-warning dashboard receiving short-range alerts and medium-range S2S outlooks, used as a delivery channel for the programme's irrigation and drought advisories.
+title: AWARE Platform
+summary: Early Warning, Early Action and Early Finance platform — connecting forecast-based triggers to predefined response actions and financial disbursements, so a warning becomes action rather than a notification.
 status: Operational
-flagship: true
-weight: 90
+weight: 92
 deliverables:
-- D3
-- D5
+  - D3
+  - D5
 tags:
-- Early warning
-- Drought
-- Water
-- Climate services
-- S2S
+  - Early warning
+  - Drought
+  - Flood
+  - Anticipatory finance
+  - Climate services
+  - S2S
+  - Water
 regions:
-- South Asia
-- India
-- Sri Lanka
-problem: Decision-makers need alerts at more than one lead time. Short-range warnings arrive too late to change an irrigation or input decision, while seasonal outlooks are too coarse in timing to act on.
+  - South Asia
+  - Sri Lanka
+  - Africa
+  - Zambia
+  - Philippines
+organisation: IWMI, supported by the CGIAR initiative on Climate Resilience (ClimBeR)
+problem: >-
+  Early warning systems and financing mechanisms usually sit in separate
+  institutions with separate timelines. A forecast arrives, and the money and the
+  mandate to act on it arrive weeks later — after the harvest has failed or the
+  water has risen. The gap between knowing and acting is where the damage
+  happens.
 capabilities:
-- title: Short-range alerting
-  description: 1–7 day alerts delivered through the dashboard.
-- title: Medium-range outlooks
-  description: 7–30 day medium-range outlooks generated from downscaled S2S products.
-- title: Advisory delivery
-  description: Serves as one of the delivery platforms for the South Asia irrigation advisory pilot.
+  - title: Forecast-based triggers
+    description: Connects forecast thresholds to predefined response actions, so a crossing triggers a plan rather than a discussion.
+  - title: Early finance
+    description: Links triggers to financial disbursement, so anticipatory action is funded at the moment it is still anticipatory.
+  - title: Integrated risk picture
+    description: Combines meteorological forecasts with socio-economic indicators, market dynamics, health, nutrition and population displacement.
+  - title: Multi-partner coordination
+    description: Brings partners into a shared view, so preparedness and response are joint rather than parallel.
 workflow:
-- stage: Downscaled S2S products
-  detail: Bias-corrected and QBR-downscaled rainfall, temperature and soil-moisture fields.
-- stage: Impact models and indicators
-  detail: Hydrological and agro-climate indicators produced in Stage&nbsp;3 of the framework.
-- stage: Interoperability toolkit
-  detail: Products packaged and served through the D3 APIs.
-- stage: AWARE dashboard
-  detail: 1–7 day alerts and 7–30 day outlooks presented to users.
+  - stage: Forecast inputs
+    detail: Meteorological forecasts across lead times, including downscaled S2S products from this programme.
+  - stage: Integrated risk assessment
+    detail: Forecasts combined with socio-economic, market, health, nutrition and displacement indicators.
+  - stage: Trigger evaluation
+    detail: Forecast-based thresholds evaluated against predefined criteria.
+  - stage: Early action and finance
+    detail: Triggers connected to predefined response actions and financial disbursement.
+  - stage: Partners and communities
+    detail: National agencies, humanitarian partners and communities acting on a shared picture.
 outputs:
-- 1–7 day alerts
-- 7–30 day medium-range outlooks
+  - 1–7 day alerts
+  - 7–30 day medium-range outlooks
+  - Forecast-based trigger status
+  - Anticipatory action and finance recommendations
 related_tools:
-- interoperability-toolkit
-related_case_studies:
-- s2s-irrigation-advisory-south-asia
+  - sadms
+  - sukharakshak-ai
+related_methods:
+  - indicator-generation
+  - forecast-verification
 links:
-- label: AWARE web application
-  url: '#'
-  kind: Web application
-  available: false
-  note: Public URL to be confirmed by the platform team.
+  - label: AWARE Platform
+    url: https://aware.iwmi.org/climber
+    kind: Web application
+  - label: "AWARE Platform: technical guide (CGSpace)"
+    url: https://cgspace.cgiar.org/items/f48f617d-cf21-4e3e-9024-6dc634cd3038
+    kind: Publication
+  - label: "New platform supports integrated drought management in Africa and South Asia (CGIAR)"
+    url: https://www.cgiar.org/news-events/news/new-platform-supports-integrated-drought-management-in-africa-and-south-asia/
+    kind: Publication
+  - label: "Sri Lanka is now AWARE (IWMI)"
+    url: https://www.iwmi.org/news/sri-lanka-is-now-aware/
+    kind: Publication
 ---
 
-## About this page
+## About AWARE
 
-AWARE appears in the programme material as an existing early-warning dashboard
-that the S2S work integrates with, rather than as a tool built by this
-programme. The sections below record only what the programme workplan states
-about that integration.
+AWARE — **Early Warning, Early Action and Early Finance** — is designed for
+anticipatory action: giving stakeholders the means to reduce the impact of a
+disaster before it happens rather than responding after it has.
 
-## Integration with the S2S programme
+It is a component of CGIAR's Climate Resilience work, and its distinguishing idea
+is the join it makes. Early warning systems, response protocols and financing
+mechanisms usually operate separately. AWARE connects **forecast-based triggers
+to predefined response actions and financial disbursements**, so that a warning
+translates into action on the ground rather than stopping at a notification.
 
-Under Deliverable&nbsp;3, the interoperability toolkit is integrated with
-advisory systems, AWARE dashboards and decision-support tools, followed by
-interoperability testing and documentation with CGIAR and selected national
-partners.
+## What it brings together
 
-Under the South Asia irrigation advisory pilot, AWARE receives both 1–7 day
-alerts and 7–30 day medium-range outlooks, the latter derived from downscaled
-S2S products.
+The platform integrates diverse data streams — meteorological forecasts alongside
+socio-economic indicators — to give a fuller picture of risk than a forecast
+alone can. It disseminates information across climate, market dynamics, health,
+nutrition and population displacement, and is built for collaboration between
+partners so that preparedness and response are coordinated rather than
+duplicated.
+
+## Where it has been used
+
+AWARE was piloted in **Sri Lanka in 2023 and 2024**, with community-level
+simulations of flood in Nuwara Eliya district and drought in Anuradhapura
+district.
+
+The wider ClimBeR work it sits within is building climate resilience in Kenya,
+Morocco, Senegal, Zambia, Guatemala and the Philippines.
+
+## Relationship to the S2S programme
+
+AWARE is one of the delivery platforms the programme's forecast products flow
+into. Under the
+[interoperability toolkit]({{ site.baseurl }}/tools/interoperability-toolkit/),
+integration with AWARE dashboards is an explicit deliverable, followed by
+interoperability testing with CGIAR and national partners.
+
+AWARE receives **1–7 day alerts** and **7–30 day medium-range outlooks**, the
+latter derived from downscaled S2S products.
+
+*Content on this page is drawn from IWMI and CGIAR descriptions of the platform.
+Sources are linked above.*

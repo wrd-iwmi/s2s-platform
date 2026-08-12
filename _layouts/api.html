@@ -10,15 +10,25 @@ kicker: API
       <div class="prose prose--wide">{{ content }}</div>
     </section>
 
-    {%- if page.swagger_spec %}
+    {%- if page.console_url %}
     <section id="sec-try" style="margin-top:3rem">
       <h2>Try the API</h2>
-      <p>
-        Selected endpoints, live. Open one, press <strong>Try it out</strong>,
-        fill in any parameters and press <strong>Execute</strong> — the request
-        goes to the real service and the response comes back below.
-      </p>
-      {% include swagger.html %}
+      <div class="api-console">
+        <div>
+          <p class="api-console__title">Interactive console</p>
+          <p class="api-console__text">
+            Open the API's own documentation to browse every endpoint and run
+            live requests with <strong>Try it out</strong>. It runs on the API's
+            own domain, so requests are not blocked by browser security.
+          </p>
+        </div>
+        <p class="btn-row">
+          <a class="btn btn--primary" href="{{ page.console_url }}" rel="noopener">Open the API console ↗</a>
+          {%- if page.service_url %}
+          <a class="btn btn--secondary" href="{{ page.service_url }}" rel="noopener">Open the dashboard ↗</a>
+          {%- endif %}
+        </p>
+      </div>
     </section>
     {%- endif %}
 
@@ -116,7 +126,7 @@ kicker: API
       <h2>On this page</h2>
       <ul>
         <li><a href="#sec-purpose">Purpose</a></li>
-        {%- if page.swagger_spec %}<li><a href="#sec-try">Try the API</a></li>{% endif %}
+        {%- if page.console_url %}<li><a href="#sec-try">Try the API</a></li>{% endif %}
         <li><a href="#sec-endpoints">Endpoints</a></li>
         <li><a href="#sec-reference">Reference</a></li>
         <li><a href="#sec-access">Documentation links</a></li>

@@ -37,6 +37,7 @@ validation: Hindcast skill assessment in the Cauvery basin and Narmada / eastern
 related_tools:
 - ci-idss-digital-twin
 - aware
+coming_soon: true
 ---
 
 ## Models used

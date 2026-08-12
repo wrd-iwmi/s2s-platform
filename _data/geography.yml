@@ -55,8 +55,7 @@ countries:
   - name: India
     lat: 20.59
     lon: 78.96
-    note: "S2S irrigation advisory, drought triggers and basin benchmarking"
-    url: /case-studies/s2s-irrigation-advisory-south-asia/
+    note: "Drought monitoring and advisory platforms, and basin benchmarking"
 
   - name: Sri Lanka
     lat: 7.87

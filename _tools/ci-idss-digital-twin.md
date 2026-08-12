@@ -2,7 +2,7 @@
 title: CI-IDSS Digital Twin
 summary: Digital twin platform for the Upper Krishna basin, being extended from v1 to a v2 that carries S2S irrigation advisories.
 status: In development
-weight: 85
+weight: 80
 deliverables:
 - D5
 tags:
@@ -37,8 +37,6 @@ outputs:
 related_methods:
 - quantile-bin-resampling
 - impact-modelling
-related_case_studies:
-- s2s-irrigation-advisory-south-asia
 links:
 - label: CI-IDSS platform
   url: '#'

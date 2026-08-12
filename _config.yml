@@ -26,7 +26,11 @@ url: "https://wrd-iwmi.github.io"
 # -----------------------------------------------------------------------------
 title: "CGIAR Climate Action — S2S Platform"
 short_name: "S2S Platform"
-brand_line: "CGIAR Climate Action Seasonal to Subseasonal"
+# The header title, one line per entry. Spacing between lines is identical, so
+# add or remove a line without anything else needing adjustment.
+brand_lines:
+  - "CGIAR Climate Action"
+  - "Seasonal to Subseasonal"
 brand_line_2: "Knowledge Hub"
 lead_institute: "International Water Management Institute (IWMI)"
 programme: "CGIAR Climate Action"

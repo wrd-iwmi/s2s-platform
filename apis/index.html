@@ -12,7 +12,7 @@ permalink: /apis/
   <a class="btn btn--secondary btn--sm" href="{{ '/tools/interoperability-toolkit/' | relative_url }}">Interoperability toolkit</a>
 </div>
 
-{% include callout.html variant="caution" title="No endpoints are published yet" body="The APIs below are in development. Endpoint paths, parameters, authentication and rate limits are shown as placeholders and will be filled in on release. Nothing on these pages is illustrative or invented — an unpublished endpoint is shown as unpublished." %}
+{% include callout.html variant="note" title="One API is live; the rest are in development" body="The ENSO Dashboard API is operational and open — 146 endpoints, no key required, with an interactive console on its own domain. The remaining entries are still being built: their endpoint paths, parameters, authentication and rate limits are shown as placeholders and will be filled in on release. Nothing on these pages is illustrative or invented — an unpublished endpoint is shown as unpublished." %}
 
 {%- assign items = site.apis | sort: "weight" | reverse -%}
 {% include filterable-list.html items=items label="APIs"

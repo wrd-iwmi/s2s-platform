@@ -1,6 +1,6 @@
 ---
 title: IITM S2S forecasts
-summary: Sub-seasonal forecast product from the Indian Institute of Tropical Meteorology, used as the primary forecast source for the South Asia irrigation advisory pilot.
+summary: Sub-seasonal forecast product from the Indian Institute of Tropical Meteorology, used as a primary sub-seasonal forecast source in the programme.
 status: Operational
 weight: 100
 tags:
@@ -17,6 +17,6 @@ variables:
 - Temperature
 ---
 
-Used in the South Asia pilot at 2–6 week lead for precipitation and temperature,
-bias-corrected via QBR to irrigation command level. Product specifications
+Used at 2–6 week lead for precipitation and temperature, bias-corrected via QBR
+to decision scale. Product specifications
 should be verified against the IITM documentation for the version in use.

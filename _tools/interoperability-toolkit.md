@@ -3,7 +3,7 @@ title: CGIAR Forecast Interoperability & Data Access Toolkit
 summary: A unified toolkit of APIs, metadata standards and data pipelines connecting S2S and seasonal forecasts to CGIAR digital platforms, advisory systems and early-warning dashboards.
 status: In development
 flagship: true
-weight: 100
+weight: 84
 deliverables:
 - D3
 team:
@@ -56,7 +56,6 @@ related_apis:
 - stac-catalogue
 - client-libraries
 related_case_studies:
-- s2s-irrigation-advisory-south-asia
 - cocoa-yield-forecasting-ghana
 related_tutorials:
 - accessing-forecast-data-via-api

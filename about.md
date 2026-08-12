@@ -17,7 +17,7 @@ team:
   - { name: "Suman Padhee",     role: "Forecast datasets and downscaling",          deliverables: "Needs assessment, Forecast datasets, Capacity strengthening, Benchmarking" }
   - { name: "Kalpani Jaymini",  role: "Interoperability toolkit",                   deliverables: "Interoperability toolkit" }
   - { name: "Yakob Umer",       role: "Capacity strengthening, pilots",             deliverables: "Capacity strengthening, Advisory pilots" }
-  - { name: "Surya Kiran Guniganti", role: "South Asia irrigation advisory",        deliverables: "Advisory pilots" }
+  - { name: "Surya Kiran Guniganti", role: "Advisory pilots",                      deliverables: "Advisory pilots" }
   - { name: "Mirriam Makungwe", role: "Advisory pilots",                            deliverables: "Advisory pilots" }
   - { name: "Salomon",          role: "Ghana cocoa yield forecasting",              deliverables: "Advisory pilots" }
 
@@ -29,10 +29,11 @@ contributors: ["Aniruddha Saha", "Mohamed Yousuf"]
 gaps:
   # Each gap is a sentence. If it starts with a page name followed by " — ",
   # add a "url" and that name becomes a link automatically.
-  - text: "ENSO Dashboard — the tool page is a structured request for content; the API it exposes is documented in full."
+  - text: "ENSO Dashboard — the tool page still needs a description of the interface itself; its API is documented in full."
     url: /tools/enso-dashboard/
-  - text: "Public URLs for AWARE, SADMS / SukhaRakshak AI, CI-IDSS and the Ghana cocoa dashboard."
-  - text: "The expansion of the SADMS and CI-IDSS acronyms."
+  - text: "Method documentation and both case studies are written but under review, and show as coming soon."
+  - text: "Public URLs for CI-IDSS and the Ghana cocoa dashboard."
+  - text: "The expansion of the CI-IDSS acronym."
   - text: "The QBR mathematical formulation, parameters and reference implementation."
   - text: "Tutorial step-by-step content for the capacity-strengthening modules."
 ---
@@ -140,26 +141,6 @@ gaps:
   <p style="margin-top:1rem;font-size:var(--t-xs);color:var(--c-muted)">{{ p.partners_note }}</p>
 </section>
 
-<section id="team" style="margin-top:4rem">
-  <h2>Team</h2>
-  <p style="max-width:68ch">
-    Team members named across the programme's six deliverables and two documented
-    pilots.
-  </p>
-  <div class="table-scroll" style="max-width:78ch">
-    <table>
-      <thead><tr><th>Name</th><th>Contribution</th><th>Deliverables</th></tr></thead>
-      <tbody>
-        {%- for t in page.team %}
-        <tr><td>{{ t.name }}</td><td>{{ t.role }}</td><td>{{ t.deliverables }}</td></tr>
-        {%- endfor %}
-      </tbody>
-    </table>
-  </div>
-  <p style="margin-top:1rem;font-size:var(--t-sm);color:var(--c-ink-2)">
-    Interns and contributors: {{ page.contributors | join: ', ' }}.
-  </p>
-</section>
 
 <section id="limitations" style="margin-top:4rem">
   <h2>Limitations and documentation status</h2>
@@ -223,6 +204,26 @@ gaps:
   <div class="citation" style="max-width:68ch">
     <code>{{ site.lead_institute }} ({{ site.time | date: '%Y' }}). {{ site.brand_line }}. {{ site.programme }}. Citation format to be confirmed.</code>
   </div>
+</section>
+
+<section id="team" style="margin-top:4rem">
+  <h2>Team</h2>
+  <p style="max-width:68ch">
+    Team members named across the programme's six deliverables.
+  </p>
+  <div class="table-scroll" style="max-width:78ch">
+    <table>
+      <thead><tr><th>Name</th><th>Contribution</th><th>Deliverables</th></tr></thead>
+      <tbody>
+        {%- for t in page.team %}
+        <tr><td>{{ t.name }}</td><td>{{ t.role }}</td><td>{{ t.deliverables }}</td></tr>
+        {%- endfor %}
+      </tbody>
+    </table>
+  </div>
+  <p style="margin-top:1rem;font-size:var(--t-sm);color:var(--c-ink-2)">
+    Interns and contributors: {{ page.contributors | join: ', ' }}.
+  </p>
 </section>
 
 <section id="contact" style="margin-top:4rem">

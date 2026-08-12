@@ -2,6 +2,9 @@
 layout: detail
 kicker: Method
 ---
+{%- if page.coming_soon %}
+{% include coming-soon.html note="The technical documentation for this method is being written." %}
+{%- else %}
 <div class="split">
   <div>
     <section id="sec-levels">
@@ -126,3 +129,4 @@ kicker: Method
     </nav>
   </aside>
 </div>
+{%- endif %}

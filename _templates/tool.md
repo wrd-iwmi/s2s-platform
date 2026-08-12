@@ -72,8 +72,6 @@ links:
 related_methods:
   - quantile-bin-resampling
 related_case_studies:
-  - s2s-irrigation-advisory-south-asia
-
 # citation: How to cite this tool. Leave out until it has been agreed.
 ---
 

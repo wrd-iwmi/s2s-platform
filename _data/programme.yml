@@ -48,7 +48,7 @@ pillars_note: >-
 
 framework_heading: "S2S operational framework"
 framework_lede: >-
-  Every researcher's workflow — irrigation advisory, cocoa yield forecasting,
+  Every researcher's workflow — drought advisory, cocoa yield forecasting,
   flood early warning — follows the same five-stage pipeline. The stages map
   directly to D1–D6, and the framework standardises <em>how</em> data flows
   between them.
@@ -193,7 +193,6 @@ deliverables:
       - "Monitoring, evidence and learning — assessing adoption, behavioural response, forecast use and links to early-warning protocols and safety-net financing."
     team: ["Giriraj", "Angie", "Naga", "Petra / Salomon", "Yakob / Mirriam"]
     links:
-      - { label: "S2S irrigation advisory — South Asia", url: /case-studies/s2s-irrigation-advisory-south-asia/ }
       - { label: "S2S cocoa yield forecasting — Ghana", url: /case-studies/cocoa-yield-forecasting-ghana/ }
   - id: D6
     short_label: "Benchmarking"

@@ -37,13 +37,14 @@ validation: Hindcast validation in the Cauvery basin, Narmada and eastern India 
 related_tools:
 - interoperability-toolkit
 - ci-idss-digital-twin
-- sadms-sukharakshak
+- sadms
 links:
 - label: QBR methodology guide
   url: '#'
   kind: Documentation
   available: false
   note: Listed in the programme workplan as a capacity-building output under Deliverable 4.
+coming_soon: true
 ---
 
 ## Where it sits in the framework

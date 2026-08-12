@@ -14,8 +14,10 @@
 
     <a class="brand" href="{{ '/' | relative_url }}">
       <span class="brand__text">
-        <strong>{{ site.brand_line }}</strong>
-        <span>{{ site.brand_line_2 }}</span>
+        {%- for line in site.brand_lines %}
+        <span class="brand__line">{{ line }}</span>
+        {%- endfor %}
+        <span class="brand__line brand__line--hub">{{ site.brand_line_2 }}</span>
       </span>
     </a>
 

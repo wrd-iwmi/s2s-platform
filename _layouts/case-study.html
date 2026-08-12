@@ -2,6 +2,9 @@
 layout: detail
 kicker: Case study
 ---
+{%- if page.coming_soon %}
+{% include coming-soon.html note="This case study is being written up." %}
+{%- else %}
 <div class="split">
   <div>
     <section id="sec-context">
@@ -95,3 +98,4 @@ kicker: Case study
     </nav>
   </aside>
 </div>
+{%- endif %}

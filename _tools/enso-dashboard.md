@@ -2,7 +2,8 @@
 title: ENSO Dashboard
 summary: Dashboard bringing together ENSO indices, food prices, Earth observation indicators, forecast layers and water stress. Its API is live and fully documented.
 status: In development
-weight: 95
+flagship: true
+weight: 100
 tags:
 - Seasonal
 - Forecasting

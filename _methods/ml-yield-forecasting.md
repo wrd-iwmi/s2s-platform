@@ -35,6 +35,7 @@ limitations:
 validation: Hindcast comparison of model skill against a climatology baseline and a persistence benchmark, with cross-validation; RMSE and MAE for yield, Brier skill score for tercile categories.
 related_tools:
 - cocoa-outlook-dashboard
+coming_soon: true
 ---
 
 ## Model family

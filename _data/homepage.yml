@@ -76,7 +76,7 @@ pathways:
     - label: "Case studies"
       url: /case-studies/
       count_from: case_studies
-      description: "How the same five-stage pipeline produces an irrigation advisory in India and a yield outlook in Ghana."
+      description: "How the five-stage pipeline turns a forecast into a decision, worked through in a real country programme."
     - label: "Programme & framework"
       url: "/about/#framework"
       count_from: none

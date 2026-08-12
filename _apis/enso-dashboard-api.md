@@ -27,7 +27,8 @@ response_formats:
   - GeoJSON
 coverage: Global, with country and admin-level breakdowns. ONI series run from 1950 to the present.
 related_tool: enso-dashboard
-swagger_spec: /assets/api/enso-selected.json
+console_url: https://enso.iwmi.org/ENSO_api/docs
+service_url: https://enso.iwmi.org/
 
 endpoints:
   - path: /api/v1/enso/current-phase
@@ -133,8 +134,11 @@ links:
     url: https://enso.iwmi.org/ENSO_api/openapi.json
     kind: API
   - label: ENSO Dashboard
-    url: /tools/enso-dashboard/
+    url: https://enso.iwmi.org/
     kind: Web application
+  - label: ENSO Dashboard on this site
+    url: /tools/enso-dashboard/
+    kind: Documentation
 ---
 
 ## What is available
@@ -173,13 +177,19 @@ national bulletin gets the derivation and the caveat in the same payload. If you
 are building on this API, carry that `method` block through to your users rather
 than discarding it.
 
-## Two base URLs
+## Where to go
 
-Use the public hostname:
+| | |
+| --- | --- |
+| **ENSO Dashboard** | [enso.iwmi.org](https://enso.iwmi.org/) |
+| **Interactive API console** | [enso.iwmi.org/ENSO_api/docs](https://enso.iwmi.org/ENSO_api/docs) |
+| **Base URL for integration** | `https://enso.iwmi.org/ENSO_api` |
+| **OpenAPI specification** | [openapi.json](https://enso.iwmi.org/ENSO_api/openapi.json) |
 
-```
-https://enso.iwmi.org/ENSO_api
-```
+Run live requests in the console on the API's own domain. An interactive console
+was trialled on this page and removed: a browser blocks cross-origin requests
+from this site to the API unless the API sends permissive CORS headers, so
+"Try it out" failed here while working perfectly at the link above.
 
 A direct IP address also serves the same API on the internal network. It is not
 documented here because it is not a stable public endpoint — it has no TLS and

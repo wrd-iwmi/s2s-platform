@@ -39,6 +39,7 @@ limitations:
 validation: Hindcast validation against climatology and persistence baselines.
 related_tools:
 - interoperability-toolkit
+coming_soon: true
 ---
 
 ## Metrics

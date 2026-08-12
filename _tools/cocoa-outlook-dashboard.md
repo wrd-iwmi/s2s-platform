@@ -2,7 +2,7 @@
 title: Cocoa Seasonal Outlook Dashboard (Ghana)
 summary: Dashboard interface delivering district-level seasonal cocoa yield outlooks to COCOBOD, GMet and extension officers, co-designed alongside policy briefs.
 status: In development
-weight: 60
+weight: 76
 deliverables:
 - D5
 team:

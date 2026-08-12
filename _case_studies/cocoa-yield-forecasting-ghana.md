@@ -58,15 +58,14 @@ related_methods:
 - ml-yield-forecasting
 - bias-correction
 - forecast-verification
+coming_soon: true
 ---
 
-## Contrast with the South Asia pilot
+## Why the framework matters here
 
-Read alongside the [South Asia irrigation advisory]({{ site.baseurl }}/case-studies/s2s-irrigation-advisory-south-asia/),
-this case is the programme's argument for a shared framework. The two pilots
-differ in end user, forecast source, model family and delivery mechanism, yet
-they occupy the same five stages and exchange data through the same
-interoperability toolkit.
+This case is the programme's argument for a shared framework. Whatever the end
+user, forecast source, model family or delivery mechanism, the work occupies the
+same five stages and exchanges data through the same interoperability toolkit.
 
 ## Results
 

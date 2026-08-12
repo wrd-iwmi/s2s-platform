@@ -1,0 +1,17 @@
+{%- comment -%}
+  Shown in place of a page's detail when `coming_soon: true` is set in its
+  front matter.
+
+  The content stays in the file — this only changes what a reader sees. Remove
+  the one line from the front matter and the full page returns.
+{%- endcomment -%}
+<div class="coming-soon">
+  <p class="coming-soon__label">Coming soon</p>
+  <p class="coming-soon__text">
+    {{ include.note | default: "This page is being written and will be published once the content has been reviewed." }}
+  </p>
+  <p class="coming-soon__contact">
+    If you need this material now,
+    <a href="mailto:{{ site.contact_email }}">contact the team</a>.
+  </p>
+</div>
