@@ -13,7 +13,7 @@ permalink: /about/
 team:
   - { name: "Giriraj Amarnath", role: "Programme lead",                             deliverables: "Needs assessment, Forecast datasets, Interoperability toolkit, Advisory pilots, Benchmarking" }
   - { name: "Niranga Alahacoon",  role: "Capacity strengthening",                   deliverables: "Capacity strengthening" }
-  - { name: "Dhyey Bhatpuria",  role: "Datasets, interoperability, benchmarking",   deliverables: "Forecast datasets, Interoperability toolkit, Benchmarking" }
+  - { name: "[Dhyey Bhatpuria](https://www.iwmi.org/people/dhyey-bhatpuria/)",  role: "Datasets, interoperability, benchmarking",   deliverables: "Forecast datasets, Interoperability toolkit, Benchmarking" }
   - { name: "Suman Padhee",     role: "Forecast datasets and downscaling",          deliverables: "Needs assessment, Forecast datasets, Capacity strengthening, Benchmarking" }
   - { name: "Kalpani Jaymini",  role: "Interoperability toolkit",                   deliverables: "Interoperability toolkit" }
   - { name: "Yakob Umer",       role: "Capacity strengthening, pilots",             deliverables: "Capacity strengthening, Advisory pilots" }
