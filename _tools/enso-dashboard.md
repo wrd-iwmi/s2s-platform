@@ -11,16 +11,7 @@ tags:
 regions:
 - Global
 problem: >-
-ENSO is a major driver of climate variability, but the information needed to understand its
-implications is fragmented across climate forecasts, Earth observation products, hydrological datasets,
-agricultural indicators and food-market information. Decision-makers are often left to interpret these
-signals separately, making it difficult to move from a global climate signal to an understanding of
-where risks may emerge and which sectors could be affected.
-The ENSO Dashboard brings these disparate sources together in a single, interactive platform, combining
-ENSO monitoring and forecasts with seasonal and sub-seasonal outlooks, water stress, hydrological and
-Earth observation indicators, and food-price signals. It provides a common evidence base for exploring
-how an evolving ENSO state may translate into risks for water, agriculture and food systems, supporting
-earlier interpretation and more informed anticipatory action.
+Climate information relevant to ENSO impacts is fragmented across forecasts, Earth observation, hydrological, agricultural and food-market datasets, making it difficult to translate global climate signals into actionable information. The ENSO Dashboard integrates these diverse sources in a single platform, enabling users to explore emerging risks across water, agriculture and food systems and support informed anticipatory action.
 related_apis:
   - enso-dashboard-api
 links:
