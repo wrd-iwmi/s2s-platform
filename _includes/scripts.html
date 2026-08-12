@@ -115,6 +115,25 @@
     return html;
   }
 
+  function countVertices(data) {
+    var n = 0;
+    function walk(g) {
+      if (!g) return;
+      var t = g.type, c = g.coordinates;
+      if (t === 'Point') n += 1;
+      else if (t === 'MultiPoint' || t === 'LineString') n += c.length;
+      else if (t === 'Polygon' || t === 'MultiLineString') {
+        c.forEach(function (r) { n += r.length; });
+      } else if (t === 'MultiPolygon') {
+        c.forEach(function (p) { p.forEach(function (r) { n += r.length; }); });
+      } else if (t === 'GeometryCollection') {
+        (g.geometries || []).forEach(walk);
+      }
+    }
+    (data.features || []).forEach(function (f) { walk(f.geometry); });
+    return n;
+  }
+
   function mapNotice(el, text) {
     var box = el.querySelector('[data-map-notice]');
     if (!box) {
@@ -138,6 +157,7 @@
       onDone();
       return;
     }
+    mapNotice(el, 'Loading “' + cfg.name + '”…');
     fetch(cfg.url)
       .then(function (r) {
         if (!r.ok) throw new Error(r.status + ' ' + r.statusText);
@@ -145,7 +165,20 @@
       })
       .then(function (data) {
         if (!data || !data.type) throw new Error('not a GeoJSON object');
+
+        /* Warn about files big enough to hurt on a modest connection. */
+        var vertices = countVertices(data);
+        if (vertices > 40000) {
+          console.warn('Map layer "' + cfg.name + '" has ' +
+            vertices.toLocaleString() + ' vertices. Run ' +
+            '_scripts/simplify_geojson.py on it — the page will be slow on ' +
+            'mobile connections until you do.');
+        }
+
         var layer = L.geoJSON(data, {
+          /* Canvas, not the default SVG renderer. SVG creates one DOM node per
+             ring, which stalls the browser on a detailed boundary file. */
+          renderer: L.canvas({ padding: 0.5 }),
           style: function () {
             return {
               color: cfg.colour,
@@ -179,6 +212,9 @@
           var b = layer.getBounds();
           if (b.isValid()) bounds.push(b.getSouthWest(), b.getNorthEast());
         } catch (e) { /* empty layer */ }
+
+        var note = el.querySelector('[data-map-notice]');
+        if (note) note.parentNode.removeChild(note);
 
         onDone();
       })
