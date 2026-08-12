@@ -10,7 +10,7 @@ tags:
 - Climate services
 regions:
 - Global
-problem: >-
+problem:
 Climate information relevant to ENSO impacts is fragmented across forecasts, Earth observation, hydrological, agricultural and food-market datasets, making it difficult to translate global climate signals into actionable information. The ENSO Dashboard integrates these diverse sources in a single platform, enabling users to explore emerging risks across water, agriculture and food systems and support informed anticipatory action.
 related_apis:
   - enso-dashboard-api
