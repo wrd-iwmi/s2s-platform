@@ -12,14 +12,14 @@ permalink: /about/
 # ---------------------------------------------------------------------------
 team:
   - { name: "Giriraj Amarnath", role: "Programme lead",                             deliverables: "Needs assessment, Forecast datasets, Interoperability toolkit, Advisory pilots, Benchmarking" }
-  - { name: "Niranga Alacoon",  role: "Capacity strengthening",                     deliverables: "Capacity strengthening" }
+  - { name: "Niranga Alahacoon",  role: "Capacity strengthening",                   deliverables: "Capacity strengthening" }
   - { name: "Dhyey Bhatpuria",  role: "Datasets, interoperability, benchmarking",   deliverables: "Forecast datasets, Interoperability toolkit, Benchmarking" }
   - { name: "Suman Padhee",     role: "Forecast datasets and downscaling",          deliverables: "Needs assessment, Forecast datasets, Capacity strengthening, Benchmarking" }
   - { name: "Kalpani Jaymini",  role: "Interoperability toolkit",                   deliverables: "Interoperability toolkit" }
   - { name: "Yakob Umer",       role: "Capacity strengthening, pilots",             deliverables: "Capacity strengthening, Advisory pilots" }
-  - { name: "Surya Kiran Guniganti", role: "Advisory pilots",                      deliverables: "Advisory pilots" }
+  - { name: "Surya Kiran Guniganti", role: "Forecast datasets and downscaling",     deliverables: "Advisory pilots" }
   - { name: "Mirriam Makungwe", role: "Advisory pilots",                            deliverables: "Advisory pilots" }
-  - { name: "Salomon",          role: "Ghana cocoa yield forecasting",              deliverables: "Advisory pilots" }
+ # - { name: "Salomon",          role: "Ghana cocoa yield forecasting",              deliverables: "Advisory pilots" }
 
 contributors: ["Aniruddha Saha", "Mohamed Yousuf"]
 
