@@ -604,6 +604,20 @@ caption { caption-side: bottom; padding-top: var(--s-3); color: var(--c-muted); 
 .map .leaflet-control-attribution a { color: var(--c-ink-3); text-decoration: none; }
 .map .leaflet-control-attribution a:hover { color: var(--c-blue-700); text-decoration: underline; }
 
+/* Shown on the map when a GeoJSON layer cannot be loaded, so the failure is
+   visible rather than console-only. */
+.map__notice {
+  position: absolute; left: var(--s-3); right: var(--s-3); bottom: var(--s-3);
+  z-index: 500;
+  background: var(--c-earth-100);
+  border: 1px solid var(--c-earth-500);
+  border-radius: var(--r-md);
+  padding: var(--s-2) var(--s-3);
+  font-size: var(--t-xs);
+  line-height: 1.45;
+  color: var(--c-earth-700);
+}
+
 /* Layer switcher, shown only when GeoJSON layers are configured. */
 .map .leaflet-control-layers {
   border: 1px solid var(--c-line);

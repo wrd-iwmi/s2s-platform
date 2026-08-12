@@ -35,38 +35,38 @@ settings:
   interactive: true
 
 # --- 2. COUNTRY MARKERS ------------------------------------------------------
-countries:[]
-  # - name: Ghana
-  #   lat: 7.95
-  #   lon: -1.03
-  #   note: "Cocoa seasonal yield forecasting with COCOBOD and GMet"
-  #   url: /case-studies/cocoa-yield-forecasting-ghana/
+countries:
+  - name: Ghana
+    lat: 7.95
+    lon: -1.03
+    note: "Cocoa seasonal yield forecasting with COCOBOD and GMet"
+    url: /case-studies/cocoa-yield-forecasting-ghana/
 
-  # - name: Ethiopia
-  #   lat: 9.15
-  #   lon: 40.49
-  #   note: "Country programme engagement"
+  - name: Ethiopia
+    lat: 9.15
+    lon: 40.49
+    note: "Country programme engagement"
 
-  # - name: Zambia
-  #   lat: -13.13
-  #   lon: 27.85
-  #   note: "Country programme engagement; AICCRA networks, ZMD, DMMU, WARMA"
+  - name: Zambia
+    lat: -13.13
+    lon: 27.85
+    note: "Country programme engagement; AICCRA networks, ZMD, DMMU, WARMA"
 
-  # - name: India
-  #   lat: 20.59
-  #   lon: 78.96
-  #   note: "S2S irrigation advisory, drought triggers and basin benchmarking"
-  #   url: /case-studies/s2s-irrigation-advisory-south-asia/
+  - name: India
+    lat: 20.59
+    lon: 78.96
+    note: "S2S irrigation advisory, drought triggers and basin benchmarking"
+    url: /case-studies/s2s-irrigation-advisory-south-asia/
 
-  # - name: Sri Lanka
-  #   lat: 7.87
-  #   lon: 80.77
-  #   note: "Hindcast validation and advisory partners including DoM, DMC, NBRO"
+  - name: Sri Lanka
+    lat: 7.87
+    lon: 80.77
+    note: "Hindcast validation and advisory partners including DoM, DMC, NBRO"
 
-  # - name: Philippines
-  #   lat: 12.88
-  #   lon: 121.77
-  #   note: "Country programme engagement"
+  - name: Philippines
+    lat: 12.88
+    lon: 121.77
+    note: "Country programme engagement"
 
 # --- 3. GEOJSON LAYERS -------------------------------------------------------
 #  Points, lines or polygons — basin boundaries, command areas, station
@@ -95,14 +95,14 @@ countries:[]
 #  Two demonstration files ship with the site. They are NOT programme data.
 #  Uncomment a block to see how a layer behaves, then replace it with yours.
 layers:
- - name: "Countries"
-   file: assets/geo/countryboundaries1.geojson
-   colour: "#8a4b1e"
-   fill_opacity: 0.15
-   weight: 1.5
-   label_field: NAM_0
-   popup_fields: [NAM_0]
-   show: true
+  - name: "Countries"
+    file: assets/geo/countryboundaries.min.geojson
+    colour: "#8a4b1e"
+    fill_opacity: 0.15
+    weight: 1.5
+    label_field: NAM_0
+    popup_fields: [NAM_0]
+    show: true
 
 #  - name: "Example — study areas (demo)"
 #    file: assets/geo/EXAMPLE-areas.geojson

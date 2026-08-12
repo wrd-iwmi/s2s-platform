@@ -62,20 +62,52 @@ then use `label_field: basin` and `popup_fields: [basin, area_km2]`.
 **Aim for under 1 MB.** Much of this site's audience is on modest mobile
 connections, and a 20 MB boundary file will stall the page for them.
 
-A full-resolution basin or admin boundary is often tens of megabytes and looks
-identical on screen once simplified. To fix that:
+Layers are fetched only when the map scrolls into view, so a visitor who never
+reaches that section pays nothing. But once they do scroll, they pay the full
+size.
 
-- **[mapshaper.org](https://mapshaper.org)** — drag your file in, move the
-  simplify slider to around 5–10%, export as GeoJSON. Runs entirely in the
-  browser, nothing to install, and it will tell you the new file size.
-- Delete attribute columns you are not going to show in a popup. They are often
-  most of the file size.
-- Round coordinates to 4 or 5 decimal places (about 1–10 m precision) — plenty
-  for a locator map.
+### The one-command fix
 
-The layers are fetched only when the map scrolls into view, so a visitor who
-never reaches that section pays nothing for them. But once they do scroll, they
-pay the full size.
+```bash
+python3 _scripts/simplify_geojson.py assets/geo/your-file.geojson --keep NAM_0
+```
+
+That writes `your-file.min.geojson` beside the original and prints the saving.
+No dependencies — plain Python 3.
+
+It does three things: rounds coordinates to 4 decimal places (about 11 m —
+exporters typically write 15, which is nanometre precision), removes vertices
+that make no visible difference at map zoom, and keeps only the attributes you
+name.
+
+Real result on the country boundary file in this folder:
+
+```
+  in : countryboundaries.geojson       6.94 MB   168,086 points
+  out: countryboundaries.min.geojson     565 KB    31,241 points
+  92.1% smaller
+```
+
+Useful options:
+
+```bash
+--tolerance 0.02                  stronger simplification (default 0.01, ~1 km)
+--tolerance 0.005                 gentler, keeps more detail
+--keep NAM_0 AREA_KM2             keep only these properties
+--drop-props                      drop all properties
+--filter NAM_0=India,Ghana        keep only matching features
+--no-simplify                     round coordinates only, keep every vertex
+```
+
+**Simplify a copy, never your analysis file.** At the default tolerance a
+boundary can move by up to about a kilometre. Invisible on a locator map,
+unacceptable for anything quantitative.
+
+### Or do it in the browser
+
+[mapshaper.org](https://mapshaper.org) — drag the file in, move the simplify
+slider to 5–10%, export as GeoJSON. Nothing to install, and it shows the new
+file size as you go.
 
 ---
 
@@ -120,5 +152,29 @@ logs a warning and carries on. Open the browser console (F12) to see it.
 | `404` in the console | The `file:` path is wrong. It starts from the site root: `assets/geo/your-file.geojson`, no leading slash |
 | `Unexpected token` in the console | The file is not valid JSON. Paste it into [geojson.io](https://geojson.io) to find the problem |
 | Layer loads but sits in the wrong place | Wrong projection — reproject to EPSG:4326 |
-| Nothing loads when opening the offline preview folder | Expected. Browsers block `fetch` from `file://` URLs. Run `python3 -m http.server` in the built folder and open `http://localhost:8000` instead, or just check on the live site |
+| Nothing loads when opening the offline preview folder | **Expected.** Browsers block `fetch` from `file://` URLs, so no layer can ever load that way. The map now shows an amber note saying so. Check on the published site, or serve the built folder over HTTP — see below |
 | Popup shows raw field names | Set `label_field` and `popup_fields` to the properties you want |
+| Layer loads but the page is slow | The file is too big. Run the simplify script above |
+
+A failed layer never takes the map down — the map still draws, and an amber note
+appears on it naming the layer and the error.
+
+### Checking layers locally
+
+Because of the `file://` restriction, the offline preview folder cannot show
+layers. To check them on your own machine, serve the built site over HTTP:
+
+```bash
+cd _site            # or the preview folder
+python3 -m http.server 8000
+```
+
+Then open `http://localhost:8000`. If the site uses a `baseurl` such as
+`/s2s-platform`, put the built files inside a folder of that name first, so the
+paths line up:
+
+```bash
+mkdir -p /tmp/serve/s2s-platform && cp -r _site/* /tmp/serve/s2s-platform/
+cd /tmp/serve && python3 -m http.server 8000
+# open http://localhost:8000/s2s-platform/
+```
