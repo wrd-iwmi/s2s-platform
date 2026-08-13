@@ -122,7 +122,7 @@ pip install earthengine-api geemap
 `geemap` is the interactive-map layer over Earth Engine; see its
 [documentation](https://geemap.org/) for what else it can do.
 
-<p class="nb-cell__label">In [ ]:</p>
+<p class="nb-cell__label">In [1]:</p>
 
 ```python
 # In Colab, uncomment this line and run the cell once per session:
@@ -192,7 +192,7 @@ is a lot of computation, and Earth Engine will time out rather than run for ever
 "accumulated" means. `mean` gives the average daily rainfall instead, which is a
 different and equally useful number.
 
-<p class="nb-cell__label">In [ ]:</p>
+<p class="nb-cell__label">In [3]:</p>
 
 ```python
 # ── EDIT THESE ────────────────────────────────────────────────────────────
@@ -215,6 +215,13 @@ print(f"Source: {DATA_SOURCE}, aggregated with '{TEMPORAL_AGGREGATION}'")
 ```
 {: .nb-input}
 
+<div class="nb-cell__output" markdown="0">
+<pre class="nb-stream">Area:  [88.0, 20.6, 92.7, 26.6]
+Dates: 2026-01-01 to 2026-06-30 inclusive
+Source: gpm, aggregated with &#x27;sum&#x27;
+</pre>
+</div>
+
 ## 5. What the two datasets look like
 
 Each entry records what Earth Engine needs to know about a product: the
@@ -231,7 +238,7 @@ Both catalogue entries are worth reading once:
 and
 [CHIRPS Daily](https://developers.google.com/earth-engine/datasets/catalog/UCSB-CHG_CHIRPS_DAILY).
 
-<p class="nb-cell__label">In [ ]:</p>
+<p class="nb-cell__label">In [4]:</p>
 
 ```python
 DATASETS = {
@@ -266,6 +273,11 @@ print(f"{cfg['label']}: band '{cfg['band']}' stored in {cfg['units']}, "
 ```
 {: .nb-input}
 
+<div class="nb-cell__output" markdown="0">
+<pre class="nb-stream">GPM IMERG V07: band &#x27;precipitation&#x27; stored in mm/hr, 11.1 km pixels
+</pre>
+</div>
+
 ## 6. Units: the mistake worth avoiding
 
 The two products do not store the same kind of number, and this is where
@@ -293,7 +305,7 @@ The function below applies the conversion and then adds the half-hourly depths
 into daily ones, so that whichever source you picked, `daily_totals` means the
 same thing: one image per day, in millimetres.
 
-<p class="nb-cell__label">In [ ]:</p>
+<p class="nb-cell__label">In [5]:</p>
 
 ```python
 def daily_totals(start_date, end_date, cfg):
@@ -338,7 +350,7 @@ map, with no error to tell you why.
 
 So ask the archive what it actually holds, and clip the request to that.
 
-<p class="nb-cell__label">In [ ]:</p>
+<p class="nb-cell__label">In [6]:</p>
 
 ```python
 def latest_available_date(collection_id):
@@ -358,6 +370,11 @@ if END_DATE > latest:
 ```
 {: .nb-input}
 
+<div class="nb-cell__output" markdown="0">
+<pre class="nb-stream">Most recent image in GPM IMERG V07: 2026-08-12
+</pre>
+</div>
+
 `.getInfo()` is the moment a request actually leaves your machine. Everything
 before it only describes a computation; Earth Engine runs it lazily, on the
 server, when a result is finally asked for. Google's
@@ -375,7 +392,7 @@ axis, and cut the result to the area of interest.
 collection answers other questions — `mean` for average daily rainfall, `max`
 for the wettest single day in the window.
 
-<p class="nb-cell__label">In [ ]:</p>
+<p class="nb-cell__label">In [7]:</p>
 
 ```python
 days = daily_totals(START_DATE, END_DATE, cfg)
@@ -396,6 +413,12 @@ print(f"Computed '{TEMPORAL_AGGREGATION}' of {cfg['label']} "
 ```
 {: .nb-input}
 
+<div class="nb-cell__output" markdown="0">
+<pre class="nb-stream">Days in the window: 181
+Computed &#x27;sum&#x27; of GPM IMERG V07 for 2026-01-01 to 2026-06-30
+</pre>
+</div>
+
 ## 9. Read the real range before colouring the map
 
 A fixed colour scale flatters some maps and ruins others. A palette running 0 to
@@ -412,7 +435,7 @@ can exceed the pixel limit and throw an error. With it, Earth Engine
 automatically coarsens the scale until the request fits — the exact minimum and
 maximum may shift slightly, which is fine for choosing a colour scale.
 
-<p class="nb-cell__label">In [ ]:</p>
+<p class="nb-cell__label">In [8]:</p>
 
 ```python
 def value_range(image, geometry, scale, band):
@@ -449,6 +472,11 @@ vis_params = {"min": vis_min, "max": vis_max, "palette": RAINFALL_PALETTE}
 ```
 {: .nb-input}
 
+<div class="nb-cell__output" markdown="0">
+<pre class="nb-stream">Observed range: 190.99 to 1998.56 mm
+</pre>
+</div>
+
 **This is your sanity check.** Compare the maximum against what you know about
 the place. Six months over the Bengal delta should land somewhere in the
 low thousands of millimetres. Roughly double that, and the units conversion in
@@ -467,20 +495,29 @@ running. Documented under
 <p class="nb-cell__label">In [ ]:</p>
 
 ```python
+import requests
 from IPython.display import Image, display
 
-thumbnail = composite.getThumbURL({
+thumbnail_url = composite.getThumbURL({
     **vis_params,
     "region": geometry,
     "dimensions": 720,          # longest side, in pixels
     "format": "png",
 })
 
+png_bytes = requests.get(thumbnail_url, timeout=120).content
+
 print(f"Total rainfall, {cfg['label']}, {START_DATE} to {END_DATE}")
 print(f"Colour scale: {vis_min} to {vis_max} mm")
-display(Image(url=thumbnail))
+display(Image(data=png_bytes, format="png"))
 ```
 {: .nb-input}
+
+<div class="nb-cell__output" markdown="0">
+<pre class="nb-stream">Total rainfall, GPM IMERG V07, 2026-01-01 to 2026-06-30
+Colour scale: 190.99 to 1998.56 mm
+</pre>
+</div>
 
 ### An interactive map
 
@@ -489,7 +526,7 @@ It needs a live Python kernel, so it appears when you run this notebook in Colab
 or Jupyter — on the web page above it is a still picture, which is why the
 thumbnail is there too.
 
-<p class="nb-cell__label">In [ ]:</p>
+<p class="nb-cell__label">In [10]:</p>
 
 ```python
 centre = geometry.centroid(maxError=1).getInfo()["coordinates"]
@@ -520,7 +557,7 @@ plot.
 than one number for the whole window, so expect a minute or two for six months.
 If it times out, shorten the date range or shrink the box.
 
-<p class="nb-cell__label">In [ ]:</p>
+<p class="nb-cell__label">In [11]:</p>
 
 ```python
 def daily_area_mean(image):
@@ -558,6 +595,57 @@ series.head()
 ```
 {: .nb-input}
 
+<div class="nb-cell__output nb-cell__output--long" markdown="0">
+<pre class="nb-stream">Days with data:  181
+Wettest day:     2026-04-29  (35.1 mm)
+Dry days (&lt;1mm): 78
+Season total:    770.1 mm
+</pre>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>date</th>
+      <th>rain_mm</th>
+      <th>cumulative_mm</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>2026-01-01</td>
+      <td>0.000598</td>
+      <td>0.000598</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2026-01-02</td>
+      <td>0.012808</td>
+      <td>0.013406</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>2026-01-03</td>
+      <td>0.003034</td>
+      <td>0.016440</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>2026-01-04</td>
+      <td>0.002524</td>
+      <td>0.018964</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>2026-01-05</td>
+      <td>0.000712</td>
+      <td>0.019676</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<button class="nb-cell__expand" type="button" data-nb-expand aria-expanded="false">Show all output</button>
+
 The season total printed here should be close to the area-average figure in
 section 12, and both should sit inside the range section 9 read off the map.
 Three numbers computed three different ways — if they disagree by more than
@@ -573,7 +661,7 @@ Two things on one pair of axes, because they answer different questions:
   should be. This is the curve an advisory service watches; a flat stretch in
   mid-season is a failing monsoon long before the final total says so.
 
-<p class="nb-cell__label">In [ ]:</p>
+<p class="nb-cell__label">In [12]:</p>
 
 ```python
 fig, ax = plt.subplots(figsize=(10, 4.5))
@@ -605,12 +693,16 @@ plt.show()
 ```
 {: .nb-input}
 
+<div class="nb-cell__output" markdown="0">
+<img src="{{ site.baseurl }}/assets/img/notebooks/accumulated-rainfall-earth-engine/output-1.png" alt="Figure from the section &#x27;The plot&#x27;" loading="lazy" decoding="async">
+</div>
+
 ### Keep the table
 
 The chart is a picture of the numbers; this is the numbers. A CSV of daily and
 cumulative rainfall drops straight into a report, a spreadsheet or a model.
 
-<p class="nb-cell__label">In [ ]:</p>
+<p class="nb-cell__label">In [13]:</p>
 
 ```python
 csv_name = f"rainfall_daily_{DATA_SOURCE}_{START_DATE}_to_{END_DATE}.csv"
@@ -621,6 +713,12 @@ print("In Colab, open the folder icon in the left sidebar to download it.")
 ```
 {: .nb-input}
 
+<div class="nb-cell__output" markdown="0">
+<pre class="nb-stream">Wrote rainfall_daily_gpm_2026-01-01_to_2026-06-30.csv — 181 rows
+In Colab, open the folder icon in the left sidebar to download it.
+</pre>
+</div>
+
 ## 12. Take the numbers away with you
 
 A picture is for looking at. For anything downstream — a report, a model input,
@@ -630,7 +728,7 @@ a GIS layer — you want the values.
 
 An area-average total, which is the figure that usually ends up in a bulletin.
 
-<p class="nb-cell__label">In [ ]:</p>
+<p class="nb-cell__label">In [14]:</p>
 
 ```python
 area_mean = composite.reduceRegion(
@@ -646,6 +744,11 @@ print(f"Area-average {TEMPORAL_AGGREGATION} rainfall: "
 ```
 {: .nb-input}
 
+<div class="nb-cell__output" markdown="0">
+<pre class="nb-stream">Area-average sum rainfall: 770.1 mm
+</pre>
+</div>
+
 ### The grid, as a GeoTIFF
 
 `Export.image.toDrive` starts a background task on Earth Engine's servers and
@@ -656,7 +759,7 @@ writes the result to your Google Drive. Watch it in the **Tasks** tab of the
 See [exporting images](https://developers.google.com/earth-engine/guides/exporting_images)
 for the other destinations, including Cloud Storage and Earth Engine assets.
 
-<p class="nb-cell__label">In [ ]:</p>
+<p class="nb-cell__label">In [15]:</p>
 
 ```python
 task = ee.batch.Export.image.toDrive(
@@ -674,6 +777,12 @@ print(f"Export started: {task.id}")
 print("Check progress with task.status(), or in the Tasks tab of the Code Editor.")
 ```
 {: .nb-input}
+
+<div class="nb-cell__output" markdown="0">
+<pre class="nb-stream">Export started: JOJBC27UJTIVLRLG6M44INDP
+Check progress with task.status(), or in the Tasks tab of the Code Editor.
+</pre>
+</div>
 
 ## 13. When it does not work
 

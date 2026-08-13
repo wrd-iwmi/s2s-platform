@@ -146,12 +146,45 @@ def render_svg(payload):
     return svg
 
 
+# Placeholder reprs a library leaves in text/plain when the real output is in
+# another mime type. On their own they say nothing and must never reach a page.
+PLACEHOLDER_REPR = re.compile(
+    r'^<(?:IPython\.core\.display\.\w+ object|Figure size [^>]*|'
+    r'matplotlib\.[\w.]+ (?:object )?at 0x[0-9a-f]+)>$', re.I)
+
+# Jupyter widgets need a live kernel. A static page cannot run one, so a
+# widget output is dropped rather than rendered as its useless text repr.
+WIDGET_MIME = 'application/vnd.jupyter.widget-view+json'
+
+
 def clean_html(fragment: str) -> str:
-    """Remove scripts and inline event handlers from notebook HTML output."""
+    """
+    Make one HTML output safe to drop into a page.
+
+    Beyond scripts and event handlers this removes `<style>` blocks. Libraries
+    ship their own CSS with every cell — geemap emits a theme block on each one —
+    and letting that into the page means a notebook can restyle the site.
+    """
     fragment = re.sub(r'<script\b.*?</script>', '', fragment, flags=re.S | re.I)
+    fragment = re.sub(r'<style\b.*?</style>', '', fragment, flags=re.S | re.I)
     fragment = re.sub(r'\son\w+\s*=\s*"[^"]*"', '', fragment, flags=re.I)
     fragment = re.sub(r"\son\w+\s*=\s*'[^']*'", '', fragment, flags=re.I)
-    return fragment
+
+    # Colab wraps a DataFrame in its own container of buttons and generated ids,
+    # all of which depend on the scripts just removed — and duplicate ids fail
+    # the site's accessibility check. Keep the table, drop the furniture.
+    if 'class="dataframe"' in fragment:
+        table = re.search(r'<table\b[^>]*class="dataframe".*?</table>', fragment, flags=re.S)
+        if table:
+            fragment = table.group(0)
+
+    # Every image on this site needs alt text.
+    def add_alt(match):
+        tag = match.group(0)
+        return tag if 'alt=' in tag else tag[:4] + ' alt="Notebook output"' + tag[4:]
+
+    fragment = re.sub(r'<img\b[^>]*>', add_alt, fragment, flags=re.I)
+    return fragment.strip()
 
 
 def render_outputs(cell, ctx):
@@ -175,6 +208,13 @@ def render_outputs(cell, ctx):
 
         elif kind in ('execute_result', 'display_data'):
             data = output.get('data', {})
+
+            # An interactive widget cannot work on a static page. Skip it, and
+            # do not fall through to its text repr — "Map(center=[23.5, 90.3],
+            # controls=(WidgetControl(..." helps nobody.
+            if WIDGET_MIME in data:
+                continue
+
             # Richest representation first.
             if 'image/png' in data or 'image/jpeg' in data or 'image/gif' in data:
                 mime = next(m for m in ('image/png', 'image/jpeg', 'image/gif') if m in data)
@@ -189,12 +229,16 @@ def render_outputs(cell, ctx):
                 line_count += 12
             elif 'text/html' in data:
                 fragment = clean_html(join(data['text/html']))
+                if not fragment:
+                    continue      # was nothing but a <style> block
                 line_count += fragment.count('\n') + 1
                 parts.append(fragment)
             elif 'text/latex' in data:
                 parts.append(f'<pre>{html.escape(join(data["text/latex"]))}</pre>')
             elif 'text/plain' in data:
-                text = strip_ansi(join(data['text/plain']))
+                text = strip_ansi(join(data['text/plain'])).strip()
+                if PLACEHOLDER_REPR.match(text):
+                    continue      # the real output was in a mime type we skipped
                 line_count += text.count('\n') + 1
                 parts.append(f'<pre>{html.escape(text)}</pre>')
 
@@ -231,6 +275,18 @@ def convert(nb_path: Path, site_root: Path, collection: str, slug: str, max_kb: 
     if not had_front_matter:
         warn("no settings cell found — writing a page with placeholder title and summary.")
         warn("Add a raw cell at the top of the notebook (see the top of this script).")
+
+    # The notebook itself is published for download, so its size matters.
+    widget_state = notebook.get('metadata', {}).get('widgets')
+    if widget_state:
+        size_kb = len(json.dumps(widget_state)) / 1024
+        warn(f"metadata.widgets is {size_kb:.0f} KB of saved widget state. A static page "
+             f"cannot replay a widget, and for geemap this blob holds signed map URLs "
+             f"carrying your Cloud project ID. Delete metadata.widgets before committing.")
+    nb_kb = nb_path.stat().st_size / 1024
+    if nb_kb > 500:
+        warn(f"the notebook is {nb_kb:.0f} KB — readers download this file. "
+             f"Consider clearing widget state or reducing figure dpi.")
 
     image_dir = site_root / 'assets' / 'img' / 'notebooks' / slug
     image_url_base = f'/assets/img/notebooks/{slug}'
