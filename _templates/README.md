@@ -19,3 +19,20 @@ Name the file in lowercase with hyphens: `soil-moisture-monitor.md`.
 
 **Delete any line you cannot fill in honestly.** The page will show a clear
 "information to be added" block in its place, which is what we want.
+
+## Lines that are commented out
+
+Every template has some settings behind a `#`. They are off by default because
+most pages do not need them. Delete the `#` to switch one on.
+
+| Setting | What it does |
+| --- | --- |
+| `updated` | Shows "Last updated ..." under the page title. Use `YYYY-MM-DD`. |
+| `published: false` | Keeps the file, but the page is not built. Nothing is lost. |
+| `coming_soon: true` | Replaces the page body with a "Coming soon" panel. Your text stays in the file. |
+
+## A tutorial that is a notebook
+
+Do not start from `tutorial.md`. Put the `.ipynb` in `../notebooks/` and run the
+converter — the page then shows every cell and output, with download and Colab
+buttons. See `../notebooks/README.md`.

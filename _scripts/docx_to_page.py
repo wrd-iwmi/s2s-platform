@@ -71,6 +71,8 @@ COMMON = {
     'deliverables': ('deliverables', 'list'),
     'team':         ('team', 'list'),
     'weight':       ('weight', 'text'),
+    'last updated': ('updated', 'text'),
+    'updated':      ('updated', 'text'),
     'links':        ('links', 'links'),
     'main text':    ('__body__', 'block'),
     'body':         ('__body__', 'block'),
@@ -85,6 +87,7 @@ SCHEMAS = {
         'key capabilities':    ('capabilities', 'pairs:title,description'),
         'how it works':        ('workflow', 'pairs:stage,detail'),
         'outputs':             ('outputs', 'list'),
+        'related tools':       ('related_tools', 'list'),
         'related methods':     ('related_methods', 'list'),
         'related case studies':('related_case_studies', 'list'),
         'related tutorials':   ('related_tutorials', 'list'),
@@ -119,6 +122,9 @@ SCHEMAS = {
         'update frequency': ('update_frequency', 'text'),
         'coverage':         ('coverage', 'text'),
         'rate limits':      ('rate_limits', 'text'),
+        'interactive docs url': ('console_url', 'text'),
+        'console url':      ('console_url', 'text'),
+        'service url':      ('service_url', 'text'),
         'related tool':     ('related_tool', 'text'),
     },
     'tutorials': {
@@ -212,8 +218,58 @@ def run_text(run) -> str:
     return text
 
 
-def paragraph_text(par) -> str:
-    return ''.join(run_text(r) for r in par.findall(f'{W}r')).strip()
+R = '{http://schemas.openxmlformats.org/officeDocument/2006/relationships}'
+
+
+def paragraph_text(par, rels=None) -> str:
+    """
+    Text of one paragraph.
+
+    Word wraps a clicked-in link in a <w:hyperlink> element, so its runs are
+    *not* direct children of the paragraph. Walking only direct children — which
+    an earlier version of this script did — silently dropped every URL a
+    researcher pasted in. We walk the whole paragraph instead, and where the
+    visible text differs from the link target we emit markdown `[text](url)` so
+    neither the wording nor the address is lost.
+    """
+    parts = []
+    for node in par:
+        if node.tag == f'{W}r':
+            parts.append(run_text(node))
+        elif node.tag == f'{W}hyperlink':
+            inner = ''.join(run_text(r) for r in node.iter(f'{W}r'))
+            target = (rels or {}).get(node.get(f'{R}id'), '')
+            anchor = node.get(f'{W}anchor')
+            if not target and anchor:
+                target = '#' + anchor
+            visible = inner.strip()
+            if target and visible and visible.rstrip('/') != target.rstrip('/'):
+                parts.append(f'[{visible}]({target})')
+            else:
+                parts.append(inner or target)
+        else:
+            # Tracked insertions, smart tags, bookmarks and content controls all
+            # nest runs one level deeper. Take any text they carry.
+            runs = list(node.iter(f'{W}r'))
+            if runs:
+                parts.append(''.join(run_text(r) for r in runs))
+    return ''.join(parts).strip()
+
+
+def read_rels(path: Path):
+    """Map a hyperlink relationship id to the URL it points at."""
+    rels = {}
+    try:
+        with zipfile.ZipFile(path) as zf:
+            if 'word/_rels/document.xml.rels' not in zf.namelist():
+                return rels
+            root = ET.fromstring(zf.read('word/_rels/document.xml.rels'))
+        for rel in root:
+            if rel.get('Type', '').endswith('/hyperlink'):
+                rels[rel.get('Id')] = rel.get('Target', '')
+    except Exception:
+        pass
+    return rels
 
 
 def paragraph_style(par) -> str:
@@ -236,12 +292,12 @@ def list_level(par):
     return int(ilvl.get(f'{W}val')) if ilvl is not None else 0
 
 
-def table_to_markdown(tbl) -> str:
+def table_to_markdown(tbl, rels=None) -> str:
     rows = []
     for tr in tbl.findall(f'{W}tr'):
         cells = []
         for tc in tr.findall(f'{W}tc'):
-            text = ' '.join(paragraph_text(p) for p in tc.findall(f'{W}p')).strip()
+            text = ' '.join(paragraph_text(p, rels) for p in tc.findall(f'{W}p')).strip()
             cells.append(text.replace('|', '\\|'))
         if any(cells):
             rows.append(cells)
@@ -265,12 +321,13 @@ def read_blocks(path: Path):
         return
 
     numbering_kinds = read_numbering(path)
+    rels = read_rels(path)
 
     for child in body:
         tag = child.tag
         if tag == f'{W}p':
             style = paragraph_style(child)
-            text = paragraph_text(child)
+            text = paragraph_text(child, rels)
             if not text:
                 continue
             # Instruction text in the Word template carries the 'Guidance'
@@ -290,7 +347,7 @@ def read_blocks(path: Path):
             else:
                 yield ('para', text, 0)
         elif tag == f'{W}tbl':
-            md = table_to_markdown(child)
+            md = table_to_markdown(child, rels)
             if md:
                 yield ('table', md, 0)
 
@@ -378,19 +435,54 @@ def blocks_to_markdown(blocks) -> str:
     return md.strip()
 
 
+# A bullet glyph or dash typed at the *start* of a line. Anchored, so a value
+# ending in a hyphen or containing one keeps it.
+BULLET_PREFIX = re.compile(r'^[\s ]*(?:[-–—•·*●▪‣⁃]\s+)?')
+
+
 def blocks_to_lines(blocks):
-    """Every non-empty line, with bullets flattened. Used for list fields."""
+    """
+    Every non-empty line, with any leading bullet glyph removed.
+
+    This is the literal reading of what the researcher typed. It does NOT split
+    on commas — an earlier version did, which quietly deleted every comma from
+    one-line prose answers such as a summary. Splitting is the caller's choice;
+    see `lines_to_list`.
+    """
     lines = []
     for kind, text, _ in blocks:
         if kind == 'table':
             continue
         for piece in text.split('\n'):
-            piece = piece.strip(' •-\t')
+            piece = BULLET_PREFIX.sub('', piece).strip()
             if piece and not is_blank(piece):
                 lines.append(piece)
-    # A single comma-separated line is also accepted.
-    if len(lines) == 1 and ',' in lines[0] and len(lines[0]) < 200:
-        return [p.strip() for p in lines[0].split(',') if p.strip()]
+    return lines
+
+
+LABEL_MAX = 40
+
+
+def lines_to_list(lines):
+    """
+    List fields only. A researcher may write one item per line, or put them all
+    on one line separated by commas or semicolons — both are accepted.
+
+    The split only happens when every piece looks like a short label: at most
+    LABEL_MAX characters and no full stop. A sentence such as "a GeoTIFF clipped
+    to the area, together with the range used for the colour scale" is one
+    output, not two, and must not be chopped at its comma. Semicolons are tried
+    first so "Rainfall, mm; Temperature, °C" survives intact.
+    """
+    if len(lines) != 1:
+        return lines
+    only = lines[0]
+    for sep in (';', ','):
+        if sep not in only:
+            continue
+        parts = [p.strip() for p in only.split(sep) if p.strip()]
+        if len(parts) >= 2 and all(len(p) <= LABEL_MAX and '.' not in p for p in parts):
+            return parts
     return lines
 
 
@@ -409,16 +501,28 @@ def split_pair(line):
 # 4. YAML OUTPUT
 # ==========================================================================
 
-def yaml_scalar(value) -> str:
+def yaml_scalar(value, indent: int = 0) -> str:
+    """
+    Render one value as YAML.
+
+    `indent` is the column the *key* sits at. A folded block scalar's
+    continuation lines must be indented further than that, so the caller has to
+    say where it is. Getting this wrong produces YAML that looks fine and does
+    not parse — a long list item or a long capability description used to emit
+    its continuation at the same depth as its own `- `, which broke the page's
+    front matter outright.
+    """
     if isinstance(value, bool):
         return 'true' if value else 'false'
     value = str(value).strip()
     if value == '':
         return '""'
     if '\n' in value or len(value) > 110:
-        indented = '\n'.join('  ' + l.strip() for l in value.split('\n') if l.strip())
-        return '>-\n' + indented
-    if re.search(r'^[\[\]{}#&*!|>%@`\'"]|: |:$|^\s|\s$| #', value) or value.lower() in ('yes','no','true','false','on','off','null','~'):
+        pad = ' ' * (indent + 2)
+        body = '\n'.join(pad + l.strip() for l in value.split('\n') if l.strip())
+        return '>-\n' + body
+    if re.search(r'^[\[\]{}#&*!|>%@`\'"]|: |:$|^\s|\s$| #', value) \
+            or value.lower() in ('yes', 'no', 'true', 'false', 'on', 'off', 'null', '~'):
         return '"' + value.replace('\\', '\\\\').replace('"', '\\"') + '"'
     return value
 
@@ -432,20 +536,21 @@ def render_front_matter(fields, order):
         if isinstance(value, list):
             if not value:
                 continue
-            if value and isinstance(value[0], dict):
+            if isinstance(value[0], dict):
                 lines.append(f'{key}:')
                 for item in value:
                     first = True
                     for k, v in item.items():
                         prefix = '  - ' if first else '    '
-                        lines.append(f'{prefix}{k}: {yaml_scalar(v)}')
+                        # Both forms put the key at column 4.
+                        lines.append(f'{prefix}{k}: {yaml_scalar(v, 4)}')
                         first = False
             else:
                 lines.append(f'{key}:')
                 for item in value:
-                    lines.append(f'  - {yaml_scalar(item)}')
+                    lines.append(f'  - {yaml_scalar(item, 4)}')
         else:
-            lines.append(f'{key}: {yaml_scalar(value)}')
+            lines.append(f'{key}: {yaml_scalar(value, 0)}')
     return '\n'.join(lines)
 
 
@@ -456,7 +561,8 @@ FIELD_ORDER = [
     'spatial_scale', 'temporal_scale', 'spatial_resolution',
     'temporal_resolution', 'temporal_coverage', 'update_frequency', 'licence',
     'variables', 'estimated_time', 'authentication', 'response_formats',
-    'coverage', 'rate_limits', 'base_url', 'tags', 'regions', 'deliverables',
+    'coverage', 'rate_limits', 'base_url', 'console_url', 'service_url',
+    'updated', 'tags', 'regions', 'deliverables',
     'team', 'capabilities', 'workflow', 'inputs', 'outputs', 'prerequisites',
     'requirements', 'climate_information', 'end_users', 'partners',
     'strengths', 'limitations', 'lessons', 'validation', 'uncertainty',
@@ -497,17 +603,35 @@ def detect_collection(sections, preamble, override=None):
     return 'tools'
 
 
+MD_LINK = re.compile(r'\[([^\]]*)\]\(([^)\s]+)\)')
+KIND_BY_LOWER = {k.lower(): k for k in VALID_KIND}
+
+
 def parse_links(blocks):
-    """Each line: Label — https://url — Kind"""
+    """
+    Each line: Label — https://url — Kind
+
+    A Word hyperlink arrives as markdown `[text](url)`, so that form is accepted
+    too. `Kind` is matched case-insensitively — Word capitalises the first word
+    of a line, and a mis-cased kind used to fall back to Documentation silently.
+    """
     links = []
     for line in blocks_to_lines(blocks):
-        parts = re.split(r'\s+[—–|]\s+|\s+--\s+', line)
-        parts = [p.strip() for p in parts if p.strip()]
+        # Pull the address out of any markdown link, keeping its visible text.
+        found = MD_LINK.search(line)
+        md_url = found.group(2) if found else ''
+        line = MD_LINK.sub(lambda m: m.group(1) or m.group(2), line)
+
+        parts = [p.strip() for p in re.split(r'\s+[—–|]\s+|\s+--\s+', line) if p.strip()]
         if not parts:
             continue
-        label = parts[0]
-        url = next((p for p in parts if p.startswith(('http', '/', '#'))), '')
-        kind = next((p for p in parts if p in VALID_KIND), 'Documentation')
+        url = md_url or next((p for p in parts if p.startswith(('http', 'www.', '/', '#'))), '')
+        if url.startswith('www.'):
+            url = 'https://' + url
+        kind = next((KIND_BY_LOWER[p.lower()] for p in parts if p.lower() in KIND_BY_LOWER),
+                    'Documentation')
+        label = next((p for p in parts if p != url and p.lower() not in KIND_BY_LOWER), '') \
+            or parts[0]
         entry = {'label': label, 'url': url or '#', 'kind': kind}
         if not url or url == '#':
             entry['available'] = False
@@ -549,7 +673,7 @@ def convert(path: Path, site_root: Path, collection_override=None, slug_override
             if value and not is_blank(value):
                 fields[target] = value
         elif kind == 'list':
-            values = [v for v in blocks_to_lines(content) if not is_blank(v)]
+            values = [v for v in lines_to_list(blocks_to_lines(content)) if not is_blank(v)]
             if values:
                 fields[target] = values
         elif kind == 'links':
@@ -585,6 +709,16 @@ def convert(path: Path, site_root: Path, collection_override=None, slug_override
     if 'weight' in fields and not str(fields['weight']).strip().isdigit():
         problems.append(f"weight '{fields['weight']}' is not a whole number — ignoring it")
         fields.pop('weight')
+    if 'updated' in fields and not re.fullmatch(r'\d{4}-\d{2}-\d{2}', str(fields['updated']).strip()):
+        problems.append(f"updated '{fields['updated']}' is not a YYYY-MM-DD date — ignoring it")
+        fields.pop('updated')
+
+    # Every schema target must appear in FIELD_ORDER or render_front_matter drops
+    # it without a word. Cheap to check, and it catches a mistyped key when a
+    # field is added.
+    for key in fields:
+        if key not in FIELD_ORDER:
+            problems.append(f"field '{key}' is missing from FIELD_ORDER in this script — not written")
 
     slug = slug_override or slugify(fields.get('title', path.stem))
     body = '\n\n'.join(body_parts).strip()

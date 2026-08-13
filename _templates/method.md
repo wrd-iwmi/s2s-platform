@@ -15,6 +15,9 @@ executive_summary: >-
 
 status: In development
 weight: 50
+# updated: 2026-08-13      # date this page was last checked
+# published: false         # keeps the file but does not build the page
+# coming_soon: true        # replaces the body with a "Coming soon" panel
 
 tags:
   - Downscaling

@@ -13,6 +13,9 @@ difficulty: Beginner      # Beginner | Intermediate | Advanced
 status: Planned           # change to Operational once the steps are written
 weight: 50
 estimated_time: 45 minutes
+# updated: 2026-08-13     # date this page was last checked
+# published: false        # keeps the file but does not build the page
+# coming_soon: true       # replaces the body with a "Coming soon" panel
 
 tags:
   - Capacity building
@@ -28,6 +31,12 @@ requirements:
 
 related_tool: interoperability-toolkit
 related_method: quantile-bin-resampling
+
+# If this tutorial is a Jupyter notebook, do not write it here — put the .ipynb
+# in notebooks/ and run _scripts/notebook_to_page.py. That sets `notebook:` and
+# `generated_from_notebook:` for you, and the page then carries download, Colab
+# and nbviewer buttons. See notebooks/README.md.
+# notebook: /notebooks/my-tutorial.ipynb
 
 links:
   - label: Example notebook

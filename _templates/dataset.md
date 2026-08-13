@@ -12,6 +12,9 @@ source: Organisation that produces it
 role: Observation       # Forecast | Observation | Reanalysis | Projection | Ancillary | Product
 status: Operational
 weight: 50
+# updated: 2026-08-13   # date this page was last checked
+# published: false      # keeps the file but does not build the page
+# coming_soon: true     # replaces the body with a "Coming soon" panel
 
 variables:
   - Precipitation
@@ -19,6 +22,8 @@ tags:
   - Earth observation
 regions:
   - Global
+deliverables:
+  - D2
 
 # SPECIFICATIONS — only fill these in if you are confident they are correct
 # for the exact product version in use. Otherwise delete the line.

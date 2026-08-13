@@ -7,6 +7,21 @@
   Reads `stages` from _data/programme.yml. To add a stage, add a block there —
   nothing here needs changing.
 
+  An output is either plain text:
+
+      outputs:
+        - Capability gap analysis
+
+  or a link, written as a name and a url:
+
+      outputs:
+        - name: Need Assessment Survey
+          url: https://forms.office.com/...
+
+  A url containing "://" is treated as external and gets rel="noopener" and an
+  arrow; anything else is treated as a path on this site and passed through
+  relative_url so the baseurl is added.
+
   Built as an ordered list rather than an image, so it stays readable on a
   phone, in a screen reader, and with CSS disabled. On narrow screens the
   outputs box stacks underneath its stage.
@@ -35,7 +50,15 @@
         <p class="flow__outputs-title">Outputs</p>
         {%- if s.outputs.size > 0 %}
         <ul>
-          {%- for o in s.outputs %}<li>{{ o }}</li>{% endfor %}
+          {%- for o in s.outputs %}
+          {%- if o.url -%}
+            {%- assign is_external = false -%}
+            {%- if o.url contains '://' or o.url contains 'mailto:' %}{% assign is_external = true %}{% endif -%}
+          <li><a href="{% if is_external %}{{ o.url }}{% else %}{{ o.url | relative_url }}{% endif %}"{% if is_external %} rel="noopener"{% endif %}>{{ o.name }}{% if is_external %} ↗{% endif %}</a></li>
+          {%- else -%}
+          <li>{% if o.name %}{{ o.name }}{% else %}{{ o }}{% endif %}</li>
+          {%- endif -%}
+          {% endfor %}
         </ul>
         {%- else %}
         <p class="flow__outputs-empty">Information to be added</p>

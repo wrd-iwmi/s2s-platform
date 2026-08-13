@@ -34,7 +34,13 @@ Fill in a form, send it to the site maintainer, and it becomes a page.
 
 5. Save as **.docx** and send it to the site maintainer.
 
-Bold, italics, bullet lists, numbered lists and tables all carry across.
+Bold, italics, bullet lists, numbered lists and tables all carry across, and so
+do links you insert with Word's own *Insert → Link* — both the wording and the
+address are kept.
+
+For a list field you can put one item per line, or all of them on one line
+separated by commas. The comma shortcut only applies to short labels, so a
+sentence containing a comma stays whole.
 
 `EXAMPLE-filled-tool-form.docx` shows a completed form, so you can see what a
 good answer looks like. (The tool in it is fictional — it exists only to
@@ -73,7 +79,7 @@ python3 _scripts/docx_to_page.py form.docx --collection methods   # override det
 - Required fields are present. If any are missing it reports them and **does not
   write the file**, rather than producing a broken page.
 - `status`, `difficulty` and `role` are one of the allowed values.
-- `weight` is a number.
+- `weight` is a number, and `last updated` is a `YYYY-MM-DD` date.
 - Link entries have a recognised `kind`; a link with no URL is marked
   *Not yet public* rather than published as a dead link.
 - Headings it does not recognise are kept as sections in the page body and
@@ -84,11 +90,28 @@ faithful, but it cannot tell whether the content is right.
 
 ### Adding a field to a form
 
-1. Add the heading to the Word template (Heading 2 style, with a `Guidance`-styled
-   line underneath explaining it).
+1. Add the heading with the helper, which matches the existing styles exactly:
+
+   ```bash
+   python3 _scripts/add_form_field.py intake-forms/tool-form.docx \
+       --heading "Related tools" \
+       --guidance "File names of other tool pages, without the .md." \
+       --example "aware" --hint "One per line." --before "Citation"
+   ```
+
 2. Add a matching row to `SCHEMAS` in `_scripts/docx_to_page.py`, mapping the
    heading text to a front-matter key and a kind (`text`, `list`, `block`,
-   `links` or `pairs:a,b`).
+   `links` or `pairs:a,b`), and add the key to `FIELD_ORDER` in the same file.
+
+3. Check the two sides agree:
+
+   ```bash
+   python3 _scripts/add_form_field.py --check
+   ```
+
+   That reports any heading with no schema row, any schema row no heading
+   produces, and any key missing from `FIELD_ORDER` — which would otherwise be
+   dropped from the page without a word.
 
 ---
 

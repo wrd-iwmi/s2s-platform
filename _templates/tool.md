@@ -13,6 +13,9 @@ summary: One sentence saying what it does and who it is for. Shown on cards and 
 status: In development     # Operational | In development | Pilot | Planned | Documentation pending
 weight: 50                 # higher numbers appear first in the tools list
 flagship: false            # true puts this tool on the homepage
+# updated: 2026-08-13      # date this page was last checked
+# published: false         # keeps the file but does not build the page
+# coming_soon: true        # replaces the body with a "Coming soon" panel
 
 # LABELS — these become the filter buttons. Reuse existing ones where you can.
 tags:
@@ -69,9 +72,14 @@ links:
     note: Repository not published yet.
 
 # CROSS-LINKS — file names without the .md ------------------------------------
+# A name that does not match a file renders nothing at all, silently. Check
+# the file exists in the folder before adding it here.
 related_methods:
   - quantile-bin-resampling
 related_case_studies:
+related_tools:
+related_apis:
+related_tutorials:
 # citation: How to cite this tool. Leave out until it has been agreed.
 ---
 

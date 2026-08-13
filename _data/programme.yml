@@ -16,7 +16,6 @@ pillars_lede: >-
 
 pillars:
   - number: 1
-    when: "Q1 2026"
     title: "CGIAR-wide needs assessment & recommendations"
     body: >-
       A comprehensive assessment of CGIAR-wide requirements for S2S and seasonal
@@ -55,8 +54,11 @@ framework_lede: >-
 
 stages:
   - name: "Needs and context"
+    # An output is either plain text, or `{ name, url }` to make it a link.
+    # `url` may be an external address or an internal path such as /tools/aware/.
     outputs:
-      - Need Assessment Survey
+      - name: Need Assessment Survey
+        url: "https://forms.office.com/pages/responsepage.aspx?id=AA76ahT6t0CKLiKn-MNX1fK4umjg6CBAiTSS9wYT-TpUQ0E0SUVFVkwyOVhCMTBKSzFTMVlRN1JJVi4u&route=shorturl"
       - Capability gap analysis
       - Recommendation framework
     detail: "Stakeholder consultations, decision calendars, risk maps, priority variables."
@@ -120,7 +122,6 @@ deliverables_lede: "Expand any deliverable for its activities, team and the docu
 deliverables:
   - id: D1
     short_label: "Needs assessment"
-    when: "Q1 2026"
     title: "CGIAR-wide needs assessment & recommendations"
     summary: >-
       Assessment of CGIAR-wide requirements for S2S and seasonal forecasting

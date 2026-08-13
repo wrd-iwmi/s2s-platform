@@ -14,6 +14,9 @@ context: >-
 
 status: Pilot
 weight: 50
+# updated: 2026-08-13      # date this page was last checked
+# published: false         # keeps the file but does not build the page
+# coming_soon: true        # replaces the body with a "Coming soon" panel
 
 tags:
   - Irrigation
@@ -57,6 +60,15 @@ related_tools:
   - aware
 related_methods:
   - quantile-bin-resampling
+
+# WHERE TO GET IT ------------------------------------------------------------
+# kind: Web application | API | Dataset | Repository | Documentation |
+#       Download | Demonstration | Publication
+links:
+  - label: Pilot report
+    url: "#"
+    kind: Publication
+    available: false          # shows "Not yet public" instead of a broken link
 ---
 
 ## Why this case matters

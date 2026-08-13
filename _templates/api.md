@@ -13,6 +13,9 @@ purpose: >-
 status: In development
 version: Unreleased
 weight: 50
+# updated: 2026-08-13      # date this page was last checked
+# published: false         # keeps the file but does not build the page
+# coming_soon: true        # replaces the body with a "Coming soon" panel
 
 tags:
   - API
@@ -47,6 +50,11 @@ response_formats:
 #       curl https://api.example.org/v1/forecast/rainfall?lead=14
 #     example_response: |
 #       { "variable": "rainfall", "lead_days": 14 }
+
+# THE API'S OWN PAGES — each renders a call-to-action panel --------------------
+# Do not embed a console on this site; it fails on CORS. Link out instead.
+# console_url: https://api.example.org/docs      # interactive documentation
+# service_url: https://example.org               # the service behind the API
 
 related_tool: interoperability-toolkit
 
